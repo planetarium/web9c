@@ -20,7 +20,7 @@ jobs:
         cache: 'npm'
     - name: Install dependencies
       run: yarn
-    - run: yarn build
+    - run: yarn build --base /web9c
     - name: Publish to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:

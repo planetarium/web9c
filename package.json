@@ -12,11 +12,10 @@
   "dependencies": {
     "@planetarium/account": "^1.3.0",
     "@planetarium/bencodex": "^0.2.2",
-    "@planetarium/lib9c-wasm": "0.0.4-dev.a8d6dd3",
+    "@planetarium/lib9c-wasm": "dev",
     "@planetarium/sign": "^0.0.12",
     "@planetarium/tx": "^1.3.0",
     "@tailwindcss/typography": "^0.5.9",
-    "buffer": "^6.0.3",
     "jotai": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

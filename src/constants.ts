@@ -1,14 +1,12 @@
-import { Address, Currency, parseHex } from "@planetarium/lib9c-wasm";
-import { Buffer } from "buffer";
-
-globalThis.Buffer = Buffer;
+import { Address, Currency } from "@planetarium/lib9c-wasm";
+import { hexToBytes } from "../src/utils/convert";
 
 export const LOCAL_STORAGE_KEY = "WEB9C_RAW_PRIAVTE_KEY";
 
 export const { GRAPHQL_ENDPOINT, GENESIS_HASH, NCG_CURRENCY } = {
   MAINNET: {
     GRAPHQL_ENDPOINT: "https://9c-main-full-state.planetarium.dev/graphql",
-    GENESIS_HASH: parseHex(
+    GENESIS_HASH: hexToBytes(
       "4582250d0da33b06779a8475d283d5dd210c683b9b999d74d03fac4f58fa6bce"
     ),
     NCG_CURRENCY: new Currency({
@@ -19,7 +17,7 @@ export const { GRAPHQL_ENDPOINT, GENESIS_HASH, NCG_CURRENCY } = {
   },
   LOCALHOST: {
     GRAPHQL_ENDPOINT: "http://localhost:5000/graphql",
-    GENESIS_HASH: parseHex(
+    GENESIS_HASH: hexToBytes(
       "bb045dc178dd7a25c882f86451ef9ceda9b47bb52706489c161dcb6df40aa969"
     ),
     NCG_CURRENCY: new Currency({

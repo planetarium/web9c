@@ -1,9 +1,9 @@
 import { Layout } from "../../layouts/Layout";
 import { RawPrivateKey } from "@planetarium/account";
-import { toHex } from "@planetarium/lib9c-wasm";
 import { LOCAL_STORAGE_KEY } from "../../constants";
 import { useNavigate } from "react-router";
 import Button from "../../components/ui/Button";
+import { bytesToHex } from "../../utils/convert";
 
 export default function RegisterView() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ export default function RegisterView() {
 
   function handleClick() {
     const rawPrivateKey = RawPrivateKey.generate();
-    localStorage.setItem(LOCAL_STORAGE_KEY, toHex(rawPrivateKey.toBytes()));
+    localStorage.setItem(LOCAL_STORAGE_KEY, bytesToHex(rawPrivateKey.toBytes()));
     navigate("/lobby");
   }
 

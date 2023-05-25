@@ -1,9 +1,11 @@
 import { Layout } from "../../layouts/Layout";
 import { Address, RawPrivateKey } from "@planetarium/account";
-import { Address as Lib9cWasmAddress, toHex } from "@planetarium/lib9c-wasm";
+import { Address as Lib9cWasmAddress } from "@planetarium/lib9c-wasm";
 import { LOCAL_STORAGE_KEY } from "../../constants";
 import { useNavigate } from "react-router";
 import { useEffect, useRef, useState } from "react";
+import { bytesToHex, hexToBytes } from "../../utils/convert";
+
 import {
   getNcgBalance,
   getNextTxNonce,
@@ -32,7 +34,7 @@ export default function LobbyView() {
   }
 
   // eslint-disable-next-line
-  const rawPrivateKey = RawPrivateKey.fromHex(rawPrivateKeyHex!);
+  const rawPrivateKey = RawPrivateKey.fromBytes(hexToBytes(rawPrivateKeyHex!))
 
   useEffect(() => {
     (async () => {
@@ -66,7 +68,7 @@ export default function LobbyView() {
       new Lib9cWasmAddress(recipient),
       parseFloat(amount),
       memo
-    ).then((x) => setTxId(toHex(x)));
+    ).then((x) => setTxId(bytesToHex(x)));
   }
 
   return (
@@ -76,7 +78,7 @@ export default function LobbyView() {
         <p>Loading...</p>
       ) : (
         <>
-          <p>Address: 0x{state.address.toHex()}</p>
+          <p>Address: 0x{state.address.bytesToHex()}</p>
           <p>Balance: {state.ncgBalance}</p>
           <p>Next Tx Nonce: {state.nextTxNonce}</p>
         </>

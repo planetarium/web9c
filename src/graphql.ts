@@ -1,7 +1,5 @@
 import { Client, cacheExchange, fetchExchange, gql } from "urql";
 import {
-  toHex,
-  parseHex,
   transfer_asset3,
   Address,
 } from "@planetarium/lib9c-wasm";
@@ -17,6 +15,7 @@ import {
   signTx,
 } from "@planetarium/tx";
 import { GRAPHQL_ENDPOINT, NCG_CURRENCY, GENESIS_HASH } from "./constants";
+import { bytesToHex, hexToBytes } from "../src/utils/convert";
 
 const client = new Client({
   url: GRAPHQL_ENDPOINT,
@@ -46,11 +45,11 @@ const StageTransactionMutation = gql`
 export async function stageTransaction(payload: Uint8Array): Promise<TxId> {
   const { data } = await client
     .mutation(StageTransactionMutation, {
-      payload: toHex(payload),
+      payload: bytesToHex(payload),
     })
     .toPromise();
 
-  return parseHex(data.stageTransaction);
+  return hexToBytes(data.stageTransaction);
 }
 
 export async function getNextTxNonce(
@@ -62,7 +61,7 @@ export async function getNextTxNonce(
     })
     .toPromise();
 
-  return data.transaction.nextTxNonce;
+  return data.transaction.nextTxNonce as number;
 }
 
 export async function getNcgBalance(
@@ -86,7 +85,7 @@ export async function sendTransferAssetTransaction(
   const sender = await account.getAddress();
   const action = decode(
     transfer_asset3({
-      sender: new Address(sender.toHex()),
+      sender: new Address(sender.bytesToHex()),
       recipient: recipient,
       amount: {
         currency: NCG_CURRENCY,

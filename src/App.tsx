@@ -1,13 +1,18 @@
-import { Layout } from "./layouts/Layout";
+import { boot } from "@planetarium/lib9c-wasm";
+import { useEffect, useState } from "react";
+import Routes from "./Routes";
 
 function App() {
-  return (
-    <Layout>
-      <h1 className="text-3xl font-bold animate-scrollText p-4">
-        Hi There! 안녕하세요! おはよう!
-      </h1>
-    </Layout>
-  );
+  const [booted, setBooted] = useState<boolean>(false);
+
+  useEffect(() => {
+    (async () => {
+      await boot();
+      setBooted(true);
+    })();
+  }, []);
+
+  return booted ? <Routes /> : <p>"BOOTING..."</p>;
 }
 
 export default App;

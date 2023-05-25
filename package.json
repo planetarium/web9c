@@ -16,6 +16,7 @@
     "@planetarium/sign": "^0.0.12",
     "@planetarium/tx": "^1.3.0",
     "@tailwindcss/typography": "^0.5.9",
+    "buffer": "^6.0.3",
     "jotai": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

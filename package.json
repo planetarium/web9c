@@ -1,6 +1,6 @@
 {
   "name": "web9c",
-  "packageManager": "yarn@3.2.4",
+  "packageManager": "yarn@3.5.1",
   "version": "0.0.1",
   "type": "module",
   "scripts": {

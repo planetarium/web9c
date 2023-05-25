@@ -1,6 +1,6 @@
 {
   "name": "web9c",
-  "packageManager": "yarn@3.2.4",
+  "packageManager": "yarn@3.5.1",
   "version": "0.0.1",
   "type": "module",
   "scripts": {
@@ -12,13 +12,16 @@
   "dependencies": {
     "@planetarium/account": "^1.3.0",
     "@planetarium/bencodex": "^0.2.2",
-    "@planetarium/lib9c-wasm": "^0.0.3",
+    "@planetarium/lib9c-wasm": "0.0.4-dev.a8d6dd3",
     "@planetarium/sign": "^0.0.12",
     "@planetarium/tx": "^1.3.0",
     "@tailwindcss/typography": "^0.5.9",
+    "buffer": "^6.0.3",
     "jotai": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router": "^6.11.2",
+    "react-router-dom": "^6.11.2",
     "urql": "^4.0.2",
     "vite-plugin-svgr": "^3.2.0",
     "vite-tsconfig-paths": "^4.2.0"
@@ -26,6 +29,9 @@
   "devDependencies": {
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
+    "@types/react-router": "^5.1.20",
+    "@types/react-router-dom": "^5.3.3",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
     "@vitejs/plugin-react-swc": "^3.3.1",

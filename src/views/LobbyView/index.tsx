@@ -1,15 +1,16 @@
 import { Layout } from "../../layouts/Layout";
-import { Address, RawPrivateKey } from "@planetarium/account";
+import { Address } from "@planetarium/account";
 import { Address as Lib9cWasmAddress, toHex } from "@planetarium/lib9c-wasm";
-import { LOCAL_STORAGE_KEY } from "../../constants";
 import { useNavigate } from "react-router";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   getNcgBalance,
   getNextTxNonce,
   sendTransferAssetTransaction,
 } from "../../graphql";
 import Button from "../../components/ui/Button";
+import AccountContext from "../../contexts/Account";
+import { MakeTransactionUrl } from "../../constants";
 
 export default function LobbyView() {
   const navigate = useNavigate();
@@ -20,19 +21,20 @@ export default function LobbyView() {
     ncgBalance: number;
   } | null>(null);
 
+  const { privateKey: nullableRawPrivateKey } = useContext(AccountContext);
+
   const [txId, setTxId] = useState<string | null>(null);
 
   const recipientInputRef = useRef<HTMLInputElement>(null);
   const amountInputRef = useRef<HTMLInputElement>(null);
   const memoInputRef = useRef<HTMLInputElement>(null);
 
-  const rawPrivateKeyHex = localStorage.getItem(LOCAL_STORAGE_KEY);
-  if (rawPrivateKeyHex == null) {
+  if (nullableRawPrivateKey == null) {
     navigate("/");
   }
 
   // eslint-disable-next-line
-  const rawPrivateKey = RawPrivateKey.fromHex(rawPrivateKeyHex!);
+  const rawPrivateKey = nullableRawPrivateKey!;
 
   useEffect(() => {
     (async () => {
@@ -114,11 +116,7 @@ export default function LobbyView() {
         Tranfer
       </Button>
 
-      {txId !== null && (
-        <p>
-          Check {`https://explorer.libplanet.io/localhost/transaction?${txId}`}
-        </p>
-      )}
+      {txId !== null && <p>Check {MakeTransactionUrl(txId)}</p>}
     </Layout>
   );
 }

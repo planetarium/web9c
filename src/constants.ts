@@ -28,4 +28,4 @@ export const { GRAPHQL_ENDPOINT, GENESIS_HASH, NCG_CURRENCY } = {
       minters: [new Address("0x5c00CBFb90eB38788ACBc650438261c09f4a53f7")],
     }),
   },
-}["LOCALHOST"];
+}["MAINNET"];

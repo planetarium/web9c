@@ -4,31 +4,33 @@ import { Navigate, useNavigate } from "react-router";
 import Button from "../../components/ui/Button";
 import { isKeyObject } from "../../web3-account";
 import { decryptKeyObject } from "../../web3-account";
-import { useContext, useRef } from "react";
-import AccountContext from "../../contexts/Account";
+import useAccountContext from "../../hooks/useAccountContext";
+import { useForm } from "react-hook-form";
+import InputField from "../../components/ui/InputField";
+
+interface Inputs {
+  password: string;
+}
 
 export default function LoginView() {
   const navigate = useNavigate();
+  const { register, handleSubmit } = useForm<Inputs>();
 
-  const passwordInputRef = useRef<HTMLInputElement>(null);
-  const { setPrivateKey } = useContext(AccountContext);
+  const { setPrivateKey } = useAccountContext();
 
   const protectedPrivateKeyItem = localStorage.getItem(LOCAL_STORAGE_KEY);
-  console.log("protectedPrivateKeyItem", protectedPrivateKeyItem);
   if (protectedPrivateKeyItem == null) {
     return <Navigate to="/welcome" />;
   }
 
   // eslint-disable-next-line
   const maybeProtectedPrivateKey = JSON.parse(protectedPrivateKeyItem!);
-  console.log("maybeProtectedPrivateKey", maybeProtectedPrivateKey);
   if (!isKeyObject(maybeProtectedPrivateKey)) {
     return <Navigate to="/welcome" />;
   }
 
-  function handleClick() {
-    // eslint-disable-next-line
-    decryptKeyObject(maybeProtectedPrivateKey, passwordInputRef.current!.value)
+  function onSubmit(inputs: Inputs) {
+    decryptKeyObject(maybeProtectedPrivateKey, inputs.password)
       .then(({ privateKey }) => {
         setPrivateKey(privateKey);
         navigate("/lobby");
@@ -39,8 +41,13 @@ export default function LoginView() {
   return (
     <Layout>
       <h1>Login</h1>
-      <input ref={passwordInputRef} name="password" type="password" />
-      <Button onClick={handleClick}>Login</Button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <InputField
+          type="password"
+          {...register("password", { required: true })}
+        />
+        <Button type="submit">Login</Button>
+      </form>
     </Layout>
   );
 }

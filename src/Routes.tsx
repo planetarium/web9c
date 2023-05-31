@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import {
   BrowserRouter,
   Routes as DomRoutes,
@@ -8,12 +7,12 @@ import {
 import WelcomeView from "./views/WelcomeView";
 import RegisterView from "./views/RegisterView";
 import LobbyView from "./views/LobbyView";
-import AccountContext from "./contexts/Account";
 import LoginView from "./views/LoginView";
 import ImportView from "./views/ImportView";
+import useAccountContext from "./hooks/useAccountContext";
 
 const Redirector = () => {
-  const { privateKey } = useContext(AccountContext);
+  const { privateKey } = useAccountContext();
 
   if (privateKey != null) {
     return <Navigate to="/lobby" />;

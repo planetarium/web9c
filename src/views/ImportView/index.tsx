@@ -2,13 +2,13 @@ import { Layout } from "../../layouts/Layout";
 import { LOCAL_STORAGE_KEY } from "../../constants";
 import { Navigate, useNavigate } from "react-router";
 import Button from "../../components/ui/Button";
-import { useContext, useRef } from "react";
-import AccountContext from "../../contexts/Account";
+import { useRef } from "react";
 import { isKeyObject } from "../../web3-account";
+import useAccountContext from "../../hooks/useAccountContext";
 
 export default function ImportView() {
   const navigate = useNavigate();
-  const { privateKey } = useContext(AccountContext);
+  const { privateKey } = useAccountContext();
   const keyFileInputRef = useRef<HTMLInputElement>(null);
 
   if (privateKey != null) {

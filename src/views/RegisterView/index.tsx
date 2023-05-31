@@ -4,34 +4,41 @@ import { LOCAL_STORAGE_KEY } from "../../constants";
 import { useNavigate } from "react-router";
 import Button from "../../components/ui/Button";
 import { encryptKeyObject, generateKeyId } from "../../web3-account";
-import { useRef } from "react";
+import { useForm } from "react-hook-form";
+import InputField from "../../components/ui/InputField";
+
+interface Inputs {
+  password: string;
+}
 
 export default function RegisterView() {
   const navigate = useNavigate();
+  const { register, handleSubmit } = useForm<Inputs>();
 
-  const passwordInputRef = useRef<HTMLInputElement>(null);
   if (localStorage.getItem(LOCAL_STORAGE_KEY) != null) {
-    navigate("/lobby");
+    navigate("/login");
   }
 
-  function handleClick() {
+  function onSubmit(inputs: Inputs) {
     const rawPrivateKey = RawPrivateKey.generate();
-    encryptKeyObject(
-      generateKeyId(),
-      rawPrivateKey,
-      // eslint-disable-next-line
-      passwordInputRef.current!.value
-    ).then((keyObj) => {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(keyObj));
-      navigate("/lobby");
-    });
+    encryptKeyObject(generateKeyId(), rawPrivateKey, inputs.password).then(
+      (keyObj) => {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(keyObj));
+        navigate("/login");
+      }
+    );
   }
 
   return (
     <Layout>
       <h1>Register</h1>
-      <input ref={passwordInputRef} type="password" />
-      <Button onClick={handleClick}>Create Key</Button>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <InputField
+          type="password"
+          {...register("password", { required: true })}
+        />
+        <Button type="submit">Create Key</Button>
+      </form>
     </Layout>
   );
 }

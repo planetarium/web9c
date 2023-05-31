@@ -1,5 +1,17 @@
+import React from "react";
+
 type InputFieldProps = React.ComponentProps<"input">;
 
-export default function InputField(props: InputFieldProps) {
-  return <input className="ml-2 border-solid border-black border" {...props} />;
-}
+const InputField = React.forwardRef<HTMLInputElement, InputFieldProps>(
+  (props, ref) => {
+    return (
+      <input
+        ref={ref}
+        className="ml-2 border-solid border-black border"
+        {...props}
+      />
+    );
+  }
+);
+
+export default InputField;

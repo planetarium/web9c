@@ -5,7 +5,12 @@ globalThis.Buffer = Buffer;
 
 export const LOCAL_STORAGE_KEY = "WEB9C_RAW_PRIAVTE_KEY";
 
-export const { GRAPHQL_ENDPOINT, GENESIS_HASH, NCG_CURRENCY } = {
+export const {
+  GRAPHQL_ENDPOINT,
+  GENESIS_HASH,
+  NCG_CURRENCY,
+  MakeTransactionUrl,
+} = {
   MAINNET: {
     GRAPHQL_ENDPOINT: "https://9c-main-full-state.planetarium.dev/graphql",
     GENESIS_HASH: parseHex(
@@ -16,6 +21,7 @@ export const { GRAPHQL_ENDPOINT, GENESIS_HASH, NCG_CURRENCY } = {
       decimalPlaces: 2,
       minters: [new Address("0x47d082a115c63e7b58b1532d20e631538eafadde")],
     }),
+    MakeTransactionUrl: (txId: string) => `https://9cscan.com/tx/${txId}`,
   },
   LOCALHOST: {
     GRAPHQL_ENDPOINT: "http://localhost:5000/graphql",
@@ -27,5 +33,7 @@ export const { GRAPHQL_ENDPOINT, GENESIS_HASH, NCG_CURRENCY } = {
       decimalPlaces: 2,
       minters: [new Address("0x5c00CBFb90eB38788ACBc650438261c09f4a53f7")],
     }),
+    MakeTransactionUrl: (txId: string) =>
+      `https://explorer.libplanet.io/localhost/transaction/?${txId}`,
   },
 }["MAINNET"];

@@ -10,6 +10,7 @@ import {
 } from "../../graphql";
 import Button from "../../components/ui/Button";
 import AccountContext from "../../contexts/Account";
+import { MakeTransactionUrl } from "../../constants";
 
 export default function LobbyView() {
   const navigate = useNavigate();
@@ -114,11 +115,7 @@ export default function LobbyView() {
         Tranfer
       </Button>
 
-      {txId !== null && (
-        <p>
-          Check {`https://explorer.libplanet.io/localhost/transaction?${txId}`}
-        </p>
-      )}
+      {txId !== null && <p>Check {MakeTransactionUrl(txId)}</p>}
     </Layout>
   );
 }

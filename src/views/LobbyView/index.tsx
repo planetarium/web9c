@@ -4,6 +4,7 @@ import { Address as Lib9cWasmAddress, toHex } from "@planetarium/lib9c-wasm";
 import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import {
+  getAvatarStates,
   getNcgBalance,
   getNextTxNonce,
   sendTransferAssetTransaction,
@@ -13,6 +14,7 @@ import { MakeTransactionUrl } from "../../constants";
 import useAccountContext from "../../hooks/useAccountContext";
 import { useForm } from "react-hook-form";
 import InputField from "../../components/ui/InputField";
+import Avatar from "./Avatar";
 
 interface Inputs {
   recipient: string;
@@ -28,6 +30,11 @@ export default function LobbyView() {
     address: Address;
     nextTxNonce: number;
     ncgBalance: number;
+    avatarStates: ({
+      name: string;
+      level: number;
+      actionPoint: number;
+    } | null)[];
   } | null>(null);
 
   const { privateKey: nullableRawPrivateKey } = useAccountContext();
@@ -46,11 +53,13 @@ export default function LobbyView() {
       const address = await rawPrivateKey.getAddress();
       const nextTxNonce = await getNextTxNonce(address);
       const ncgBalance = await getNcgBalance(address);
+      const avatarStates = await getAvatarStates(address);
 
       setState({
         address,
         nextTxNonce,
         ncgBalance,
+        avatarStates,
       });
     })();
   }, [rawPrivateKey]);
@@ -74,6 +83,9 @@ export default function LobbyView() {
           <p>Address: 0x{state.address.toHex()}</p>
           <p>Balance: {state.ncgBalance}</p>
           <p>Next Tx Nonce: {state.nextTxNonce}</p>
+          {...state.avatarStates.map((avatarState) =>
+            avatarState === null ? <></> : <Avatar {...avatarState} />
+          )}
         </>
       )}
       <hr className="my-5" />

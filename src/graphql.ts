@@ -23,20 +23,6 @@ const client = new Client({
   exchanges: [cacheExchange, fetchExchange],
 });
 
-const GetNextNonceQuery = gql`
-  query ($address: Address!) {
-    transaction {
-      nextTxNonce(address: $address)
-    }
-  }
-`;
-
-const GetGoldBalanceQuery = gql`
-  query ($address: Address!) {
-    goldBalance(address: $address)
-  }
-`;
-
 const StageTransactionMutation = gql`
   mutation ($payload: String!) {
     stageTransaction(payload: $payload)
@@ -53,6 +39,14 @@ export async function stageTransaction(payload: Uint8Array): Promise<TxId> {
   return parseHex(data.stageTransaction);
 }
 
+const GetNextNonceQuery = gql`
+  query ($address: Address!) {
+    transaction {
+      nextTxNonce(address: $address)
+    }
+  }
+`;
+
 export async function getNextTxNonce(
   address: LibplanetAccountAddress
 ): Promise<number> {
@@ -65,6 +59,12 @@ export async function getNextTxNonce(
   return data.transaction.nextTxNonce;
 }
 
+const GetGoldBalanceQuery = gql`
+  query ($address: Address!) {
+    goldBalance(address: $address)
+  }
+`;
+
 export async function getNcgBalance(
   address: LibplanetAccountAddress
 ): Promise<number> {
@@ -75,6 +75,48 @@ export async function getNcgBalance(
     .toPromise();
 
   return data.goldBalance;
+}
+
+const GetAvatarStatesQuery = gql`
+  query ($address: Address!) {
+    stateQuery {
+      agent(address: $address) {
+        avatarStates {
+          name
+          level
+          index
+          actionPoint
+        }
+      }
+    }
+  }
+`;
+
+export async function getAvatarStates(
+  address: LibplanetAccountAddress
+): Promise<
+  ({
+    name: string;
+    level: number;
+    actionPoint: number;
+  } | null)[]
+> {
+  const { data, error } = await client
+    .query(GetAvatarStatesQuery, {
+      address: address.toHex(),
+    })
+    .toPromise();
+
+  if (error) {
+    throw error;
+  }
+
+  const avatarStates = [null, null, null];
+  for (const avatarState of data.stateQuery.agent.avatarStates) {
+    avatarStates[avatarState.index] = avatarState;
+  }
+
+  return avatarStates;
 }
 
 export async function sendTransferAssetTransaction(

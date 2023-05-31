@@ -19,6 +19,7 @@ export default function LoginView() {
     return <Navigate to="/welcome" />;
   }
 
+  // eslint-disable-next-line
   const maybeProtectedPrivateKey = JSON.parse(protectedPrivateKeyItem!);
   console.log("maybeProtectedPrivateKey", maybeProtectedPrivateKey);
   if (!isKeyObject(maybeProtectedPrivateKey)) {
@@ -26,12 +27,13 @@ export default function LoginView() {
   }
 
   function handleClick() {
+    // eslint-disable-next-line
     decryptKeyObject(maybeProtectedPrivateKey, passwordInputRef.current!.value)
       .then(({ privateKey }) => {
         setPrivateKey(privateKey);
         navigate("/lobby");
       })
-      .catch((_) => alert("Invalid password."));
+      .catch(() => alert("Invalid password."));
   }
 
   return (

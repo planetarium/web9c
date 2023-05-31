@@ -19,6 +19,7 @@ export default function RegisterView() {
     encryptKeyObject(
       generateKeyId(),
       rawPrivateKey,
+      // eslint-disable-next-line
       passwordInputRef.current!.value
     ).then((keyObj) => {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(keyObj));

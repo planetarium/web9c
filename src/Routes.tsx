@@ -1,10 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import {
   BrowserRouter,
   Routes as DomRoutes,
   Navigate,
   Route,
-  useNavigate,
 } from "react-router-dom";
 import WelcomeView from "./views/WelcomeView";
 import RegisterView from "./views/RegisterView";
@@ -16,16 +15,11 @@ import ImportView from "./views/ImportView";
 const Redirector = () => {
   const { privateKey } = useContext(AccountContext);
 
-  const navigate = useNavigate();
-
   if (privateKey != null) {
     return <Navigate to="/lobby" />;
   }
 
-  useEffect(() => {
-    navigate("/welcome");
-  });
-  return null;
+  return <Navigate to="/welcome" />;
 };
 
 export default function Routes() {

@@ -1,10 +1,4 @@
-import {
-  Address,
-  ExportableAccount,
-  PublicKey,
-  RawPrivateKey,
-  Signature,
-} from "@planetarium/account";
+import { Address, RawPrivateKey } from "@planetarium/account";
 import { pbkdf2Async } from "@noble/hashes/pbkdf2";
 import { scrypt } from "scrypt-js";
 import { sha256 } from "@noble/hashes/sha256";
@@ -67,68 +61,6 @@ export interface Web3KeyObject {
   id: KeyId;
   address: string;
   crypto: Web3KeyObjectCipher & Web3KeyObjectKdf;
-}
-
-export class Web3Account implements ExportableAccount {
-  #keyObject: Web3KeyObject;
-  #passphraseEntry: PassphraseEntry;
-  #options: Partial<Web3AccountOptions>;
-
-  constructor(
-    keyObject: Web3KeyObject,
-    passphraseEntry: PassphraseEntry,
-    options: Partial<Web3AccountOptions> = {}
-  ) {
-    this.#keyObject = keyObject;
-    this.#passphraseEntry = passphraseEntry;
-    this.#options = options;
-  }
-
-  async #exportPrivateKey(
-    options: Partial<Web3AccountOptions> = {}
-  ): Promise<RawPrivateKey> {
-    let firstAttempt = true;
-    let privateKey: RawPrivateKey;
-    while (true) {
-      const passphrase = await this.#passphraseEntry.authenticate(
-        this.#keyObject.id,
-        firstAttempt
-      );
-      try {
-        const result = await decryptKeyObject(this.#keyObject, passphrase, {
-          ...this.#options,
-          ...options,
-        });
-        privateKey = result.privateKey;
-      } catch (e) {
-        if (e instanceof IncorrectPassphraseError) {
-          firstAttempt = false;
-          continue;
-        }
-        throw e;
-      }
-      break;
-    }
-    return privateKey;
-  }
-
-  exportPrivateKey(): Promise<RawPrivateKey> {
-    return this.#exportPrivateKey({ allowWeakPrivateKey: true });
-  }
-
-  getAddress(): Promise<Address> {
-    return Promise.resolve(Address.fromHex(this.#keyObject.address, true));
-  }
-
-  async getPublicKey(): Promise<PublicKey> {
-    const key = await this.#exportPrivateKey({ allowWeakPrivateKey: true });
-    return await key.getPublicKey();
-  }
-
-  async sign(message: Uint8Array): Promise<Signature> {
-    const key = await this.#exportPrivateKey();
-    return await key.sign(message);
-  }
 }
 
 function toHex(bytes: Uint8Array | ArrayBuffer): string {

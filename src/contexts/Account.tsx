@@ -8,7 +8,9 @@ interface AccountContextProps {
 
 const AccountContext = createContext<AccountContextProps>({
   privateKey: null,
-  setPrivateKey: (_) => {},
+  setPrivateKey: function () {
+    throw new Error("default function.");
+  },
 });
 
 export default AccountContext;

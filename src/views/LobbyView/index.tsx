@@ -33,6 +33,7 @@ export default function LobbyView() {
     navigate("/");
   }
 
+  // eslint-disable-next-line
   const rawPrivateKey = nullableRawPrivateKey!;
 
   useEffect(() => {

@@ -4,14 +4,14 @@ import { Navigate, useNavigate } from "react-router";
 import Button from "../../components/ui/Button";
 import { isKeyObject } from "../../web3-account";
 import { decryptKeyObject } from "../../web3-account";
-import { useContext, useRef } from "react";
-import AccountContext from "../../contexts/Account";
+import { useRef } from "react";
+import useAccountContext from "../../hooks/useAccountContext";
 
 export default function LoginView() {
   const navigate = useNavigate();
 
   const passwordInputRef = useRef<HTMLInputElement>(null);
-  const { setPrivateKey } = useContext(AccountContext);
+  const { setPrivateKey } = useAccountContext();
 
   const protectedPrivateKeyItem = localStorage.getItem(LOCAL_STORAGE_KEY);
   console.log("protectedPrivateKeyItem", protectedPrivateKeyItem);

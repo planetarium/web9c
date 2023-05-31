@@ -2,15 +2,15 @@ import { Layout } from "../../layouts/Layout";
 import { Address } from "@planetarium/account";
 import { Address as Lib9cWasmAddress, toHex } from "@planetarium/lib9c-wasm";
 import { useNavigate } from "react-router";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   getNcgBalance,
   getNextTxNonce,
   sendTransferAssetTransaction,
 } from "../../graphql";
 import Button from "../../components/ui/Button";
-import AccountContext from "../../contexts/Account";
 import { MakeTransactionUrl } from "../../constants";
+import useAccountContext from "../../hooks/useAccountContext";
 
 export default function LobbyView() {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export default function LobbyView() {
     ncgBalance: number;
   } | null>(null);
 
-  const { privateKey: nullableRawPrivateKey } = useContext(AccountContext);
+  const { privateKey: nullableRawPrivateKey } = useAccountContext();
 
   const [txId, setTxId] = useState<string | null>(null);
 

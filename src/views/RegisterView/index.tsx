@@ -15,7 +15,7 @@ export default function RegisterView() {
   const { register, handleSubmit } = useForm<Inputs>();
 
   if (localStorage.getItem(LOCAL_STORAGE_KEY) != null) {
-    navigate("/lobby");
+    navigate("/login");
   }
 
   function onSubmit(inputs: Inputs) {

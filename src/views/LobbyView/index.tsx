@@ -95,7 +95,7 @@ export default function LobbyView() {
           />
         </div>
         <div className="my-2">
-          <label htmlFor="amount">Memo</label>
+          <label htmlFor="memo">Memo</label>
           <input
             className="ml-2 border-solid border-black border"
             type="text"

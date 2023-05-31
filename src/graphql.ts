@@ -4,6 +4,7 @@ import {
   parseHex,
   transfer_asset3,
   Address,
+  stake2,
 } from "@planetarium/lib9c-wasm";
 import {
   Account,
@@ -23,20 +24,6 @@ const client = new Client({
   exchanges: [cacheExchange, fetchExchange],
 });
 
-const GetNextNonceQuery = gql`
-  query ($address: Address!) {
-    transaction {
-      nextTxNonce(address: $address)
-    }
-  }
-`;
-
-const GetGoldBalanceQuery = gql`
-  query ($address: Address!) {
-    goldBalance(address: $address)
-  }
-`;
-
 const StageTransactionMutation = gql`
   mutation ($payload: String!) {
     stageTransaction(payload: $payload)
@@ -53,6 +40,14 @@ export async function stageTransaction(payload: Uint8Array): Promise<TxId> {
   return parseHex(data.stageTransaction);
 }
 
+const GetNextNonceQuery = gql`
+  query ($address: Address!) {
+    transaction {
+      nextTxNonce(address: $address)
+    }
+  }
+`;
+
 export async function getNextTxNonce(
   address: LibplanetAccountAddress
 ): Promise<number> {
@@ -65,6 +60,12 @@ export async function getNextTxNonce(
   return data.transaction.nextTxNonce;
 }
 
+const GetGoldBalanceQuery = gql`
+  query ($address: Address!) {
+    goldBalance(address: $address)
+  }
+`;
+
 export async function getNcgBalance(
   address: LibplanetAccountAddress
 ): Promise<number> {
@@ -75,6 +76,48 @@ export async function getNcgBalance(
     .toPromise();
 
   return data.goldBalance;
+}
+
+const GetAvatarStatesQuery = gql`
+  query ($address: Address!) {
+    stateQuery {
+      agent(address: $address) {
+        avatarStates {
+          name
+          level
+          index
+          actionPoint
+        }
+      }
+    }
+  }
+`;
+
+export async function getAvatarStates(
+  address: LibplanetAccountAddress
+): Promise<
+  ({
+    name: string;
+    level: number;
+    actionPoint: number;
+  } | null)[]
+> {
+  const { data, error } = await client
+    .query(GetAvatarStatesQuery, {
+      address: address.toHex(),
+    })
+    .toPromise();
+
+  if (error) {
+    throw error;
+  }
+
+  const avatarStates = [null, null, null];
+  for (const avatarState of data.stateQuery.agent.avatarStates) {
+    avatarStates[avatarState.index] = avatarState;
+  }
+
+  return avatarStates;
 }
 
 export async function sendTransferAssetTransaction(
@@ -95,6 +138,33 @@ export async function sendTransferAssetTransaction(
         minorUnit: amount.toFixed(2).slice(2),
       },
       memo: memo || "LIB9C-WASM DOESNT ALLOW NULL MEMO",
+    })
+  );
+
+  const unsignedTx: UnsignedTxWithCustomActions = {
+    nonce: BigInt(await getNextTxNonce(sender)),
+    publicKey: (await account.getPublicKey()).toBytes("uncompressed"),
+    signer: sender.toBytes(),
+    timestamp: new Date(Date.now()),
+    updatedAddresses: new Set(),
+    genesisHash: GENESIS_HASH,
+    customActions: [action],
+  };
+
+  const signed = await signTx(unsignedTx, account);
+  const encodedSignedTx = encode(encodeSignedTx(signed));
+  const txId = await stageTransaction(encodedSignedTx);
+  return txId;
+}
+
+export async function sendStakeTransaction(
+  account: Account,
+  amount: bigint
+): Promise<TxId> {
+  const sender = await account.getAddress();
+  const action = decode(
+    stake2({
+      amount: amount.toString(),
     })
   );
 

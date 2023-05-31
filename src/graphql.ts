@@ -4,6 +4,7 @@ import {
   parseHex,
   transfer_asset3,
   Address,
+  stake2,
 } from "@planetarium/lib9c-wasm";
 import {
   Account,
@@ -137,6 +138,33 @@ export async function sendTransferAssetTransaction(
         minorUnit: amount.toFixed(2).slice(2),
       },
       memo: memo || "LIB9C-WASM DOESNT ALLOW NULL MEMO",
+    })
+  );
+
+  const unsignedTx: UnsignedTxWithCustomActions = {
+    nonce: BigInt(await getNextTxNonce(sender)),
+    publicKey: (await account.getPublicKey()).toBytes("uncompressed"),
+    signer: sender.toBytes(),
+    timestamp: new Date(Date.now()),
+    updatedAddresses: new Set(),
+    genesisHash: GENESIS_HASH,
+    customActions: [action],
+  };
+
+  const signed = await signTx(unsignedTx, account);
+  const encodedSignedTx = encode(encodeSignedTx(signed));
+  const txId = await stageTransaction(encodedSignedTx);
+  return txId;
+}
+
+export async function sendStakeTransaction(
+  account: Account,
+  amount: bigint
+): Promise<TxId> {
+  const sender = await account.getAddress();
+  const action = decode(
+    stake2({
+      amount: amount.toString(),
     })
   );
 

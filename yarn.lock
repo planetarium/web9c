@@ -1853,6 +1853,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"clsx@npm:^1.1.0":
+  version: 1.2.1
+  resolution: "clsx@npm:1.2.1"
+  checksum: 30befca8019b2eb7dbad38cff6266cf543091dae2825c856a62a8ccf2c3ab9c2907c4d12b288b73101196767f66812365400a227581484a05f968b0307cfaf12
+  languageName: node
+  linkType: hard
+
 "color-convert@npm:^1.9.0":
   version: 1.9.3
   resolution: "color-convert@npm:1.9.3"
@@ -4230,7 +4237,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.8.1":
+"prop-types@npm:^15.5.0, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -4327,6 +4334,18 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: e47f875dca70033a3b42704cb5ec076b60f9629a5cdc3be613707f3d5a5706123fb80301037455c285c6d5a1011b443e1784e0103969ebfac7071648d360c413
+  languageName: node
+  linkType: hard
+
+"react-tabs@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "react-tabs@npm:6.0.1"
+  dependencies:
+    clsx: ^1.1.0
+    prop-types: ^15.5.0
+  peerDependencies:
+    react: ^18.0.0
+  checksum: 951fcf50f0e5d6cd1b8a39b8531c3e32b73227f39c70b7f88692e1de2e987fd59e9243aab76b2551a4905d5d9714406a1d09ae67dfddf6289e3271e85aa9e9dc
   languageName: node
   linkType: hard
 
@@ -5308,6 +5327,7 @@ __metadata:
     react-hook-form: ^7.44.2
     react-router: ^6.11.2
     react-router-dom: ^6.11.2
+    react-tabs: ^6.0.1
     scrypt-js: ^3.0.1
     tailwindcss: ^3.3.2
     typescript: ^5.0.2

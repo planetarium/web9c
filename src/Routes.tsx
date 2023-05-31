@@ -11,6 +11,7 @@ import RegisterView from "./views/RegisterView";
 import LobbyView from "./views/LobbyView";
 import AccountContext from "./contexts/Account";
 import LoginView from "./views/LoginView";
+import ImportView from "./views/ImportView";
 
 const Redirector = () => {
   const { privateKey } = useContext(AccountContext);
@@ -35,6 +36,7 @@ export default function Routes() {
         <Route path="/register" Component={RegisterView} />
         <Route path="/login" Component={LoginView} />
         <Route path="/lobby" Component={LobbyView} />
+        <Route path="/import" Component={ImportView} />
         <Route path="/*" Component={Redirector} />
       </DomRoutes>
     </BrowserRouter>

@@ -11,7 +11,10 @@ export default function WelcomeView() {
       {registered ? (
         <ButtonLink to="/login">Login</ButtonLink>
       ) : (
-        <ButtonLink to="/register">Generate your own key</ButtonLink>
+        <>
+          <ButtonLink to="/register">Generate your own key</ButtonLink>
+          <ButtonLink to="/import">Import your own key</ButtonLink>
+        </>
       )}
     </Layout>
   );

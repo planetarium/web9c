@@ -12,6 +12,7 @@ import Button from "../../components/ui/Button";
 import { MakeTransactionUrl } from "../../constants";
 import useAccountContext from "../../hooks/useAccountContext";
 import { useForm } from "react-hook-form";
+import InputField from "../../components/ui/InputField";
 
 interface Inputs {
   recipient: string;
@@ -80,27 +81,21 @@ export default function LobbyView() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="my-2">
           <label htmlFor="recipient">Recipient</label>
-          <input
-            className="ml-2 border-solid border-black border"
+          <InputField
             type="text"
             {...register("recipient", { required: true })}
           />
         </div>
         <div className="my-2">
           <label htmlFor="amount">Amount</label>
-          <input
-            className="ml-2 border-solid border-black border"
+          <InputField
             type="number"
             {...register("amount", { required: true, valueAsNumber: true })}
           />
         </div>
         <div className="my-2">
           <label htmlFor="memo">Memo</label>
-          <input
-            className="ml-2 border-solid border-black border"
-            type="text"
-            {...register("memo", { required: true })}
-          />
+          <InputField type="text" {...register("memo", { required: true })} />
         </div>
 
         <Button type="submit" className="p-2 bg-black text-white">

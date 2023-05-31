@@ -6,6 +6,7 @@ import { isKeyObject } from "../../web3-account";
 import { decryptKeyObject } from "../../web3-account";
 import useAccountContext from "../../hooks/useAccountContext";
 import { useForm } from "react-hook-form";
+import InputField from "../../components/ui/InputField";
 
 interface Inputs {
   password: string;
@@ -41,7 +42,10 @@ export default function LoginView() {
     <Layout>
       <h1>Login</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="password" {...register("password", { required: true })} />
+        <InputField
+          type="password"
+          {...register("password", { required: true })}
+        />
         <Button type="submit">Login</Button>
       </form>
     </Layout>

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import Button from "../../components/ui/Button";
 import { encryptKeyObject, generateKeyId } from "../../web3-account";
 import { useForm } from "react-hook-form";
+import InputField from "../../components/ui/InputField";
 
 interface Inputs {
   password: string;
@@ -32,7 +33,10 @@ export default function RegisterView() {
     <Layout>
       <h1>Register</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="password" {...register("password", { required: true })} />
+        <InputField
+          type="password"
+          {...register("password", { required: true })}
+        />
         <Button type="submit">Create Key</Button>
       </form>
     </Layout>

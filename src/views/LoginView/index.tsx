@@ -18,14 +18,12 @@ export default function LoginView() {
   const { setPrivateKey } = useAccountContext();
 
   const protectedPrivateKeyItem = localStorage.getItem(LOCAL_STORAGE_KEY);
-  console.log("protectedPrivateKeyItem", protectedPrivateKeyItem);
   if (protectedPrivateKeyItem == null) {
     return <Navigate to="/welcome" />;
   }
 
   // eslint-disable-next-line
   const maybeProtectedPrivateKey = JSON.parse(protectedPrivateKeyItem!);
-  console.log("maybeProtectedPrivateKey", maybeProtectedPrivateKey);
   if (!isKeyObject(maybeProtectedPrivateKey)) {
     return <Navigate to="/welcome" />;
   }

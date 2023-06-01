@@ -1,4 +1,4 @@
-import { Client, cacheExchange, fetchExchange, gql } from "urql";
+import { Client, fetchExchange, gql } from "urql";
 import {
   toHex,
   parseHex,
@@ -21,7 +21,7 @@ import { GRAPHQL_ENDPOINT, NCG_CURRENCY, GENESIS_HASH } from "./constants";
 
 const client = new Client({
   url: GRAPHQL_ENDPOINT,
-  exchanges: [cacheExchange, fetchExchange],
+  exchanges: [fetchExchange],
 });
 
 const StageTransactionMutation = gql`

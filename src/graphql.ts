@@ -135,7 +135,7 @@ export async function sendTransferAssetTransaction(
         currency: NCG_CURRENCY,
         sign: 1,
         majorUnit: amount.toFixed(),
-        minorUnit: amount.toFixed(2).slice(2),
+        minorUnit: amount.toFixed(2).slice(-2),
       },
       memo: memo || "LIB9C-WASM DOESNT ALLOW NULL MEMO",
     })

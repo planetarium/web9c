@@ -23,7 +23,7 @@ const Redirector = () => {
 
 export default function Routes() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <DomRoutes>
         <Route path="/welcome" Component={WelcomeView} />
         <Route path="/register" Component={RegisterView} />

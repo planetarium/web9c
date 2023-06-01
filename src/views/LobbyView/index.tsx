@@ -1,7 +1,7 @@
 import { Layout } from "../../layouts/Layout";
 import { Address } from "@planetarium/account";
 import { useNavigate } from "react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getAvatarStates, getNcgBalance, getNextTxNonce } from "../../graphql";
 import { MakeTransactionUrl } from "../../constants";
 import useAccountContext from "../../hooks/useAccountContext";
@@ -9,6 +9,7 @@ import Avatar from "./Avatar";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import TransferTab from "./TransferTab";
 import StakeTab from "./StakeTab";
+import { useInterval } from "../../hooks/useInterval";
 
 export default function LobbyView() {
   const navigate = useNavigate();
@@ -35,21 +36,19 @@ export default function LobbyView() {
   // eslint-disable-next-line
   const rawPrivateKey = nullableRawPrivateKey!;
 
-  useEffect(() => {
-    (async () => {
-      const address = await rawPrivateKey.getAddress();
-      const nextTxNonce = await getNextTxNonce(address);
-      const ncgBalance = await getNcgBalance(address);
-      const avatarStates = await getAvatarStates(address);
+  useInterval(async () => {
+    const address = await rawPrivateKey.getAddress();
+    const nextTxNonce = await getNextTxNonce(address);
+    const ncgBalance = await getNcgBalance(address);
+    const avatarStates = await getAvatarStates(address);
 
-      setState({
-        address,
-        nextTxNonce,
-        ncgBalance,
-        avatarStates,
-      });
-    })();
-  }, [rawPrivateKey]);
+    setState({
+      address,
+      nextTxNonce,
+      ncgBalance,
+      avatarStates,
+    });
+  }, 2000);
 
   return (
     <Layout>

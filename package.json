@@ -12,6 +12,7 @@
   "dependencies": {
     "@peculiar/webcrypto": "^1.4.3",
     "@planetarium/account": "^1.3.0",
+    "@planetarium/account-web3-secret-storage": "1.4.0-dev.2023658319",
     "@planetarium/bencodex": "^0.2.2",
     "@planetarium/lib9c-wasm": "0.0.4-dev.a8d6dd3",
     "@planetarium/sign": "^0.0.12",

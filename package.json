@@ -55,5 +55,8 @@
     "typescript": "^5.0.2",
     "vite": "^4.3.2",
     "vitest": "^0.31.1"
+  },
+  "resolutions": {
+    "@planetarium/account-web3-secret-storage@1.4.0-dev.2023658319": "patch:@planetarium/account-web3-secret-storage@npm%3A1.4.0-dev.2023658319#./.yarn/patches/@planetarium-account-web3-secret-storage-npm-1.4.0-dev.2023658319-7067e972f4.patch"
   }
 }

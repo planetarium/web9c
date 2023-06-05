@@ -1,11 +1,10 @@
 import { Layout } from "../../layouts/Layout";
 import { RawPrivateKey } from "@planetarium/account";
-import { LOCAL_STORAGE_KEY } from "../../constants";
 import { useNavigate } from "react-router";
 import Button from "../../components/ui/Button";
-import { encryptKeyObject, generateKeyId } from "../../web3-account";
 import { useForm } from "react-hook-form";
 import InputField from "../../components/ui/InputField";
+import { createWeb3KeyStore } from "../../hooks/useAccountMetadatas";
 
 interface Inputs {
   password: string;
@@ -15,18 +14,14 @@ export default function RegisterView() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<Inputs>();
 
-  if (localStorage.getItem(LOCAL_STORAGE_KEY) != null) {
-    navigate("/login");
-  }
-
   function onSubmit(inputs: Inputs) {
     const rawPrivateKey = RawPrivateKey.generate();
-    encryptKeyObject(generateKeyId(), rawPrivateKey, inputs.password).then(
-      (keyObj) => {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(keyObj));
+    const keyStore = createWeb3KeyStore(() => inputs.password);
+    keyStore.import(rawPrivateKey).then((result) => {
+      if (result.result === "success") {
         navigate("/login");
       }
-    );
+    });
   }
 
   return (

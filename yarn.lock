@@ -614,6 +614,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@noble/hashes@npm:^1.3.0":
+  version: 1.3.1
+  resolution: "@noble/hashes@npm:1.3.1"
+  checksum: 7fdefc0f7a0c1ec27acc6ff88841793e3f93ec4ce6b8a6a12bfc0dd70ae6b7c4c82fe305fdfeda1735d5ad4a9eebe761e6693b3d355689c559e91242f4bc95b1
+  languageName: node
+  linkType: hard
+
 "@noble/secp256k1@npm:^1.7.1":
   version: 1.7.1
   resolution: "@noble/secp256k1@npm:1.7.1"
@@ -698,6 +705,32 @@ __metadata:
     tslib: ^2.5.0
     webcrypto-core: ^1.7.7
   checksum: 5604c02b7e9a8cef61bb4430e733e939c7737533ba65ba5fac4beb3a6d613add478ab45455cb57506789b6d00704d83e4965a0f712de3e8f40706e0961670e5c
+  languageName: node
+  linkType: hard
+
+"@planetarium/account-web3-secret-storage@npm:1.4.0-dev.2023658319":
+  version: 1.4.0-dev.2023658319
+  resolution: "@planetarium/account-web3-secret-storage@npm:1.4.0-dev.2023658319"
+  dependencies:
+    "@noble/hashes": ^1.3.0
+    "@peculiar/webcrypto": ^1.4.3
+    scrypt-js: ^3.0.1
+  peerDependencies:
+    "@planetarium/account": ^1.4.0-dev.2023658319
+  checksum: af36f6329bb2172f62d408889e11850cca90b600c1f865ef1e29ca978b9fd924493d846e228fdde23576ee1abb808069c9687bdbd163ca5bd0f5c2328ef84621
+  languageName: node
+  linkType: hard
+
+"@planetarium/account-web3-secret-storage@patch:@planetarium/account-web3-secret-storage@npm%3A1.4.0-dev.2023658319#./.yarn/patches/@planetarium-account-web3-secret-storage-npm-1.4.0-dev.2023658319-7067e972f4.patch::locator=web9c%40workspace%3A.":
+  version: 1.4.0-dev.2023658319
+  resolution: "@planetarium/account-web3-secret-storage@patch:@planetarium/account-web3-secret-storage@npm%3A1.4.0-dev.2023658319#./.yarn/patches/@planetarium-account-web3-secret-storage-npm-1.4.0-dev.2023658319-7067e972f4.patch::version=1.4.0-dev.2023658319&hash=55579d&locator=web9c%40workspace%3A."
+  dependencies:
+    "@noble/hashes": ^1.3.0
+    "@peculiar/webcrypto": ^1.4.3
+    scrypt-js: ^3.0.1
+  peerDependencies:
+    "@planetarium/account": ^1.4.0-dev.2023658319
+  checksum: 3a0fac7bd8b008fa6186c752af1456ec704ae36b8e587faf5acbc121c4642ec004dd24302e0da4749f50908bda418980c4b235de5dcb134669f98085591c746f
   languageName: node
   linkType: hard
 
@@ -5296,6 +5329,7 @@ __metadata:
   dependencies:
     "@peculiar/webcrypto": ^1.4.3
     "@planetarium/account": ^1.3.0
+    "@planetarium/account-web3-secret-storage": 1.4.0-dev.2023658319
     "@planetarium/bencodex": ^0.2.2
     "@planetarium/lib9c-wasm": 0.0.4-dev.a8d6dd3
     "@planetarium/sign": ^0.0.12

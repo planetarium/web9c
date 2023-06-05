@@ -1,10 +1,12 @@
 import { Layout } from "../../layouts/Layout";
-import { LOCAL_STORAGE_KEY } from "../../constants";
 import { Navigate, useNavigate } from "react-router";
 import Button from "../../components/ui/Button";
 import { useRef } from "react";
 import { isKeyObject } from "../../web3-account";
 import useAccountContext from "../../hooks/useAccountContext";
+import { getDefaultWeb3KeyStorePath } from "@planetarium/account-web3-secret-storage";
+
+const ACCOUNT_WEB3_SECRET_STORAGE_PREFIX = "PLANETARIUM_EMULATED_FS_" as const;
 
 export default function ImportView() {
   const navigate = useNavigate();
@@ -34,11 +36,20 @@ export default function ImportView() {
         return;
       }
 
-      if (!isKeyObject(JSON.parse(result))) {
+      const parsedResult = JSON.parse(result);
+      if (!isKeyObject(parsedResult)) {
         alert("wrong keyitem");
+        return;
       }
 
-      localStorage.setItem(LOCAL_STORAGE_KEY, result);
+      const importedAt = new Date();
+      localStorage.setItem(
+        `${ACCOUNT_WEB3_SECRET_STORAGE_PREFIX}${getDefaultWeb3KeyStorePath()}/UTC--${importedAt
+          .toISOString()
+          .replace(/\.[0-9]+Z$/, "Z")
+          .replace(/:/g, "-")}--${parsedResult.id}`,
+        result
+      );
 
       navigate("/login");
     };

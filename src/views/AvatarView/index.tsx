@@ -2,9 +2,7 @@ import { Layout } from "../../layouts/Layout";
 import { Address } from "@planetarium/account";
 import { useNavigate, useParams } from "react-router";
 import { useState } from "react";
-import {
-  getAvatarInventory,
-} from "../../graphql";
+import { getAvatarInventory } from "../../graphql";
 import { useInterval } from "../../hooks/useInterval";
 import Inventory from "./Inventory";
 

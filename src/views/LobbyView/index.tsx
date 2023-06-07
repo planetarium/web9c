@@ -7,8 +7,8 @@ import { MakeTransactionUrl } from "../../constants";
 import useAccountContext from "../../hooks/useAccountContext";
 import Avatar from "./Avatar";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import TransferTab from "./TransferTab";
-import StakeTab from "./StakeTab";
+import TransferTab from "./tabs/TransferTab";
+import StakeTab from "./tabs/StakeTab";
 import { useInterval } from "../../hooks/useInterval";
 
 export default function LobbyView() {

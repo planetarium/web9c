@@ -12,6 +12,10 @@ import {
 } from "../../graphql";
 import { useInterval } from "../../hooks/useInterval";
 import { Tab, TabList, Tabs, TabPanel } from "react-tabs";
+import MaterialTab from "./Inventory/tabs/MaterialTab";
+import ConsumableTab from "./Inventory/tabs/ConsumableTab";
+import EquipmentTab from "./Inventory/tabs/EquipmentTab";
+import CostumeTab from "./Inventory/tabs/CostumeTab";
 
 export default function AvatarView() {
   const navigate = useNavigate();
@@ -43,12 +47,18 @@ export default function AvatarView() {
     return x.itemType === "Costume";
   }
 
-  function isConsumable(x: Item): x is Consumable {
-    return x.itemType === "Consumable";
+  function isConsumablePair(pair: {
+    item: Item;
+    count: number;
+  }): pair is { item: Consumable; count: number } {
+    return pair.item.itemType === "Consumable";
   }
 
-  function isMaterial(x: Item): x is Material {
-    return x.itemType === "Material";
+  function isMaterialPair(pair: {
+    item: Item;
+    count: number;
+  }): pair is { item: Material; count: number } {
+    return pair.item.itemType === "Material";
   }
 
   return (
@@ -74,69 +84,20 @@ export default function AvatarView() {
             </Tab>
           </TabList>
           <TabPanel>
-            {...state.inventory
-              .map((x) => x.item)
-              .filter(isEquipment)
-              .map((x) => (
-                <div
-                  className="p-1 border-4 w-32 h-20 inline-block"
-                  key={x.itemId}
-                >
-                  <img
-                    className="w-16 h-16 inline"
-                    src={`https://raw.githubusercontent.com/planetarium/NineChronicles/development/nekoyume/Assets/Resources/UI/Icons/Item/${x.id}.png`}
-                  />
-                  <span>+{x.level}</span>
-                </div>
-              ))}
+            <EquipmentTab
+              items={state.inventory.map((x) => x.item).filter(isEquipment)}
+            />
           </TabPanel>
           <TabPanel>
-            {...state.inventory
-              .map((x) => x.item)
-              .filter(isCostume)
-              .map((x) => (
-                <div
-                  className="p-1 border-4 w-32 h-20 inline-block"
-                  key={x.itemId}
-                >
-                  <img
-                    className="w-16 h-16 inline"
-                    src={`https://raw.githubusercontent.com/planetarium/NineChronicles/development/nekoyume/Assets/Resources/UI/Icons/Item/${x.id}.png`}
-                  />
-                </div>
-              ))}
+            <CostumeTab
+              items={state.inventory.map((x) => x.item).filter(isCostume)}
+            />
           </TabPanel>
           <TabPanel>
-            {...state.inventory
-              .filter(({ item }) => isConsumable(item))
-              .map(({ item, count }) => (
-                <div
-                  className="p-1 border-4 w-32 h-20 inline-block"
-                  key={item.itemId}
-                >
-                  <img
-                    className="w-16 h-16 inline"
-                    src={`https://raw.githubusercontent.com/planetarium/NineChronicles/development/nekoyume/Assets/Resources/UI/Icons/Item/${item.id}.png`}
-                  />
-                  <span>{count}</span>
-                </div>
-              ))}
+            <ConsumableTab items={state.inventory.filter(isConsumablePair)} />
           </TabPanel>
           <TabPanel>
-            {...state.inventory
-              .filter(({ item }) => isMaterial(item))
-              .map(({ item, count }) => (
-                <div
-                  className="p-1 border-4 w-32 h-20 inline-block"
-                  key={item.itemId}
-                >
-                  <img
-                    className="w-16 h-16 inline"
-                    src={`https://raw.githubusercontent.com/planetarium/NineChronicles/development/nekoyume/Assets/Resources/UI/Icons/Item/${item.id}.png`}
-                  />
-                  <span>{count}</span>
-                </div>
-              ))}
+            <MaterialTab items={state.inventory.filter(isMaterialPair)} />
           </TabPanel>
         </Tabs>
       )}

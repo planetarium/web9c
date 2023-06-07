@@ -10,6 +10,7 @@ import LobbyView from "./views/LobbyView";
 import LoginView from "./views/LoginView";
 import ImportView from "./views/ImportView";
 import useAccountContext from "./hooks/useAccountContext";
+import AvatarView from "./views/AvatarView";
 
 const Redirector = () => {
   const { privateKey } = useAccountContext();
@@ -30,6 +31,7 @@ export default function Routes() {
         <Route path="/login" Component={LoginView} />
         <Route path="/lobby" Component={LobbyView} />
         <Route path="/import" Component={ImportView} />
+        <Route path="/avatar/:address" Component={AvatarView} />
         <Route path="/*" Component={Redirector} />
       </DomRoutes>
     </BrowserRouter>

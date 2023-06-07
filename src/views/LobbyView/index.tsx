@@ -22,6 +22,7 @@ export default function LobbyView() {
       name: string;
       level: number;
       actionPoint: number;
+      address: string;
     } | null)[];
   } | null>(null);
 
@@ -61,7 +62,16 @@ export default function LobbyView() {
           <p>Balance: {state.ncgBalance}</p>
           <p>Next Tx Nonce: {state.nextTxNonce}</p>
           {...state.avatarStates.map((avatarState) =>
-            avatarState === null ? <></> : <Avatar {...avatarState} />
+            avatarState === null ? (
+              <></>
+            ) : (
+              <Avatar
+                onClick={() =>
+                  navigate(`/avatar/${avatarState.address.toString()}`)
+                }
+                {...avatarState}
+              />
+            )
           )}
         </>
       )}

@@ -9,6 +9,7 @@ import Inventory from "./Inventory";
 export default function AvatarView() {
   const navigate = useNavigate();
   const { address: rawAddress } = useParams<{ address: string }>();
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   const [state, setState] = useState<{
     inventory: Awaited<ReturnType<typeof getAvatarInventory>>;
@@ -28,6 +29,18 @@ export default function AvatarView() {
     });
   }, 2000);
 
+  function onSelectItem(itemId: string) {
+    const index = selectedItems.findIndex((v) => v == itemId);
+    if (index === -1) {
+      setSelectedItems([...selectedItems, itemId]);
+    } else {
+      setSelectedItems([
+        ...selectedItems.slice(0, index),
+        ...selectedItems.slice(index + 1),
+      ]);
+    }
+  }
+
   return (
     <Layout>
       <h1>Avatar</h1>
@@ -35,7 +48,11 @@ export default function AvatarView() {
       {state == null ? (
         <p>Loading...</p>
       ) : (
-        <Inventory inventory={state.inventory} />
+        <Inventory
+          inventory={state.inventory}
+          selectedItems={selectedItems}
+          onSelectItem={onSelectItem}
+        />
       )}
     </Layout>
   );

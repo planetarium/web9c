@@ -3,15 +3,32 @@ import ItemIcon from "./ItemIcon";
 
 interface EquipmentTabProps {
   items: Equipment[];
+  selectedItemIds: string[];
+  onClickItem: (itemId: string) => void;
 }
 
-export default function EquipmentTab({ items }: EquipmentTabProps) {
+export default function EquipmentTab({
+  items,
+  selectedItemIds,
+  onClickItem,
+}: EquipmentTabProps) {
+  function additionalClassName(itemId: string): string {
+    return selectedItemIds.includes(itemId) ? " bg-blue-300/[0.20]" : "";
+  }
+
   return (
     <>
       {items.map((x) => (
-        <div className="p-1 border-4 w-32 h-20 inline-block" key={x.itemId}>
+        <div
+          onClick={() => onClickItem(x.itemId || "")}
+          className={
+            "p-1 border-4 w-32 h-20 inline-block" +
+            additionalClassName(x.itemId ?? "")
+          }
+          key={x.itemId}
+        >
           <ItemIcon id={x.id} />
-          <span>+{x.level}</span>
+          <span className="bg-sky">+{x.level}</span>
         </div>
       ))}
     </>

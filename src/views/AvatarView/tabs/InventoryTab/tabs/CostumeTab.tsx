@@ -1,4 +1,4 @@
-import { Costume } from "../../../../api";
+import { Costume } from "../../../../../api";
 import ItemIcon from "./ItemIcon";
 
 interface CostumeTabProps {

@@ -4,7 +4,9 @@ import { useNavigate, useParams } from "react-router";
 import { useState } from "react";
 import { getAvatarInventory } from "../../api";
 import { useInterval } from "../../hooks/useInterval";
-import Inventory from "./Inventory";
+import InventoryTab from "./tabs/InventoryTab";
+import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import BattleTab from "./tabs/BattleTab";
 
 export default function AvatarView() {
   const navigate = useNavigate();
@@ -41,19 +43,41 @@ export default function AvatarView() {
     }
   }
 
+  if (rawAddress == null) {
+    return <p>Address not given. '/avatar/:address'</p>;
+  }
+
   return (
     <Layout>
       <h1>Avatar</h1>
-      <h2>Inventory</h2>
-      {state == null ? (
-        <p>Loading...</p>
-      ) : (
-        <Inventory
-          inventory={state.inventory}
-          selectedItems={selectedItems}
-          onSelectItem={onSelectItem}
-        />
-      )}
+      <Tabs>
+        <TabList>
+          <Tab className="inline-block rounded-1xl shadow-md p-4">
+            <h2>Inventory</h2>
+          </Tab>
+          <Tab className="inline-block rounded-1xl shadow-md p-4">
+            <h2>Battle</h2>
+          </Tab>
+        </TabList>
+        <TabPanel>
+          {state == null ? (
+            <p>Loading...</p>
+          ) : (
+            <InventoryTab
+              inventory={state.inventory}
+              selectedItems={selectedItems}
+              onSelectItem={onSelectItem}
+            />
+          )}
+        </TabPanel>
+        <TabPanel>
+          {state == null ? (
+            <p>Loading...</p>
+          ) : (
+            <BattleTab equipments={selectedItems} avatarAddress={rawAddress} />
+          )}
+        </TabPanel>
+      </Tabs>
     </Layout>
   );
 }

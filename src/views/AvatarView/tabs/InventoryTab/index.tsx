@@ -1,5 +1,11 @@
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
-import { Consumable, Costume, Equipment, Item, Material } from "../../../api";
+import {
+  Consumable,
+  Costume,
+  Equipment,
+  Item,
+  Material,
+} from "../../../../api";
 import ConsumableTab from "./tabs/ConsumableTab";
 import CostumeTab from "./tabs/CostumeTab";
 import EquipmentTab from "./tabs/EquipmentTab";
@@ -35,7 +41,7 @@ interface InventoryProps {
   onSelectItem: (itemId: ItemId) => void;
 }
 
-export default function Inventory({
+export default function InventoryTab({
   inventory,
   selectedItems,
   onSelectItem,

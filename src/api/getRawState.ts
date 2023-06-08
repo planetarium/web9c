@@ -1,4 +1,3 @@
-import { parseHex } from "@planetarium/lib9c-wasm";
 import { decode } from "@planetarium/bencodex";
 import { Address as LibplanetAccountAddress } from "@planetarium/account";
 import { gql } from "urql";
@@ -28,5 +27,5 @@ export async function getRawState(
     state: z.string(),
   });
   const validatedResponse = responseSchema.parse(data);
-  return decode(parseHex(validatedResponse.state));
+  return decode(Buffer.from(validatedResponse.state, "hex"));
 }

@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { sendTransferAssetTransaction } from "../../../api";
 import { RawPrivateKey } from "@planetarium/account";
-import { Address as Lib9cWasmAddress, toHex } from "@planetarium/lib9c-wasm";
+import { Address as Lib9cWasmAddress } from "@planetarium/lib9c-wasm";
 import InputField from "../../../components/ui/InputField";
 import Button from "../../../components/ui/Button";
 
@@ -28,7 +28,7 @@ export default function TransferTab({
       new Lib9cWasmAddress(recipient),
       amount,
       memo
-    ).then((x) => setTxId(toHex(x)));
+    ).then((x) => setTxId(Buffer.from(x).toString("hex")));
   }
   return (
     <>

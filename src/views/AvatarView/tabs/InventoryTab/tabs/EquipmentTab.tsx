@@ -1,4 +1,4 @@
-import { Equipment } from "../../../../api";
+import { Equipment } from "../../../../../api";
 import ItemIcon from "./ItemIcon";
 
 interface EquipmentTabProps {

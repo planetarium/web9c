@@ -1,5 +1,11 @@
 import { Account } from "@planetarium/account";
-import { transfer_asset3, Address, stake2 } from "@planetarium/lib9c-wasm";
+import {
+  transfer_asset3,
+  Address,
+  stake2,
+  hack_and_slash21,
+  Guid,
+} from "@planetarium/lib9c-wasm";
 import {
   UnsignedTxWithCustomActions,
   signTx,
@@ -55,6 +61,51 @@ export async function sendStakeTransaction(
   const action = decode(
     stake2({
       amount: amount.toString(),
+    })
+  );
+
+  const unsignedTx: UnsignedTxWithCustomActions = {
+    nonce: BigInt(await getNextTxNonce(sender)),
+    publicKey: (await account.getPublicKey()).toBytes("uncompressed"),
+    signer: sender.toBytes(),
+    timestamp: new Date(Date.now()),
+    updatedAddresses: new Set(),
+    genesisHash: GENESIS_HASH,
+    customActions: [action],
+  };
+
+  const signed = await signTx(unsignedTx, account);
+  const encodedSignedTx = encode(encodeSignedTx(signed));
+  const txId = await stageTransaction(encodedSignedTx);
+  return txId;
+}
+
+export async function sendHackAndSlashTransaction(
+  account: Account,
+  avatarAddress: Address,
+  stageId: number,
+  worldId: number,
+  equipments: Guid[] = [],
+  costumes: Guid[] = [],
+  foods: Guid[] = [],
+  runeSlotInfos: { slotIndex: number; runeId: number }[] = [],
+  totalPlayCount = 1,
+  apStoneCount = 0,
+  stageBuffId: number | null = null
+): Promise<TxId> {
+  const sender = await account.getAddress();
+  const action = decode(
+    hack_and_slash21({
+      AvatarAddress: avatarAddress,
+      Equipments: equipments,
+      WorldId: worldId,
+      StageId: stageId,
+      Costumes: costumes,
+      Foods: foods,
+      RuneInfos: runeSlotInfos,
+      ApStoneCount: apStoneCount,
+      StageBuffId: stageBuffId,
+      TotalPlayCount: totalPlayCount,
     })
   );
 

@@ -2,7 +2,7 @@ import { Layout } from "../../layouts/Layout";
 import { Address } from "@planetarium/account";
 import { useNavigate } from "react-router";
 import { useState } from "react";
-import { getAvatarStates, getNcgBalance, getNextTxNonce } from "../../graphql";
+import { getAvatarStates, getNcgBalance, getNextTxNonce } from "../../api";
 import { MakeTransactionUrl } from "../../constants";
 import useAccountContext from "../../hooks/useAccountContext";
 import Avatar from "./Avatar";

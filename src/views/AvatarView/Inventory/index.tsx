@@ -1,11 +1,5 @@
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
-import {
-  Consumable,
-  Costume,
-  Equipment,
-  Item,
-  Material,
-} from "../../../graphql";
+import { Consumable, Costume, Equipment, Item, Material } from "../../../api";
 import ConsumableTab from "./tabs/ConsumableTab";
 import CostumeTab from "./tabs/CostumeTab";
 import EquipmentTab from "./tabs/EquipmentTab";

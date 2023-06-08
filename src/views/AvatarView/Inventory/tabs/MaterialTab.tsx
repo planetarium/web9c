@@ -1,4 +1,4 @@
-import { Material } from "../../../../graphql";
+import { Material } from "../../../../api";
 import ItemIcon from "./ItemIcon";
 
 interface MaterialTabProps {

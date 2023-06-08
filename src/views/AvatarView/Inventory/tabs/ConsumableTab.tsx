@@ -1,4 +1,4 @@
-import { Consumable } from "../../../../graphql";
+import { Consumable } from "../../../../api";
 import ItemIcon from "./ItemIcon";
 
 interface ConsumableTabProps {

@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { sendStakeTransaction } from "../../../graphql";
+import { sendStakeTransaction } from "../../../api";
 import { RawPrivateKey } from "@planetarium/account";
 import { toHex } from "@planetarium/lib9c-wasm";
 import InputField from "../../../components/ui/InputField";

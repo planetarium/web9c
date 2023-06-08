@@ -2,7 +2,7 @@ import { Layout } from "../../layouts/Layout";
 import { Address } from "@planetarium/account";
 import { useNavigate } from "react-router";
 import { useState } from "react";
-import { getAvatarStates, getNcgBalance, getNextTxNonce } from "../../graphql";
+import { getAvatarStates, getNcgBalance, getNextTxNonce } from "../../api";
 import { MakeTransactionUrl } from "../../constants";
 import useAccountContext from "../../hooks/useAccountContext";
 import Avatar from "./Avatar";
@@ -62,16 +62,7 @@ export default function LobbyView() {
           <p>Balance: {state.ncgBalance}</p>
           <p>Next Tx Nonce: {state.nextTxNonce}</p>
           {...state.avatarStates.map((avatarState) =>
-            avatarState === null ? (
-              <></>
-            ) : (
-              <Avatar
-                onClick={() =>
-                  navigate(`/avatar/${avatarState.address.toString()}`)
-                }
-                {...avatarState}
-              />
-            )
+            avatarState === null ? <></> : <Avatar {...avatarState} />
           )}
         </>
       )}

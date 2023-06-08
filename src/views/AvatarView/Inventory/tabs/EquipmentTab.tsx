@@ -1,4 +1,4 @@
-import { Equipment } from "../../../../graphql";
+import { Equipment } from "../../../../api";
 import ItemIcon from "./ItemIcon";
 
 interface EquipmentTabProps {

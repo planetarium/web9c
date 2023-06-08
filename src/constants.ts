@@ -3,8 +3,6 @@ import { Buffer } from "buffer";
 
 globalThis.Buffer = Buffer;
 
-export const LOCAL_STORAGE_KEY = "WEB9C_RAW_PRIAVTE_KEY";
-
 export const {
   GRAPHQL_ENDPOINT,
   GENESIS_HASH,

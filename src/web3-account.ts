@@ -1,32 +1,15 @@
-import { Address, RawPrivateKey } from "@planetarium/account";
-import { pbkdf2Async } from "@noble/hashes/pbkdf2";
-import { scrypt } from "scrypt-js";
-import { sha256 } from "@noble/hashes/sha256";
-import { keccak_256 } from "@noble/hashes/sha3";
+import { Address } from "@planetarium/account";
 
-export type KeyId = string;
+type KeyId = string;
 
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-export function isKeyId(keyId: string): keyId is KeyId {
+function isKeyId(keyId: string): keyId is KeyId {
   return !!keyId.match(UUID_PATTERN);
 }
 
-export function generateKeyId(): KeyId {
-  return crypto.randomUUID();
-}
-
-export default KeyId;
-
-export type Passphrase = Uint8Array | string;
-
-export interface PassphraseEntry {
-  authenticate(keyId: KeyId, firstAttempt: boolean): Promise<Passphrase>;
-  configurePassphrase(): Promise<Passphrase>;
-}
-
-export type Web3KeyObjectKdf =
+type Web3KeyObjectKdf =
   | {
       kdf: "pbkdf2";
       kdfparams: {
@@ -47,7 +30,7 @@ export type Web3KeyObjectKdf =
       };
     };
 
-export type Web3KeyObjectCipher = {
+type Web3KeyObjectCipher = {
   cipher: "aes-128-ctr";
   cipherparams: {
     iv: string;
@@ -56,55 +39,11 @@ export type Web3KeyObjectCipher = {
   mac: string;
 };
 
-export interface Web3KeyObject {
+interface Web3KeyObject {
   version: 3;
   id: KeyId;
   address: string;
   crypto: Web3KeyObjectCipher & Web3KeyObjectKdf;
-}
-
-function toHex(bytes: Uint8Array | ArrayBuffer): string {
-  const array = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
-  let hex = "";
-  for (let i = 0; i < array.length; i++) {
-    hex += array[i].toString(16).padStart(2, "0");
-  }
-  return hex;
-}
-
-export async function encryptKeyObject(
-  keyId: KeyId,
-  privateKey: RawPrivateKey,
-  passphrase: Passphrase
-): Promise<Web3KeyObject> {
-  if (!isKeyId(keyId)) {
-    throw new Error(`Invalid key ID: ${keyId}`);
-  }
-
-  const salt = new Uint8Array(32);
-  crypto.getRandomValues(salt);
-  const kdf: Web3KeyObjectKdf = {
-    kdf: "pbkdf2",
-    kdfparams: {
-      c: 10240,
-      dklen: 32,
-      prf: "hmac-sha256",
-      salt: toHex(salt),
-    },
-  };
-  const derivedKey = await deriveKey(kdf, passphrase);
-  const cipher = await encipher({
-    derivedKey,
-    privateKey: privateKey.toBytes(),
-  });
-  const address = await Address.deriveFrom(privateKey);
-
-  return {
-    version: 3,
-    id: keyId,
-    address: address.toHex("lower"),
-    crypto: { ...cipher, ...kdf },
-  };
 }
 
 export function isKeyObject(json: unknown): json is Web3KeyObject {
@@ -195,185 +134,4 @@ function isKeyObjectKdf(json: unknown): json is Web3KeyObjectKdf {
     default:
       return false;
   }
-}
-
-export interface Web3AccountOptions {
-  /**
-   * Whether to allow weak private keys (i.e. private keys with leading zeros).
-   */
-  readonly allowWeakPrivateKey: boolean;
-}
-
-export class WeakPrivateKeyError extends Error {
-  readonly name = "WeakPrivateKeyError";
-}
-
-export async function decryptKeyObject(
-  keyObject: Web3KeyObject,
-  passphrase: Passphrase,
-  options: Partial<Web3AccountOptions> = {}
-): Promise<{ keyId: KeyId; privateKey: RawPrivateKey }> {
-  if (keyObject == null) {
-    throw new Error("Key object is null.");
-  } else if (keyObject.version !== 3) {
-    throw new Error(`Unsupported key object version: ${keyObject?.version}`);
-  } else if (keyObject.crypto == null) {
-    throw new Error("Key object does not have crypto field.");
-  }
-
-  const keyObjectAddress = Address.fromHex(keyObject.address, true);
-  const derivedKey = await deriveKey(keyObject.crypto, passphrase);
-  let privateKeyBytes = await decipher(keyObject.crypto, derivedKey);
-  if (privateKeyBytes.length < 32) {
-    const zeroPadded = new Uint8Array(32);
-    zeroPadded.set(privateKeyBytes, 32 - privateKeyBytes.length);
-    privateKeyBytes = zeroPadded;
-  }
-  if (privateKeyBytes.at(0) === 0x00 && !options.allowWeakPrivateKey) {
-    throw new WeakPrivateKeyError(
-      "The private key given is too weak; keys of length less than 32 bytes " +
-        "are disallowed by default.  See also " +
-        "the Web3AccountOptions.allowWeakPrivateKey option."
-    );
-  }
-  const privateKey = RawPrivateKey.fromBytes(privateKeyBytes);
-  const address = await Address.deriveFrom(privateKey);
-  if (!keyObjectAddress.equals(address)) {
-    throw new Error(
-      `Failed to decrypt the key object; expected account ${keyObjectAddress} but got ${address} instead.`
-    );
-  }
-  return { keyId: keyObject.id, privateKey };
-}
-
-async function deriveKey(
-  kdf: Web3KeyObjectKdf,
-  passphrase: Passphrase
-): Promise<Uint8Array> {
-  if (kdf.kdf === "pbkdf2") {
-    const { c, dklen, prf, salt } = kdf.kdfparams;
-    if (dklen < 16) throw new Error(`Too short dklen: ${dklen}`);
-    if (prf !== "hmac-sha256") throw new Error(`Unsupported prf: ${prf}`);
-    const derivedKey = await pbkdf2Async(
-      sha256,
-      passphrase,
-      Buffer.from(salt, "hex"),
-      {
-        c,
-        dkLen: dklen,
-      }
-    );
-    if (derivedKey.length < dklen) {
-      throw new Error(`Too short key: ${toHex(derivedKey)}`);
-    }
-    return derivedKey;
-  } else if (kdf.kdf === "scrypt") {
-    const { dklen, n, p, r, salt } = kdf.kdfparams;
-    const passphraseBytes =
-      passphrase instanceof Uint8Array
-        ? passphrase
-        : new TextEncoder().encode(passphrase);
-    return scrypt(passphraseBytes, Buffer.from(salt, "hex"), n, r, p, dklen);
-  }
-
-  throw new Error(`Unsupported kdf: ${kdf["kdf"]}`);
-}
-
-export class IncorrectPassphraseError extends Error {
-  readonly name = "IncorrectPassphraseError";
-
-  constructor(
-    readonly expectedMac: Uint8Array,
-    readonly actualMac: Uint8Array
-  ) {
-    super(`Expected: ${toHex(expectedMac)}, Actual: ${toHex(actualMac)}`);
-  }
-}
-
-async function encipher({
-  derivedKey,
-  privateKey,
-}: {
-  derivedKey: Uint8Array;
-  privateKey: Uint8Array;
-}): Promise<Web3KeyObjectCipher> {
-  const iv = new Uint8Array(16);
-  crypto.getRandomValues(iv);
-  const ciphertext = await crypto.subtle.encrypt(
-    {
-      name: "AES-CTR",
-      counter: iv,
-      length: 128,
-    },
-    await crypto.subtle.importKey(
-      "raw",
-      derivedKey.subarray(0, 16),
-      { name: "AES-CTR" },
-      false,
-      ["encrypt"]
-    ),
-    privateKey
-  );
-  return {
-    cipher: "aes-128-ctr",
-    cipherparams: { iv: toHex(iv) },
-    ciphertext: toHex(ciphertext),
-    mac: toHex(calculateMac(derivedKey, ciphertext)),
-  };
-}
-
-async function decipher(
-  cipher: Web3KeyObjectCipher,
-  derivedKey: Uint8Array
-): Promise<Uint8Array> {
-  if (cipher.cipher !== "aes-128-ctr") {
-    throw new Error(`Unsupported cipher: ${cipher.cipher}`);
-  }
-
-  const ciphertext = new Uint8Array(Buffer.from(cipher.ciphertext, "hex"));
-  const mac = calculateMac(derivedKey, ciphertext);
-  const expectedMac = new Uint8Array(Buffer.from(cipher.mac, "hex"));
-  if (!mac.every((v, i) => v === expectedMac[i])) {
-    throw new IncorrectPassphraseError(expectedMac, mac);
-  }
-  const decrypted = await crypto.subtle.decrypt(
-    {
-      name: "AES-CTR",
-      counter: new Uint8Array(Buffer.from(cipher.cipherparams.iv, "hex")),
-      length: 128,
-    },
-    await crypto.subtle.importKey(
-      "raw",
-      derivedKey.subarray(0, 16),
-      { name: "AES-CTR" },
-      false,
-      ["decrypt"]
-    ),
-    ciphertext
-  );
-  // FIXME: This is a workaround for a bug in @peculiar/webcrypto.
-  return decrypted instanceof Uint8Array
-    ? decrypted
-    : new Uint8Array(decrypted);
-}
-
-function calculateMac(
-  derivedKey: Uint8Array,
-  ciphertext: Uint8Array | ArrayBuffer
-): Uint8Array {
-  const keySubBytes = 16;
-  const ciphertextBytes =
-    ciphertext instanceof Uint8Array ? ciphertext : new Uint8Array(ciphertext);
-  const seal = new Uint8Array(keySubBytes + ciphertextBytes.length);
-  if (derivedKey.length < keySubBytes) {
-    throw new Error(
-      `Too short derived key (${derivedKey.length} < ${keySubBytes}): ${toHex(
-        derivedKey
-      )}`
-    );
-  }
-  seal.set(derivedKey.subarray(derivedKey.length - keySubBytes));
-  seal.set(ciphertextBytes, keySubBytes);
-  const mac = keccak_256(seal);
-  return mac;
 }

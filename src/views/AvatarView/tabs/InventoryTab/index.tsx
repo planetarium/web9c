@@ -1,5 +1,11 @@
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
-import { Consumable, Costume, Equipment, Item, Material } from "../../../api";
+import {
+  Consumable,
+  Costume,
+  Equipment,
+  Item,
+  Material,
+} from "../../../../api";
 import ConsumableTab from "./tabs/ConsumableTab";
 import CostumeTab from "./tabs/CostumeTab";
 import EquipmentTab from "./tabs/EquipmentTab";
@@ -27,11 +33,19 @@ function isMaterialPair(pair: {
   return pair.item.itemType === "Material";
 }
 
+type ItemId = string;
+
 interface InventoryProps {
   inventory: { item: Item; count: number }[];
+  selectedItems: ItemId[];
+  onSelectItem: (itemId: ItemId) => void;
 }
 
-export default function Inventory({ inventory }: InventoryProps) {
+export default function InventoryTab({
+  inventory,
+  selectedItems,
+  onSelectItem,
+}: InventoryProps) {
   return (
     <Tabs>
       <TabList>
@@ -51,6 +65,8 @@ export default function Inventory({ inventory }: InventoryProps) {
       <TabPanel>
         <EquipmentTab
           items={inventory.map((x) => x.item).filter(isEquipment)}
+          selectedItemIds={selectedItems}
+          onClickItem={onSelectItem}
         />
       </TabPanel>
       <TabPanel>

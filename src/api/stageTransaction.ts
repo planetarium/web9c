@@ -1,4 +1,3 @@
-import { toHex, parseHex } from "@planetarium/lib9c-wasm";
 import { gql } from "urql";
 import { TxId } from "../types";
 import { client } from "./graphqlClient";
@@ -12,9 +11,9 @@ const StageTransactionMutation = gql`
 export async function stageTransaction(payload: Uint8Array): Promise<TxId> {
   const { data } = await client
     .mutation(StageTransactionMutation, {
-      payload: toHex(payload),
+      payload: Buffer.from(payload).toString("hex"),
     })
     .toPromise();
 
-  return parseHex(data.stageTransaction);
+  return Buffer.from(data.stageTransaction, "hex");
 }

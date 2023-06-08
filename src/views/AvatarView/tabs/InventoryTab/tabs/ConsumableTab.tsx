@@ -1,11 +1,11 @@
-import { Material } from "../../../../api";
+import { Consumable } from "../../../../../api";
 import ItemIcon from "./ItemIcon";
 
-interface MaterialTabProps {
-  items: { item: Material; count: number }[];
+interface ConsumableTabProps {
+  items: { item: Consumable; count: number }[];
 }
 
-export default function MaterialTab({ items }: MaterialTabProps) {
+export default function ConsumableTab({ items }: ConsumableTabProps) {
   return (
     <>
       {...items.map(({ item, count }) => (

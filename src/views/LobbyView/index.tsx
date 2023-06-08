@@ -62,16 +62,7 @@ export default function LobbyView() {
           <p>Balance: {state.ncgBalance}</p>
           <p>Next Tx Nonce: {state.nextTxNonce}</p>
           {...state.avatarStates.map((avatarState) =>
-            avatarState === null ? (
-              <></>
-            ) : (
-              <Avatar
-                onClick={() =>
-                  navigate(`/avatar/${avatarState.address.toString()}`)
-                }
-                {...avatarState}
-              />
-            )
+            avatarState === null ? <></> : <Avatar {...avatarState} />
           )}
         </>
       )}

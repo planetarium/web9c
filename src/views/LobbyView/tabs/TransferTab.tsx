@@ -13,11 +13,13 @@ interface Inputs {
 
 interface TransferTabProps {
   rawPrivateKey: RawPrivateKey;
+  nonce: number;
   setTxId: (txId: string) => void;
 }
 
 export default function TransferTab({
   rawPrivateKey,
+  nonce,
   setTxId,
 }: TransferTabProps) {
   const { register, handleSubmit } = useForm<Inputs>();
@@ -27,7 +29,10 @@ export default function TransferTab({
       rawPrivateKey,
       new Lib9cWasmAddress(recipient),
       amount,
-      memo
+      memo,
+      {
+        nonce,
+      }
     ).then((x) => setTxId(Buffer.from(x).toString("hex")));
   }
   return (

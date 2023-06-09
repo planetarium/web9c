@@ -1,6 +1,10 @@
 import { Address, Guid } from "@planetarium/lib9c-wasm";
+import {
+  Address as LibplanetAccountAddress,
+  RawPrivateKey,
+} from "@planetarium/account";
 import { useForm } from "react-hook-form";
-import { sendHackAndSlashTransaction } from "../../../../api";
+import { sendHackAndSlashTransaction, useNextTxNonce } from "../../../../api";
 import Button from "../../../../components/ui/Button";
 import InputField from "../../../../components/ui/InputField";
 import useAccountContext from "../../../../hooks/useAccountContext";
@@ -24,7 +28,9 @@ function arrToGuid(arr: Uint8Array): Guid {
   return new Guid(raw);
 }
 
-interface BattleTabProps {
+interface BattleTabContentProps {
+  privateKey: RawPrivateKey;
+  address: LibplanetAccountAddress;
   avatarAddress: string;
   equipments: string[];
 }
@@ -36,21 +42,22 @@ interface Inputs {
   totalPlayCount: number;
 }
 
-export default function BattleTab({
+function BattleTabContent({
+  privateKey,
+  address,
   avatarAddress,
   equipments,
-}: BattleTabProps) {
+}: BattleTabContentProps) {
   const { register, handleSubmit } = useForm<Inputs>();
-  const { privateKey } = useAccountContext();
+  const nonce = useNextTxNonce(address);
   const [txId, setTxId] = useState<string | null>(null);
 
-  if (privateKey === null) {
-    return <p>Login required.</p>;
+  if (nonce == null) {
+    return <p>Loading...</p>;
   }
 
   return (
-    <div>
-      <h2>Stake</h2>
+    <>
       <form
         onSubmit={handleSubmit(
           ({ stageId, worldId, apStoneCount, totalPlayCount }) => {
@@ -67,7 +74,11 @@ export default function BattleTab({
               [],
               [],
               totalPlayCount,
-              apStoneCount
+              apStoneCount,
+              null,
+              {
+                nonce,
+              }
             ).then((x) => setTxId(Buffer.from(x).toString("hex")));
           }
         )}
@@ -117,6 +128,34 @@ export default function BattleTab({
         </Button>
       </form>
       {txId && <p>{txId}</p>}
+    </>
+  );
+}
+
+interface BattleTabProps {
+  avatarAddress: string;
+  equipments: string[];
+}
+
+export default function BattleTab({
+  avatarAddress,
+  equipments,
+}: BattleTabProps) {
+  const { privateKey, address } = useAccountContext();
+
+  if (privateKey == null || address == null) {
+    return <p>Login required.</p>;
+  }
+
+  return (
+    <div>
+      <h2>Stake</h2>
+      <BattleTabContent
+        equipments={equipments}
+        avatarAddress={avatarAddress}
+        privateKey={privateKey}
+        address={address}
+      />
     </div>
   );
 }

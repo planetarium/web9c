@@ -5,35 +5,77 @@ import { getRawState } from "./getRawState";
 
 export const InventoryType = z.array(z.instanceof(BencodexDictionary));
 type ItemType = "Consumable" | "Costume" | "Equipment" | "Material";
-interface ItemBase<T extends ItemType> {
-  itemType: T;
+interface ItemBase<TItemType extends ItemType, TItemSubType extends string> {
+  itemType: TItemType;
   elementalType: string;
   grade: number;
   id: number;
   itemId: string | null;
-  itemSubType: string;
+  itemSubType: TItemSubType;
   requiredBlockIndex: number | null;
 }
 
 export type Item = Equipment | Material | Costume | Consumable;
 
-export type Material = ItemBase<"Material">;
-export type Consumable = ItemBase<"Consumable">;
-export type Costume = ItemBase<"Costume">;
+const ALL_MATERIAL_ITEM_SUB_TYPES = [
+  "EquipmentMaterial",
+  "FoodMaterial",
+  "MonsterPart",
+  "NormalMaterial",
+  "Hourglass",
+  "ApStone",
+] as const;
+type MaterialItemSubType = (typeof ALL_MATERIAL_ITEM_SUB_TYPES)[number];
+export type Material = ItemBase<"Material", MaterialItemSubType>;
 
-export interface Equipment extends ItemBase<"Equipment"> {
+const ALL_CONSUMABLE_ITEM_SUB_TYPES = ["Food"] as const;
+type ConsumableItemSubType = (typeof ALL_CONSUMABLE_ITEM_SUB_TYPES)[number];
+export type Consumable = ItemBase<"Consumable", ConsumableItemSubType>;
+
+const ALL_COSTUME_ITEM_SUB_TYPES = [
+  "FullCostume",
+  "HairCostume",
+  "EarCostume",
+  "EyeCostume",
+  "TailCostume",
+  "Title",
+] as const;
+type CostumeItemSubType = (typeof ALL_COSTUME_ITEM_SUB_TYPES)[number];
+export type Costume = ItemBase<"Costume", CostumeItemSubType>;
+
+const ALL_EQUIPMENT_ITEM_SUB_TYPES = [
+  "Weapon",
+  "Armor",
+  "Belt",
+  "Necklace",
+  "Ring",
+] as const;
+type EquipmentItemSubType = (typeof ALL_EQUIPMENT_ITEM_SUB_TYPES)[number];
+export interface Equipment extends ItemBase<"Equipment", EquipmentItemSubType> {
   level: number;
 }
 
-function isValidItemType(
-  x: string
-): x is "Equipment" | "Material" | "Costume" | "Consumable" {
-  return (
-    x === "Equipment" ||
-    x === "Material" ||
-    x === "Costume" ||
-    x === "Consumable"
-  );
+function isValidItemSubType<T extends readonly string[]>(
+  x: string,
+  list: T
+): x is T[number] {
+  return list.includes(x);
+}
+
+function isValidEquipmentItemSubType(x: string): x is EquipmentItemSubType {
+  return isValidItemSubType(x, ALL_EQUIPMENT_ITEM_SUB_TYPES);
+}
+
+function isValidMaterialItemSubType(x: string): x is MaterialItemSubType {
+  return isValidItemSubType(x, ALL_MATERIAL_ITEM_SUB_TYPES);
+}
+
+function isValidCostumeItemSubType(x: string): x is CostumeItemSubType {
+  return isValidItemSubType(x, ALL_COSTUME_ITEM_SUB_TYPES);
+}
+
+function isValidConsumableItemSubType(x: string): x is ConsumableItemSubType {
+  return isValidItemSubType(x, ALL_CONSUMABLE_ITEM_SUB_TYPES);
 }
 
 async function deriveAvatarInventoryAddress(
@@ -61,9 +103,7 @@ export async function getAvatarInventory(address: LibplanetAccountAddress) {
     const rawRequiredBlockIndex = (item.get("requiredBlockIndex") ||
       item.get("rbi")) as number | undefined;
     const itemType = item.get("item_type") as string;
-    if (!isValidItemType(itemType)) {
-      throw new Error();
-    }
+    const itemSubType = item.get("item_sub_type") as string;
 
     const base = {
       // buffSkills: rawBuffSkills === undefined ? null : rawBuffSkills,
@@ -74,41 +114,47 @@ export async function getAvatarInventory(address: LibplanetAccountAddress) {
         rawItemId === undefined
           ? null
           : Buffer.from(rawItemId as Uint8Array).toString("hex"),
-      itemSubType: item.get("item_sub_type") as string,
-      itemType,
       requiredBlockIndex:
         rawRequiredBlockIndex === undefined ? null : rawRequiredBlockIndex,
     };
-    if (itemType === "Equipment") {
+    if (itemType === "Equipment" && isValidEquipmentItemSubType(itemSubType)) {
       const level = item.get("level") as bigint;
       return {
         ...base,
+        itemType,
+        itemSubType,
         level: Number(level),
       };
     }
 
-    if (itemType === "Consumable") {
+    if (
+      itemType === "Consumable" &&
+      isValidConsumableItemSubType(itemSubType)
+    ) {
       return {
         ...base,
-        itemType: "Consumable",
+        itemType,
+        itemSubType,
       };
     }
 
-    if (itemType === "Costume") {
+    if (itemType === "Costume" && isValidCostumeItemSubType(itemSubType)) {
       return {
         ...base,
-        itemType: "Costume",
+        itemType,
+        itemSubType,
       };
     }
 
-    if (itemType === "Material") {
+    if (itemType === "Material" && isValidMaterialItemSubType(itemSubType)) {
       return {
         ...base,
-        itemType: "Material",
+        itemType,
+        itemSubType,
       };
     }
 
-    throw new Error();
+    throw new Error(`${itemType} && ${itemSubType}`);
   }
 
   return parsedInventory.map((x) => {

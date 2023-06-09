@@ -10,16 +10,21 @@ interface Inputs {
 
 interface StakeTabProps {
   rawPrivateKey: RawPrivateKey;
+  nonce: number;
   setTxId: (txId: string) => void;
 }
 
-export default function StakeTab({ rawPrivateKey, setTxId }: StakeTabProps) {
+export default function StakeTab({
+  rawPrivateKey,
+  nonce,
+  setTxId,
+}: StakeTabProps) {
   const { register, handleSubmit } = useForm<Inputs>();
 
   function onSubmit({ amount }: Inputs) {
-    sendStakeTransaction(rawPrivateKey, BigInt(amount)).then((x) =>
-      setTxId(Buffer.from(x).toString("hex"))
-    );
+    sendStakeTransaction(rawPrivateKey, BigInt(amount), {
+      nonce,
+    }).then((x) => setTxId(Buffer.from(x).toString("hex")));
   }
   return (
     <>

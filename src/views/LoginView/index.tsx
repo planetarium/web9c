@@ -19,7 +19,7 @@ export default function LoginView() {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<Inputs>();
 
-  const { setPrivateKey } = useAccountContext();
+  const { setPrivateKey, setAddress } = useAccountContext();
 
   const accountMetadatas = useAccountMetadatas(keyStore);
 
@@ -47,6 +47,10 @@ export default function LoginView() {
           .then((privateKey) => {
             console.log("get private key");
             setPrivateKey(privateKey);
+            return privateKey.getAddress();
+          })
+          .then((address) => {
+            setAddress(address);
             navigate("/lobby");
             return;
           })

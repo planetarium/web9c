@@ -12,15 +12,20 @@ import {
   encodeSignedTx,
 } from "@planetarium/tx";
 import { decode, encode } from "@planetarium/bencodex";
-import { getNextTxNonce, stageTransaction } from ".";
+import { stageTransaction } from ".";
 import { NCG_CURRENCY, GENESIS_HASH } from "../constants";
 import { TxId } from "../types";
+
+interface TransactionOpts {
+  nonce: number;
+}
 
 export async function sendTransferAssetTransaction(
   account: Account,
   recipient: Address,
   amount: number,
-  memo: string | null
+  memo: string | null,
+  opts: TransactionOpts
 ): Promise<TxId> {
   const sender = await account.getAddress();
   const action = decode(
@@ -38,7 +43,7 @@ export async function sendTransferAssetTransaction(
   );
 
   const unsignedTx: UnsignedTxWithCustomActions = {
-    nonce: BigInt(await getNextTxNonce(sender)),
+    nonce: BigInt(opts.nonce),
     publicKey: (await account.getPublicKey()).toBytes("uncompressed"),
     signer: sender.toBytes(),
     timestamp: new Date(Date.now()),
@@ -55,7 +60,8 @@ export async function sendTransferAssetTransaction(
 
 export async function sendStakeTransaction(
   account: Account,
-  amount: bigint
+  amount: bigint,
+  opts: TransactionOpts
 ): Promise<TxId> {
   const sender = await account.getAddress();
   const action = decode(
@@ -65,7 +71,7 @@ export async function sendStakeTransaction(
   );
 
   const unsignedTx: UnsignedTxWithCustomActions = {
-    nonce: BigInt(await getNextTxNonce(sender)),
+    nonce: BigInt(opts.nonce),
     publicKey: (await account.getPublicKey()).toBytes("uncompressed"),
     signer: sender.toBytes(),
     timestamp: new Date(Date.now()),
@@ -91,7 +97,8 @@ export async function sendHackAndSlashTransaction(
   runeSlotInfos: { slotIndex: number; runeId: number }[] = [],
   totalPlayCount = 1,
   apStoneCount = 0,
-  stageBuffId: number | null = null
+  stageBuffId: number | null = null,
+  opts: TransactionOpts
 ): Promise<TxId> {
   const sender = await account.getAddress();
   const action = decode(
@@ -110,7 +117,7 @@ export async function sendHackAndSlashTransaction(
   );
 
   const unsignedTx: UnsignedTxWithCustomActions = {
-    nonce: BigInt(await getNextTxNonce(sender)),
+    nonce: BigInt(opts.nonce),
     publicKey: (await account.getPublicKey()).toBytes("uncompressed"),
     signer: sender.toBytes(),
     timestamp: new Date(Date.now()),

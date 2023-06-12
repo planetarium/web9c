@@ -8,6 +8,7 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import TransferTab from "./tabs/TransferTab";
 import StakeTab from "./tabs/StakeTab";
 import { Address, RawPrivateKey } from "@planetarium/account";
+import { NcscanTransactionLink } from "../../components/ui/NcscanTransactionLink";
 
 interface LobbyViewContentProps {
   rawPrivateKey: RawPrivateKey;
@@ -61,7 +62,11 @@ function LobbyViewContent({ rawPrivateKey, address }: LobbyViewContentProps) {
           </Tabs>
         </>
       )}
-      {txId !== null && <p>Check {MakeTransactionUrl(txId)}</p>}
+      {txId !== null && (
+        <p>
+          Check <NcscanTransactionLink txId={txId} />
+        </p>
+      )}
     </>
   );
 }

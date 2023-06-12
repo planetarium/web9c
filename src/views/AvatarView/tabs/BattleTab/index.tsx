@@ -9,6 +9,7 @@ import Button from "../../../../components/ui/Button";
 import InputField from "../../../../components/ui/InputField";
 import useAccountContext from "../../../../hooks/useAccountContext";
 import { useState } from "react";
+import { NcscanTransactionLink } from "../../../../components/ui/NcscanTransactionLink";
 
 function bytesToHex(arr: Uint8Array) {
   return Buffer.from(arr).toString("hex");
@@ -127,7 +128,11 @@ function BattleTabContent({
           Run
         </Button>
       </form>
-      {txId && <p>{txId}</p>}
+      {txId && (
+        <p>
+          Check <NcscanTransactionLink txId={txId} />
+        </p>
+      )}
     </>
   );
 }

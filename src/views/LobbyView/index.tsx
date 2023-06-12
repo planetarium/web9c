@@ -1,7 +1,6 @@
 import { Layout } from "../../layouts/Layout";
 import { useState } from "react";
 import { useAvatarStates, useNcgBalance, useNextTxNonce } from "../../api";
-import { MakeTransactionUrl } from "../../constants";
 import useAccountContext from "../../hooks/useAccountContext";
 import Avatar from "./Avatar";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";

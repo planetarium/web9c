@@ -4,10 +4,10 @@ import {
   RawPrivateKey,
 } from "@planetarium/account";
 import { useForm } from "react-hook-form";
-import { sendHackAndSlashTransaction, useNextTxNonce } from "../../../../api";
+import { sendHackAndSlashTransaction } from "../../../../api";
 import Button from "../../../../components/ui/Button";
 import InputField from "../../../../components/ui/InputField";
-import useAccountContext from "../../../../hooks/useAccountContext";
+import { useAccountContext, useNextTxNonce } from "../../../../hooks";
 import { useState } from "react";
 import TransactionResult from "./TransactionResult";
 

@@ -17,7 +17,7 @@ export function createWeb3KeyStore(passphraseGetter?: () => string) {
   return keyStore;
 }
 
-export default function useAccountMetadatas(keyStore: Web3KeyStore) {
+export function useAccountMetadatas(keyStore: Web3KeyStore) {
   const [accountMetadatas, setAccountMetadatas] = useState<
     | {
         address: Address;

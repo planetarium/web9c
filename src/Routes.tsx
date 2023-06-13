@@ -9,7 +9,7 @@ import RegisterView from "./views/RegisterView";
 import LobbyView from "./views/LobbyView";
 import LoginView from "./views/LoginView";
 import ImportView from "./views/ImportView";
-import useAccountContext from "./hooks/useAccountContext";
+import { useAccountContext } from "./hooks";
 import AvatarView from "./views/AvatarView";
 
 const Redirector = () => {

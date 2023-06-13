@@ -1,12 +1,10 @@
 import { Layout } from "../../layouts/Layout";
 import { Navigate, useNavigate } from "react-router";
 import Button from "../../components/ui/Button";
-import useAccountContext from "../../hooks/useAccountContext";
+import { useAccountContext, useAccountMetadatas } from "../../hooks";
 import { useForm } from "react-hook-form";
 import { PasswordField } from "../../components/ui/InputField";
-import useAccountMetadatas, {
-  createWeb3KeyStore,
-} from "../../hooks/useAccountMetadatas";
+import { createWeb3KeyStore } from "../../hooks/useAccountMetadatas";
 import { useState } from "react";
 
 interface Inputs {

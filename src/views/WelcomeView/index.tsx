@@ -1,7 +1,6 @@
 import { ButtonLink } from "../../components/ui/ButtonLink";
-import useAccountMetadatas, {
-  createWeb3KeyStore,
-} from "../../hooks/useAccountMetadatas";
+import { useAccountMetadatas } from "../../hooks/useAccountMetadatas";
+import { createWeb3KeyStore } from "../../hooks/useAccountMetadatas";
 import { Layout } from "../../layouts/Layout";
 
 const keyStore = createWeb3KeyStore();

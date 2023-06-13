@@ -3,7 +3,7 @@ import { Navigate, useNavigate } from "react-router";
 import Button from "../../components/ui/Button";
 import { useRef } from "react";
 import { isKeyObject } from "../../web3-account";
-import useAccountContext from "../../hooks/useAccountContext";
+import { useAccountContext } from "../../hooks";
 import { getDefaultWeb3KeyStorePath } from "@planetarium/account-web3-secret-storage";
 
 const ACCOUNT_WEB3_SECRET_STORAGE_PREFIX = "PLANETARIUM_EMULATED_FS_" as const;

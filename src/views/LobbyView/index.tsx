@@ -1,13 +1,13 @@
 import { Layout } from "../../layouts/Layout";
 import { useState } from "react";
 import { useAvatarStates, useNcgBalance, useNextTxNonce } from "../../api";
-import { MakeTransactionUrl } from "../../constants";
 import useAccountContext from "../../hooks/useAccountContext";
 import Avatar from "./Avatar";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import TransferTab from "./tabs/TransferTab";
 import StakeTab from "./tabs/StakeTab";
 import { Address, RawPrivateKey } from "@planetarium/account";
+import { NcscanTransactionLink } from "../../components/ui/NcscanTransactionLink";
 
 interface LobbyViewContentProps {
   rawPrivateKey: RawPrivateKey;
@@ -61,7 +61,11 @@ function LobbyViewContent({ rawPrivateKey, address }: LobbyViewContentProps) {
           </Tabs>
         </>
       )}
-      {txId !== null && <p>Check {MakeTransactionUrl(txId)}</p>}
+      {txId !== null && (
+        <p>
+          Check <NcscanTransactionLink txId={txId} />
+        </p>
+      )}
     </>
   );
 }

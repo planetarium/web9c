@@ -1,7 +1,7 @@
 import { Address as LibplanetAccountAddress } from "@planetarium/account";
 import { BencodexDictionary } from "@planetarium/bencodex";
 import { z } from "zod";
-import { getRawState } from "./getRawState";
+import { useRawState } from "./useRawState";
 
 export const InventoryType = z.array(z.instanceof(BencodexDictionary));
 type ItemType = "Consumable" | "Costume" | "Equipment" | "Material";
@@ -78,24 +78,14 @@ function isValidConsumableItemSubType(x: string): x is ConsumableItemSubType {
   return isValidItemSubType(x, ALL_CONSUMABLE_ITEM_SUB_TYPES);
 }
 
-async function deriveAvatarInventoryAddress(
-  address: LibplanetAccountAddress
-): Promise<LibplanetAccountAddress> {
-  const key = await crypto.subtle.importKey(
-    "raw",
-    new TextEncoder().encode("inventory"),
-    { name: "HMAC", hash: "SHA-1" },
-    false,
-    ["sign"]
-  );
+export function useAvatarInventory(
+  avatarInventoryAddress: LibplanetAccountAddress
+) {
+  const rawState = useRawState(avatarInventoryAddress);
 
-  const result = await crypto.subtle.sign("HMAC", key, address.toBytes());
-  return LibplanetAccountAddress.fromBytes(new Uint8Array(result));
-}
-
-export async function getAvatarInventory(address: LibplanetAccountAddress) {
-  const inventoryAddress = await deriveAvatarInventoryAddress(address);
-  const rawState = await getRawState(inventoryAddress);
+  if (rawState == null) {
+    return null;
+  }
 
   const parsedInventory = InventoryType.parse(rawState);
   function itemMapToObject(item: BencodexDictionary): Item {

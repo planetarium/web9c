@@ -1,4 +1,4 @@
-export * from "./getAvatarInventory";
-export * from "./getRawState";
+export * from "../hooks/useAvatarInventory";
+export * from "../hooks/useRawState";
 export * from "./stageTransaction";
 export * from "./shortcuts";

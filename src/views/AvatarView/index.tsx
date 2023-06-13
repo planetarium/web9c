@@ -2,8 +2,6 @@ import { Layout } from "../../layouts/Layout";
 import { Address } from "@planetarium/account";
 import { useNavigate, useParams } from "react-router";
 import { useState } from "react";
-import { getAvatarInventory } from "../../api";
-import { useInterval } from "../../hooks/useInterval";
 import InventoryTab from "./tabs/InventoryTab";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import BattleTab from "./tabs/BattleTab";
@@ -13,23 +11,9 @@ export default function AvatarView() {
   const { address: rawAddress } = useParams<{ address: string }>();
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-  const [state, setState] = useState<{
-    inventory: Awaited<ReturnType<typeof getAvatarInventory>>;
-  } | null>(null);
-
   if (rawAddress === undefined) {
     navigate("/");
   }
-
-  useInterval(async () => {
-    // eslint-disable-next-line
-    const address = Address.fromHex(rawAddress!);
-    const inventory = await getAvatarInventory(address);
-
-    setState({
-      inventory,
-    });
-  }, 2000);
 
   function onSelectItem(itemId: string) {
     const index = selectedItems.findIndex((v) => v == itemId);
@@ -43,7 +27,7 @@ export default function AvatarView() {
     }
   }
 
-  if (rawAddress == null) {
+  if (rawAddress === null || rawAddress === undefined) {
     return <p>Address not given. '/avatar/:address'</p>;
   }
 
@@ -60,22 +44,14 @@ export default function AvatarView() {
           </Tab>
         </TabList>
         <TabPanel>
-          {state == null ? (
-            <p>Loading...</p>
-          ) : (
-            <InventoryTab
-              inventory={state.inventory}
-              selectedItems={selectedItems}
-              onSelectItem={onSelectItem}
-            />
-          )}
+          <InventoryTab
+            avatarAddress={Address.fromHex(rawAddress)}
+            selectedItems={selectedItems}
+            onSelectItem={onSelectItem}
+          />
         </TabPanel>
         <TabPanel>
-          {state == null ? (
-            <p>Loading...</p>
-          ) : (
-            <BattleTab equipments={selectedItems} avatarAddress={rawAddress} />
-          )}
+          <BattleTab equipments={selectedItems} avatarAddress={rawAddress} />
         </TabPanel>
       </Tabs>
     </Layout>

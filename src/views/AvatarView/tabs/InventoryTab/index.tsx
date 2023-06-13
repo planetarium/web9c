@@ -1,3 +1,4 @@
+import { Address as LibplanetAccountAddress } from "@planetarium/account";
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
 import {
   Consumable,
@@ -5,11 +6,13 @@ import {
   Equipment,
   Item,
   Material,
-} from "../../../../api";
+  useAvatarInventory,
+} from "../../../../hooks/useAvatarInventory";
 import ConsumableTab from "./tabs/ConsumableTab";
 import CostumeTab from "./tabs/CostumeTab";
 import EquipmentTab from "./tabs/EquipmentTab";
 import MaterialTab from "./tabs/MaterialTab";
+import { useEffect, useState } from "react";
 
 function isEquipment(x: Item): x is Equipment {
   return x.itemType === "Equipment";
@@ -35,17 +38,23 @@ function isMaterialPair(pair: {
 
 type ItemId = string;
 
-interface InventoryProps {
-  inventory: { item: Item; count: number }[];
+interface InventoryContentProps {
+  avatarInventoryAddress: LibplanetAccountAddress;
   selectedItems: ItemId[];
   onSelectItem: (itemId: ItemId) => void;
 }
 
-export default function InventoryTab({
-  inventory,
+function InventoryContent({
+  avatarInventoryAddress,
   selectedItems,
   onSelectItem,
-}: InventoryProps) {
+}: InventoryContentProps) {
+  const inventory = useAvatarInventory(avatarInventoryAddress);
+
+  if (inventory == null) {
+    return <p>Loading avatar state...</p>;
+  }
+
   return (
     <Tabs>
       <TabList>
@@ -79,5 +88,53 @@ export default function InventoryTab({
         <MaterialTab items={inventory.filter(isMaterialPair)} />
       </TabPanel>
     </Tabs>
+  );
+}
+
+interface InventoryProps {
+  avatarAddress: LibplanetAccountAddress;
+  selectedItems: ItemId[];
+  onSelectItem: (itemId: ItemId) => void;
+}
+
+async function deriveAvatarInventoryAddress(
+  address: LibplanetAccountAddress
+): Promise<LibplanetAccountAddress> {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode("inventory"),
+    { name: "HMAC", hash: "SHA-1" },
+    false,
+    ["sign"]
+  );
+
+  const result = await crypto.subtle.sign("HMAC", key, address.toBytes());
+  return LibplanetAccountAddress.fromBytes(new Uint8Array(result));
+}
+
+export default function InventoryTab({
+  avatarAddress,
+  ...props
+}: InventoryProps) {
+  const [avatarInventoryAddress, setAvatarInventoryAddress] =
+    useState<LibplanetAccountAddress | null>();
+
+  useEffect(() => {
+    (async () => {
+      deriveAvatarInventoryAddress(avatarAddress).then(
+        setAvatarInventoryAddress
+      );
+    })();
+  }, [avatarAddress]);
+
+  if (avatarInventoryAddress == null) {
+    return <p>Deriving avatar inventory address...</p>;
+  }
+
+  return (
+    <InventoryContent
+      avatarInventoryAddress={avatarInventoryAddress}
+      {...props}
+    />
   );
 }

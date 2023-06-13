@@ -12,6 +12,7 @@ import TransferTab from "./tabs/TransferTab";
 import StakeTab from "./tabs/StakeTab";
 import { Address, RawPrivateKey } from "@planetarium/account";
 import { NcscanTransactionLink } from "../../components/ui/NcscanTransactionLink";
+import { ButtonLink } from "../../components/ui/ButtonLink";
 
 interface LobbyViewContentProps {
   rawPrivateKey: RawPrivateKey;
@@ -83,6 +84,7 @@ export default function LobbyView() {
 
   return (
     <Layout>
+      <ButtonLink to="/login">Login with other account</ButtonLink>
       <h1>Lobby</h1>
       <LobbyViewContent rawPrivateKey={rawPrivateKey} address={address} />
     </Layout>

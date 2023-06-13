@@ -5,6 +5,7 @@ import { useState } from "react";
 import InventoryTab from "./tabs/InventoryTab";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import BattleTab from "./tabs/BattleTab";
+import { ButtonLink } from "../../components/ui/ButtonLink";
 
 export default function AvatarView() {
   const navigate = useNavigate();
@@ -33,6 +34,7 @@ export default function AvatarView() {
 
   return (
     <Layout>
+      <ButtonLink to="/lobby">Go to lobby</ButtonLink>
       <h1>Avatar</h1>
       <Tabs>
         <TabList>

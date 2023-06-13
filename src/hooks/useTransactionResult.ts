@@ -17,9 +17,7 @@ const TransactionResultQuery = gql`
   }
 `;
 
-export default function useTransactionResult(
-  txId: string
-): TransactionResultStatus {
+export function useTransactionResult(txId: string): TransactionResultStatus {
   const ref = useRef<TransactionResultStatus>("INVALID");
   const [{ data, error, fetching }, executeQuery] = useQuery({
     query: TransactionResultQuery,

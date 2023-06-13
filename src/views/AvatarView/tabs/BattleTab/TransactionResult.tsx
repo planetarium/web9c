@@ -1,5 +1,5 @@
 import { NcscanTransactionLink } from "../../../../components/ui/NcscanTransactionLink";
-import useTransactionResult from "../../../../hooks/useTransactionResult";
+import { useTransactionResult } from "../../../../hooks";
 
 type TransactionResultProps = {
   txId: string;

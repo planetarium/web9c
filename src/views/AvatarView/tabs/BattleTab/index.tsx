@@ -150,7 +150,7 @@ export default function BattleTab({
 
   return (
     <div>
-      <h2>Stake</h2>
+      <h2>Hack And Slash</h2>
       <BattleTabContent
         equipments={equipments}
         avatarAddress={avatarAddress}

@@ -1,11 +1,15 @@
 import { Layout } from "../../layouts/Layout";
 import { Navigate, useNavigate } from "react-router";
-import Button from "../../components/ui/Button";
 import { useAccountContext, useAccountMetadatas } from "../../hooks";
 import { useForm } from "react-hook-form";
-import { PasswordField } from "../../components/ui/InputField";
 import { createWeb3KeyStore } from "../../hooks/useAccountMetadatas";
 import { useState } from "react";
+import {
+  Button,
+  Input,
+  FormErrorMessage,
+  FormControl,
+} from "@chakra-ui/react";
 
 interface Inputs {
   keyId: string;
@@ -15,6 +19,7 @@ interface Inputs {
 const keyStore = createWeb3KeyStore();
 
 export default function LoginView() {
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm<Inputs>();
 
@@ -37,7 +42,7 @@ export default function LoginView() {
   ): Promise<void> {
     console.log("call onSubmit");
     e?.preventDefault();
-
+    setLoading(true);
     const keyStore = createWeb3KeyStore(() => password);
     return keyStore.get(keyId).then((result) => {
       console.log("result", result, password);
@@ -57,6 +62,7 @@ export default function LoginView() {
           })
           .catch((e) => setLoginError(e.message));
       } else if (result.result === "error") {
+        setLoading(false);
         console.log("error");
         setLoginError("Something wrong.");
         throw new Error("error " + result.message);
@@ -74,22 +80,38 @@ export default function LoginView() {
   return (
     <Layout>
       <h1>Login</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <select {...register("keyId", { required: true })}>
-          {...accountMetadatas.map(({ keyId, address }) => (
-            <option key={keyId} value={keyId}>
-              {address.toString()} ({keyId})
-            </option>
-          ))}
-        </select>
-        <br />
-        <PasswordField
-          type="password"
-          invalid={loginError !== undefined}
-          message={loginError}
-          {...register("password", { required: true })}
-        />
-        <Button type="submit">Login</Button>
+      <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+        <FormControl>
+          <select
+            className="w-96 self-center"
+            {...register("keyId", { required: true })}
+          >
+            {...accountMetadatas.map(({ keyId, address }) => (
+              <option key={keyId} value={keyId}>
+                {address.toString()} ({keyId})
+              </option>
+            ))}
+          </select>
+          <br />
+          <Input
+            type="password"
+            isInvalid={loginError !== undefined}
+            {...register("password", { required: true })}
+          />
+          {loginError !== undefined ? (
+            <FormErrorMessage>{loginError}</FormErrorMessage>
+          ) : (
+            ""
+          )}
+          <Button
+            isLoading={loading}
+            size="lg"
+            colorScheme="blackAlpha"
+            type="submit"
+          >
+            Login
+          </Button>
+        </FormControl>
       </form>
     </Layout>
   );

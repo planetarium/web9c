@@ -16,7 +16,7 @@ export default function WelcomeView() {
 
   return (
     <Layout>
-      <h1>Hello, web9c</h1>
+      <h1>Web9c</h1>
       <>
         {registered && <ButtonLink to="/login">Login</ButtonLink>}
         <ButtonLink to="/register">Generate your own key</ButtonLink>

@@ -91,9 +91,22 @@ export default {
           "0%": { transform: "translateX(0%);" },
           "-50%": { transform: "translateX(-50%)" },
         },
+        spin: {
+          "from": { transform: "rotate(0deg)", transformOrigin: "center"  },
+          "to": { transform: "rotate(360deg)", transformOrigin: "center"  },
+        },
+        spinRev: {
+          "from": { transform: "rotate(360deg)", transformOrigin: "center"  },
+          "to": { transform: "rotate(0deg)", transformOrigin: "center"  },
+        },
       },
       animation: {
         scrollText: "scrollText 5s infinite linear",
+        spinner1: "spin 0.5s infinite linear",
+        spinner2: "spinRev 0.75s ease infinite",
+        spinner3: "spinRev 1s linear infinite",
+        spinner4: "spin 1.5s ease infinite",
+        spinner5: "spin 2s linear infinite",
       },
       opacity: {
         7: ".075",

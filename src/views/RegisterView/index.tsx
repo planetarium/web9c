@@ -1,9 +1,8 @@
 import { Layout } from "../../layouts/Layout";
 import { RawPrivateKey } from "@planetarium/account";
 import { useNavigate } from "react-router";
-import Button from "../../components/ui/Button";
+import { Button, Input, FormControl } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import InputField from "../../components/ui/InputField";
 import { createWeb3KeyStore } from "../../hooks/useAccountMetadatas";
 
 interface Inputs {
@@ -28,11 +27,13 @@ export default function RegisterView() {
     <Layout>
       <h1>Register</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <InputField
-          type="password"
-          {...register("password", { required: true })}
-        />
-        <Button type="submit">Create Key</Button>
+        <FormControl>
+          <Input
+            type="password"
+            {...register("password", { required: true })}
+          />
+          <Button type="submit">Create Key</Button>
+        </FormControl>
       </form>
     </Layout>
   );

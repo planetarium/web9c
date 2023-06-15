@@ -10,6 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.7.0",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/free-regular-svg-icons": "^6.4.0",
+    "@fortawesome/free-solid-svg-icons": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@peculiar/webcrypto": "^1.4.3",
     "@planetarium/account": "^1.3.0",
     "@planetarium/account-web3-secret-storage": "1.4.0-dev.2023658319",
@@ -19,6 +26,8 @@
     "@planetarium/tx": "^1.3.0",
     "@tailwindcss/typography": "^0.5.9",
     "buffer": "^6.0.3",
+    "formik": "^2.4.2",
+    "framer-motion": "^10.12.16",
     "jotai": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

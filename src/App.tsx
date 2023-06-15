@@ -5,6 +5,8 @@ import { Address, RawPrivateKey } from "@planetarium/account";
 import AccountContext from "./contexts/Account";
 import { Provider } from "urql";
 import { client } from "./api/graphqlClient";
+import { ChakraProvider } from "@chakra-ui/react";
+import { Spinner } from "./components/ui/Spinner";
 
 function App() {
   const [booted, setBooted] = useState<boolean>(false);
@@ -24,11 +26,13 @@ function App() {
       value={{ privateKey, setPrivateKey, address, setAddress }}
     >
       <Provider value={client}>
-        <Routes />
+        <ChakraProvider>
+          <Routes />
+        </ChakraProvider>
       </Provider>
     </AccountContext.Provider>
   ) : (
-    <p>"BOOTING..."</p>
+    <Spinner />
   );
 }
 

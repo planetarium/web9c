@@ -5,8 +5,7 @@ import {
 } from "@planetarium/account";
 import { useForm } from "react-hook-form";
 import { sendHackAndSlashTransaction } from "../../../../api";
-import Button from "../../../../components/ui/Button";
-import InputField from "../../../../components/ui/InputField";
+import { Button, Input } from "@chakra-ui/react";
 import { useAccountContext, useNextTxNonce } from "../../../../hooks";
 import { useState } from "react";
 import TransactionResult from "./TransactionResult";
@@ -86,7 +85,7 @@ function BattleTabContent({
       >
         <div className="my-2">
           <label htmlFor="worldId">World</label>
-          <InputField
+          <Input
             type="number"
             {...register("worldId", { required: true, valueAsNumber: true })}
           />
@@ -94,7 +93,7 @@ function BattleTabContent({
 
         <div className="my-2">
           <label htmlFor="stageId">Stage</label>
-          <InputField
+          <Input
             type="number"
             {...register("stageId", { required: true, valueAsNumber: true })}
           />
@@ -102,7 +101,7 @@ function BattleTabContent({
 
         <div className="my-2">
           <label htmlFor="totalPlayCount">Count to play (Repeat)</label>
-          <InputField
+          <Input
             type="number"
             value="1"
             {...register("totalPlayCount", {
@@ -114,7 +113,7 @@ function BattleTabContent({
 
         <div className="my-2">
           <label htmlFor="apStoneCount">AP Stone count to use</label>
-          <InputField
+          <Input
             type="number"
             value="0"
             {...register("apStoneCount", {

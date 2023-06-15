@@ -13,6 +13,7 @@ import StakeTab from "./tabs/StakeTab";
 import { Address, RawPrivateKey } from "@planetarium/account";
 import { NcscanTransactionLink } from "../../components/ui/NcscanTransactionLink";
 import { ButtonLink } from "../../components/ui/ButtonLink";
+import { Box } from "@chakra-ui/react";
 
 interface LobbyViewContentProps {
   rawPrivateKey: RawPrivateKey;
@@ -26,7 +27,7 @@ function LobbyViewContent({ rawPrivateKey, address }: LobbyViewContentProps) {
   const [txId, setTxId] = useState<string | null>(null);
 
   return (
-    <>
+    <Box>
       {avatarStates == null || ncgBalance == null || nextTxNonce == null ? (
         <p>Loading states...</p>
       ) : (
@@ -71,7 +72,7 @@ function LobbyViewContent({ rawPrivateKey, address }: LobbyViewContentProps) {
           Check <NcscanTransactionLink txId={txId} />
         </p>
       )}
-    </>
+    </Box>
   );
 }
 

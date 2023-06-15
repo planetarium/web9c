@@ -1,6 +1,6 @@
 import { Layout } from "../../layouts/Layout";
 import { Navigate, useNavigate } from "react-router";
-import Button from "../../components/ui/Button";
+import {Button} from "@chakra-ui/react";
 import { useRef } from "react";
 import { isKeyObject } from "../../web3-account";
 import { useAccountContext } from "../../hooks";

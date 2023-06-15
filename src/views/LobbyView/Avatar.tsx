@@ -1,3 +1,4 @@
+import { Button } from "@chakra-ui/react";
 import { useNavigate } from "react-router";
 
 interface AvatarProps {
@@ -18,12 +19,12 @@ export default function Avatar({
   return (
     <div className="rounded-2xl shadow-md p-6">
       {name} | Lv. {level} | {actionPoint}/120
-      <button
+      <Button
         onClick={() => navigate(`/avatar/${address}`)}
         className="m-2 p-1 bg-black text-white primary"
       >
         Inventory
-      </button>
+      </Button>
     </div>
   );
 }

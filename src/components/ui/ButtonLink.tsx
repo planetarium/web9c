@@ -1,7 +1,7 @@
 import type { LocationDescriptor } from "history";
 import React, { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import Button from "./Button";
+import { Button } from "@chakra-ui/react";
 
 type ButtonLinkProps = Omit<
   React.ComponentProps<typeof Button>,
@@ -16,5 +16,5 @@ export function ButtonLink({
 }: React.PropsWithChildren<ButtonLinkProps>) {
   const navigate = useNavigate();
   const onClick = useCallback(() => navigate(to), [navigate, to]);
-  return <Button {...props} onClick={onClick} />;
+  return <Button className="m-2 p-2" {...props} onClick={onClick} />;
 }

@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { sendStakeTransaction } from "../../../api";
 import { RawPrivateKey } from "@planetarium/account";
 import { Button, FormControl, Input } from "@chakra-ui/react";
+import { useState } from "react";
 
 interface Inputs {
   amount: number;

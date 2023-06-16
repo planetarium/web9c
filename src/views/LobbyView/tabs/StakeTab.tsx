@@ -34,19 +34,25 @@ export default function StakeTab({
   return (
     <>
       <h2>Stake</h2>
-     <FormControl onSubmit={handleSubmit(onSubmit)}>
-        <div className="my-2">
-          <label htmlFor="amount">Amount</label>
-          <Input
-            type="number"
-            {...register("amount", { required: true, valueAsNumber: true })}
-          />
-        </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <FormControl>
+          <div className="my-2">
+            <label htmlFor="amount">Amount</label>
+            <Input
+              type="number"
+              {...register("amount", { required: true, valueAsNumber: true })}
+            />
+          </div>
 
-        <Button isLoading={loading} type="submit" className="p-2 bg-black text-white">
-          Stake
-        </Button>
-      </FormControl>
+          <Button
+            isLoading={loading}
+            type="submit"
+            className="p-2 bg-black text-white"
+          >
+            Stake
+          </Button>
+        </FormControl>
+      </form>
     </>
   );
 }

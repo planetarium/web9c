@@ -45,7 +45,7 @@ export default function LoginView() {
     setLoading(true);
     const keyStore = createWeb3KeyStore(() => password);
     return keyStore.get(keyId).then((result) => {
-      console.log("result", result, password);
+      console.log("result", result);
       if (result.result === "success") {
         return result.account
           .exportPrivateKey()

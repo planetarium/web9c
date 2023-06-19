@@ -1,83 +1,57 @@
-# How to play
+# Howto
 
-## Prerequisites
+# Prerequisite
+ - Git
+ - Javascript Runtime / Pacakage Manager
+   - [Node.js]([https://nodejs.org/en](https://nodejs.org/en))
+   - [yarn](https://yarnpkg.com/getting-started/install)
+   - [pnpm](https://pnpm.io/)
+ 
+## Command Line
 
- - [yarn](https://yarnpkg.com/getting-started/install)
-
-## Clone repository
-
-```
-$ git clone https://github.com/planetarium/web9c
-Cloning into 'web9c'...
-remote: Enumerating objects: 714, done.
-remote: Counting objects: 100% (188/188), done.
-remote: Compressing objects: 100% (129/129), done.
-remote: Total 714 (delta 60), reused 128 (delta 52), pack-reused 526
-Receiving objects: 100% (714/714), 35.36 MiB | 21.78 MiB/s, done.
-Resolving deltas: 100% (318/318), done.
-$ cd web9c 
-```
-
-You can copy and paste the below one:
-
-```
-git clone https://github.com/planetarium/web9c
+```bash
+# Git Clone Current Repository.
+git clone git@github.com:planetarium/web9c.git
 cd web9c
-```
 
-## Install dependencies
+# Use Your Prefered package manager to install dependencies.
+# our project uses Yarn by default, But other managers are also usuable.
 
-```
-$ yarn
-➤ YN0000: ┌ Resolution step
-➤ YN0060: │ web9c@workspace:. provides @planetarium/account (p002d7) with version 1.3.0, which doesn't satisfy what @planetarium/account-web3-secret-storage requests
-➤ YN0000: │ Some peer dependencies are incorrectly met; run yarn explain peer-requirements <hash> for details, where <hash> is the six-letter p-prefixed code
-➤ YN0000: └ Completed
-➤ YN0000: ┌ Fetch step
-➤ YN0013: │ yallist@npm:4.0.0 can't be found in the cache and will be f
-➤ YN0013: │ yaml@npm:2.3.0 can't be found in the cache and will be fetc
-➤ YN0013: │ yocto-queue@npm:0.1.0 can't be found in the cache and will 
-➤ YN0013: │ yocto-queue@npm:1.0.0 can't be found in the cache and will 
-➤ YN0013: │ zod@npm:3.21.4 can't be found in the cache and will be fetc
-➤ YN0000: └ Completed in 16s 16ms
-➤ YN0000: ┌ Link step
-➤ YN0007: │ esbuild@npm:0.17.19 must be built because it never has been before or the last one failed
-➤ YN0007: │ @swc/core@npm:1.3.59 [a32c0] must be built because it never has been before or the last one failed
-➤ YN0000: └ Completed in 4s 693ms
-➤ YN0000: Done with warnings in 20s 860ms
-```
-
-You can copy and paste the below one:
-
-```
+# for yarn :
 yarn
+yarn dev
+
+# for npm : 
+npm install
+npm run dev
+
+# for pnpm :
+pnpm
+pnpm dev
+
 ```
 
-## Run
-
+This should print :
 ```
-$ yarn dev
 
   VITE v4.3.8  ready in 834 ms
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: use --host to expose
   ➜  press h to show help
-```
 
-You can copy and paste the below one:
-
-```
-yarn dev
 ```
 
 ## Open web9c in your browser [[source](https://github.com/planetarium/web9c/blob/main/src/views/WelcomeView/index.tsx)]
 
-When you ran `yarn dev`, it showed you its link to access (e.g., `http://localhost:5173/`). Open the link in your browser.
+After you boot Vite in development mode, access to `http://localhost:5173/` or else port you modified on browser.
 
 <img width="1624" alt="image" src="https://github.com/planetarium/web9c/assets/26626194/b421f5e2-906e-4914-96a9-93e80e3f6096">
 
 ## Import your keystore file [[source](https://github.com/planetarium/web9c/blob/main/src/views/ImportView/index.tsx)]
+
+> **Note**  
+> This application NEVER uploads your keystore file to network, whole decryption, signing, encryption happends on client-side, and only send requests to RPC Nodes to get NextTxNonce (Required to create Tx offline) and Staging Tx. I recommend you to not run following stage on publically used computer or network.
 
 In the view, press the *Import your own key* button. Then you will see the below screen and you need your own keystore file.
 

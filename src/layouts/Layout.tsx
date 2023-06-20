@@ -13,7 +13,7 @@ export function Layout({ children }: PropsWithChildren) {
   return (
     <div className="flex flex-col min-h-full">
       <div className="container place-self-center rounded-2xl shadow-2xl my-auto mx-12 p-6 w-auto">
-        <HStack spacing={4} align="left">
+        <HStack spacing={2} align="left">
           <IconButton
             colorScheme="teal"
             aria-label="Back"

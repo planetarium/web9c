@@ -3,7 +3,7 @@ import { Address } from "@planetarium/account";
 import { useNavigate, useParams } from "react-router";
 import { useState } from "react";
 import InventoryTab from "./tabs/InventoryTab";
-import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import BattleTab from "./tabs/BattleTab";
 import { ButtonLink } from "../../components/ui/ButtonLink";
 
@@ -45,16 +45,18 @@ export default function AvatarView() {
             <h2>Battle</h2>
           </Tab>
         </TabList>
-        <TabPanel>
-          <InventoryTab
-            avatarAddress={Address.fromHex(rawAddress)}
-            selectedItems={selectedItems}
-            onSelectItem={onSelectItem}
-          />
-        </TabPanel>
-        <TabPanel>
-          <BattleTab equipments={selectedItems} avatarAddress={rawAddress} />
-        </TabPanel>
+        <TabPanels>
+          <TabPanel>
+            <InventoryTab
+              avatarAddress={Address.fromHex(rawAddress)}
+              selectedItems={selectedItems}
+              onSelectItem={onSelectItem}
+            />
+          </TabPanel>
+          <TabPanel>
+            <BattleTab equipments={selectedItems} avatarAddress={rawAddress} />
+          </TabPanel>
+        </TabPanels>
       </Tabs>
     </Layout>
   );

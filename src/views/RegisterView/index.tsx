@@ -25,7 +25,6 @@ export default function RegisterView() {
 
   return (
     <Layout>
-      <h1>Register</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormControl>
           <Input

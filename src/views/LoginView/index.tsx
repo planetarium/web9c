@@ -79,7 +79,6 @@ export default function LoginView() {
 
   return (
     <Layout>
-      <h1>Login</h1>
       <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
         <FormControl>
           <select

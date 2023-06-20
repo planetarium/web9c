@@ -7,13 +7,12 @@ import {
   useNextTxNonce,
 } from "../../hooks";
 import Avatar from "./Avatar";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { Tab, Tabs, TabList, TabPanel, Spinner, TabPanels } from "@chakra-ui/react";
 import TransferTab from "./tabs/TransferTab";
 import StakeTab from "./tabs/StakeTab";
 import { Address, RawPrivateKey } from "@planetarium/account";
 import { NcscanTransactionLink } from "../../components/ui/NcscanTransactionLink";
 import { ButtonLink } from "../../components/ui/ButtonLink";
-import { Box } from "@chakra-ui/react";
 
 interface LobbyViewContentProps {
   rawPrivateKey: RawPrivateKey;
@@ -27,9 +26,9 @@ function LobbyViewContent({ rawPrivateKey, address }: LobbyViewContentProps) {
   const [txId, setTxId] = useState<string | null>(null);
 
   return (
-    <Box>
+    <>
       {avatarStates == null || ncgBalance == null || nextTxNonce == null ? (
-        <p>Loading states...</p>
+        <Spinner content="Loading States..." />
       ) : (
         <>
           <p>Address: 0x{address.toHex()}</p>
@@ -40,30 +39,28 @@ function LobbyViewContent({ rawPrivateKey, address }: LobbyViewContentProps) {
           )}
 
           <hr className="my-5" />
-          <Tabs>
-            <TabList className="my-2">
-              <Tab className="inline-block rounded-2xl shadow-md p-4">
-                Transfer NCG
-              </Tab>
-              <Tab className="inline-block rounded-2xl shadow-md p-4">
-                Stake
-              </Tab>
+          <Tabs variant="enclosed">
+            <TabList>
+              <Tab>Transfer NCG</Tab>
+              <Tab c>Stake</Tab>
             </TabList>
 
-            <TabPanel>
-              <TransferTab
-                nonce={nextTxNonce}
-                rawPrivateKey={rawPrivateKey}
-                setTxId={setTxId}
-              />
-            </TabPanel>
-            <TabPanel>
-              <StakeTab
-                rawPrivateKey={rawPrivateKey}
-                setTxId={setTxId}
-                nonce={nextTxNonce}
-              />
-            </TabPanel>
+            <TabPanels>
+              <TabPanel>
+                <TransferTab
+                  nonce={nextTxNonce}
+                  rawPrivateKey={rawPrivateKey}
+                  setTxId={setTxId}
+                />
+              </TabPanel>
+              <TabPanel>
+                <StakeTab
+                  rawPrivateKey={rawPrivateKey}
+                  setTxId={setTxId}
+                  nonce={nextTxNonce}
+                />
+              </TabPanel>
+            </TabPanels>
           </Tabs>
         </>
       )}
@@ -72,7 +69,7 @@ function LobbyViewContent({ rawPrivateKey, address }: LobbyViewContentProps) {
           Check <NcscanTransactionLink txId={txId} />
         </p>
       )}
-    </Box>
+    </>
   );
 }
 
@@ -86,7 +83,6 @@ export default function LobbyView() {
   return (
     <Layout>
       <ButtonLink to="/login">Login with other account</ButtonLink>
-      <h1>Lobby</h1>
       <LobbyViewContent rawPrivateKey={rawPrivateKey} address={address} />
     </Layout>
   );

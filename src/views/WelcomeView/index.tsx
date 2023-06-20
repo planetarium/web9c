@@ -1,3 +1,4 @@
+import { Divider, AbsoluteCenter } from "@chakra-ui/react";
 import { ButtonLink } from "../../components/ui/ButtonLink";
 import { useAccountMetadatas } from "../../hooks/useAccountMetadatas";
 import { createWeb3KeyStore } from "../../hooks/useAccountMetadatas";
@@ -16,12 +17,9 @@ export default function WelcomeView() {
 
   return (
     <Layout>
-      <h1>Web9c</h1>
-      <>
         {registered && <ButtonLink to="/login">Login</ButtonLink>}
         <ButtonLink to="/register">Generate your own key</ButtonLink>
         <ButtonLink to="/import">Import your own key</ButtonLink>
-      </>
     </Layout>
   );
 }

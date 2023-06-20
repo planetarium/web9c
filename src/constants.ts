@@ -7,6 +7,7 @@ export const {
   GRAPHQL_ENDPOINT,
   GENESIS_HASH,
   NCG_CURRENCY,
+  MEAD_CURRENCY,
   MakeTransactionUrl,
 } = {
   MAINNET: {
@@ -20,6 +21,7 @@ export const {
       decimalPlaces: 2,
       minters: [new Address("0x47d082a115c63e7b58b1532d20e631538eafadde")],
     }),
+    MEAD_CURRENCY: null,
     MakeTransactionUrl: (txId: string) => `https://9cscan.com/tx/${txId}`,
   },
   LOCALHOST: {
@@ -33,6 +35,7 @@ export const {
       decimalPlaces: 2,
       minters: [new Address("0x5c00CBFb90eB38788ACBc650438261c09f4a53f7")],
     }),
+    MEAD_CURRENCY: null,
     MakeTransactionUrl: (txId: string) =>
       `https://explorer.libplanet.io/localhost/transaction/?${txId}`,
   },
@@ -48,6 +51,13 @@ export const {
       decimalPlaces: 2,
       minters: [new Address("0x47d082a115c63e7b58b1532d20e631538eafadde")],
     }),
+    MEAD_CURRENCY: {
+      ticker: "Mead",
+      decimalPlaces: 18,
+      minters: null,
+      totalSupplyTrackable: false,
+      maximumSupply: null,
+    },
     MakeTransactionUrl: (txId: string) =>
       `https://explorer.libplanet.io/9c-internal-mead/transaction/?${txId}`,
   },

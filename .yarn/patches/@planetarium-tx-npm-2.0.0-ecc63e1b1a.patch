@@ -1,0 +1,13 @@
+diff --git a/dist/index.js b/dist/index.js
+index b66232ca021eea4d1da16228245181bf40fc5b7a..157e9e5e749d25be316821404714c5bcbad53878 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -36,7 +36,7 @@ function encodeCurrency(currency) {
+   const minters = currency.minters === null ? null : encodeAddressSet(currency.minters);
+   const serialized = {
+     ticker: currency.ticker,
+-    decimals: BigInt(currency.decimalPlaces),
++    decimalPlaces: new Uint8Array([ currency.decimalPlaces ]),
+     minters
+   };
+   if (currency.maximumSupply !== null) {

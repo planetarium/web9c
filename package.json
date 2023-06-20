@@ -18,12 +18,12 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@peculiar/webcrypto": "^1.4.3",
-    "@planetarium/account": "^1.3.0",
-    "@planetarium/account-web3-secret-storage": "1.4.0-dev.2023658319",
+    "@planetarium/account": "^2.0.0",
+    "@planetarium/account-web3-secret-storage": "^2.0.0",
     "@planetarium/bencodex": "^0.2.2",
     "@planetarium/lib9c-wasm": "0.0.4-dev.56de660",
     "@planetarium/sign": "^0.0.12",
-    "@planetarium/tx": "^1.3.0",
+    "@planetarium/tx": "^2.0.0",
     "@tailwindcss/typography": "^0.5.9",
     "buffer": "^6.0.3",
     "formik": "^2.4.2",
@@ -66,6 +66,7 @@
     "vitest": "^0.31.1"
   },
   "resolutions": {
-    "@planetarium/account-web3-secret-storage@1.4.0-dev.2023658319": "patch:@planetarium/account-web3-secret-storage@npm%3A1.4.0-dev.2023658319#./.yarn/patches/@planetarium-account-web3-secret-storage-npm-1.4.0-dev.2023658319-7067e972f4.patch"
+    "@planetarium/account-web3-secret-storage@^2.0.0": "patch:@planetarium/account-web3-secret-storage@npm%3A2.0.0#./.yarn/patches/@planetarium-account-web3-secret-storage-npm-2.0.0-cdaf03f6ab.patch",
+    "@planetarium/tx@^2.0.0": "patch:@planetarium/tx@npm%3A2.0.0#./.yarn/patches/@planetarium-tx-npm-2.0.0-ecc63e1b1a.patch"
   }
 }

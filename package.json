@@ -25,10 +25,12 @@
     "@planetarium/sign": "^0.0.12",
     "@planetarium/tx": "^1.3.0",
     "@tailwindcss/typography": "^0.5.9",
+    "@urql/core": "^4.0.10",
     "buffer": "^6.0.3",
     "formik": "^2.4.2",
     "framer-motion": "^10.12.16",
     "jotai": "^2.1.0",
+    "jotai-urql": "^0.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.44.2",
@@ -39,6 +41,7 @@
     "urql": "^4.0.2",
     "vite-plugin-svgr": "^3.2.0",
     "vite-tsconfig-paths": "^4.2.0",
+    "wonka": "^6.3.2",
     "zod": "^3.21.4"
   },
   "devDependencies": {

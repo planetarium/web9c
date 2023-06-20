@@ -2770,6 +2770,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@urql/core@npm:^4.0.10":
+  version: 4.0.10
+  resolution: "@urql/core@npm:4.0.10"
+  dependencies:
+    "@0no-co/graphql.web": ^1.0.1
+    wonka: ^6.3.2
+  checksum: adeb666c632acbd85dbb6d48aab81b8ec26e839ff525b71a93e6d0cc1632bab49b4615585527ccc8b98fbf5c2e1a9f5c20bdd92d3f89d573803f069d97ea09eb
+  languageName: node
+  linkType: hard
+
 "@vitejs/plugin-react-swc@npm:^3.3.1":
   version: 3.3.1
   resolution: "@vitejs/plugin-react-swc@npm:3.3.1"
@@ -4979,6 +4989,16 @@ __metadata:
   bin:
     jiti: bin/jiti.js
   checksum: 46c41cd82d01c6efdee3fc0ae9b3e86ed37457192d6366f19157d863d64961b07982ab04e9d5879576a1af99cc4d132b0b73b336094f86a5ce9fb1029ec2d29f
+  languageName: node
+  linkType: hard
+
+"jotai-urql@npm:^0.7.1":
+  version: 0.7.1
+  resolution: "jotai-urql@npm:0.7.1"
+  peerDependencies:
+    "@urql/core": "*"
+    jotai: ">=1.11.0"
+  checksum: 20136c1b9292b917082b6d5be60b60f2d1dafa3a7b83ece650530873e3221c3a8777114f7b2d9da449de2f1ffd740dc1b29fa8d946df47f2b55e2f3821a22556
   languageName: node
   linkType: hard
 
@@ -7198,6 +7218,7 @@ __metadata:
     "@types/react-router-dom": ^5.3.3
     "@typescript-eslint/eslint-plugin": ^5.57.1
     "@typescript-eslint/parser": ^5.57.1
+    "@urql/core": ^4.0.10
     "@vitejs/plugin-react-swc": ^3.3.1
     autoprefixer: ^10.4.14
     buffer: ^6.0.3
@@ -7210,6 +7231,7 @@ __metadata:
     formik: ^2.4.2
     framer-motion: ^10.12.16
     jotai: ^2.1.0
+    jotai-urql: ^0.7.1
     postcss: ^8.4.23
     postcss-import: ^15.1.0
     postcss-nesting: ^11.2.2
@@ -7228,6 +7250,7 @@ __metadata:
     vite-plugin-svgr: ^3.2.0
     vite-tsconfig-paths: ^4.2.0
     vitest: ^0.31.1
+    wonka: ^6.3.2
     zod: ^3.21.4
   languageName: unknown
   linkType: soft

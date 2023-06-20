@@ -36,4 +36,19 @@ export const {
     MakeTransactionUrl: (txId: string) =>
       `https://explorer.libplanet.io/localhost/transaction/?${txId}`,
   },
+  INTERNAL_MEAD: {
+    GRAPHQL_ENDPOINT:
+      "https://9c-internal-mead-explorer.nine-chronicles.com/graphql",
+    GENESIS_HASH: Buffer.from(
+      "4582250d0da33b06779a8475d283d5dd210c683b9b999d74d03fac4f58fa6bce",
+      "hex"
+    ),
+    NCG_CURRENCY: new Currency({
+      ticker: "NCG",
+      decimalPlaces: 2,
+      minters: [new Address("0x47d082a115c63e7b58b1532d20e631538eafadde")],
+    }),
+    MakeTransactionUrl: (txId: string) =>
+      `https://explorer.libplanet.io/9c-internal-mead/transaction/?${txId}`,
+  },
 }["MAINNET"];

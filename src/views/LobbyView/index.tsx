@@ -42,7 +42,7 @@ function LobbyViewContent({ rawPrivateKey, address }: LobbyViewContentProps) {
           <Tabs variant="enclosed">
             <TabList>
               <Tab>Transfer NCG</Tab>
-              <Tab c>Stake</Tab>
+              <Tab>Stake</Tab>
             </TabList>
 
             <TabPanels>

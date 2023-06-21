@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "codegen": "graphql-codegen-esm --config ./graphql/codegen.ts"
   },
   "dependencies": {
     "@chakra-ui/react": "^2.7.0",
@@ -28,17 +29,14 @@
     "@tailwindcss/typography": "^0.5.9",
     "@urql/core": "^4.0.10",
     "buffer": "^6.0.3",
+    "chakra-react-select": "^4.6.0",
     "formik": "^2.4.2",
     "framer-motion": "^10.12.16",
+    "graphql": "^16.6.0",
     "jotai": "^2.1.0",
     "jotai-urql": "^0.7.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.44.2",
-    "react-router": "^6.11.2",
-    "react-router-dom": "^6.11.2",
-    "react-tabs": "^6.0.1",
-    "scrypt-js": "^3.0.1",
     "urql": "^4.0.2",
     "vite-plugin-ssr": "^0.4.131",
     "vite-plugin-svgr": "^3.2.0",
@@ -47,10 +45,10 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^4.0.1",
+    "@graphql-codegen/client-preset": "^4.0.1",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
-    "@types/react-router": "^5.1.20",
-    "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
     "@vitejs/plugin-react-swc": "^3.3.1",

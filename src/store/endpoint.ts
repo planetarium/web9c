@@ -1,7 +1,7 @@
 import { atom, useAtom } from "jotai";
 import { EndpointType } from "../types/endpoint";
 
-const Endpoints = atom<EndpointType[]>([
+export const Endpoints = atom<EndpointType[]>([
   {
     label: "Main RPC - 1",
     value: "http://9c-main-rpc-1.nine-chronicles.com/graphql",
@@ -54,7 +54,7 @@ const Endpoints = atom<EndpointType[]>([
   },
 ]);
 
-const TempEndpoint = atom<EndpointType | undefined>(undefined);
+export const TempEndpoint = atom<EndpointType | undefined>(undefined);
 
 export const useLastIndex = () => {
   const [endpoints] = useAtom(Endpoints);
@@ -65,4 +65,4 @@ export const useLastIndex = () => {
     return Math.max(
       ...[...endpoints, tempEndpoint].map((e) => e.lastIndex || 0)
     );
-  });
+  };

@@ -102,7 +102,7 @@ function Page() {
         publicKey: publicKey,
         address: address,
       });
-      console.log("success");
+      navigate("/main")
     } catch (e: unknown) {
       setLoading(false);
 

@@ -1,21 +1,17 @@
-import {
-  Address,
-  PublicKey,
-  RawPrivateKey,
-} from "@planetarium/account";
+import { Address, PublicKey, RawPrivateKey } from "@planetarium/account";
 import { atom } from "jotai";
-import { Web3KeyObject } from "@planetarium/account-web3-secret-storage";
+import { Web3Account } from "@planetarium/account-web3-secret-storage";
 
 type Keystore = {
   address: Address | null;
-  keystore: Web3KeyObject | null;
+  privateKey: RawPrivateKey | null;
   publicKey: PublicKey | null;
-  account: RawPrivateKey | null;
+  account: Web3Account | null;
 };
 
-const keystoreAtom = atom<Keystore>({
+export const Keystore = atom<Keystore>({
   address: null,
-  keystore: null,
+  privateKey: null,
   publicKey: null,
   account: null,
 });

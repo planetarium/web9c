@@ -1,7 +1,7 @@
 import { atom, useAtom } from "jotai";
 import { EndpointType } from "../types/endpoint";
 
-const endpointsAtom = atom<EndpointType[]>([
+const Endpoints = atom<EndpointType[]>([
   {
     label: "Main RPC - 1",
     value: "http://9c-main-rpc-1.nine-chronicles.com/graphql",
@@ -54,21 +54,7 @@ const endpointsAtom = atom<EndpointType[]>([
   },
 ]);
 
-const tempEndpointAtom = atom<EndpointType | undefined>(undefined);
-
-export const Endpoints = atom(
-  (get) => get(endpointsAtom),
-  (_get, set, endpoint: EndpointType[]) => {
-    set(endpointsAtom, endpoint);
-  }
-);
-
-export const TempEndpoint = atom(
-  (get) => get(tempEndpointAtom),
-  (_get, set, endpoint: EndpointType) => {
-    set(tempEndpointAtom, endpoint);
-  }
-);
+const TempEndpoint = atom<EndpointType | undefined>(undefined);
 
 export const useLastIndex = () => {
   const [endpoints] = useAtom(Endpoints);

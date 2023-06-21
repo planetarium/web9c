@@ -16,12 +16,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { navigate } from "vite-plugin-ssr/client/router";
 import { Title } from "../components/Title";
-
+import { useAtom } from "jotai";
+import { Keystore } from "../store/keystore";
+import { isKeyObject } from "../utils/web3-account";
+import { Web3KeyObject } from "@planetarium/account-web3-secret-storage";
 export { Page };
 
 function Page() {
-  const [keystore, setKeystore] = useState(true);
-  const [keyFile, setKeyFile] = useState<File | null>(null);
+  const [keystore, setKeystore] = useAtom(Keystore);
+  const [keyFile, setKeyFile] = useState<Web3KeyObject>();
   const [passphrase, setPassphrase] = useState<string>("");
   const [isLoading, setLoading] = useState<boolean>(false);
 
@@ -29,35 +32,12 @@ function Page() {
 
   const toast = useToast();
 
-  /** 
-  import { useAccountMetadatas } from "../../hooks/useAccountMetadatas";
-  
-  const keyStore = createWeb3KeyStore();
-  
-  export default function WelcomeView() {
-    const accountMetadatas = useAccountMetadatas(keyStore);
-  
-    if (accountMetadatas == null) {
-      return <p>Checking accounts...</p>;
-    }
-  
-    const registered = accountMetadatas.length > 0;
-  
-    return (
-        <h1>Hello, web9c</h1>
-    );
-  }*/
   /*
   const { setKeystore, setAccount } = useMainMutations();
-
-  const [keyFile, setKeyFile] = useState<File | null>(null);
-  const [passphrase, setPassphrase] = useState<string>("");
-  const [isLoading, setLoading] = useState<boolean>(false);
 
   const inputFileRef = useRef<HTMLInputElement>(null);
 
 
-  // Read Key File on Key File Change
   useEffect(() => readKeyFile(worker, keyFile), [keyFile]);
 
   // Set Keystore on Worker Message
@@ -74,18 +54,55 @@ function Page() {
       });
     }
   }, [message]);
+*/
+  function readFile() {
+    const files = inputFileRef.current?.files;
+    if (!files || files.length !== 1) {
+      toast({
+        title: "Error",
+        description: "No keyfile has been selected.",
+        status: "error",
+      });
+      return;
+    }
+    const keyfile = files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      if (typeof result !== "string") {
+        toast({
+          title: "Error",
+          description: "Failed to read keyfile.",
+          status: "error",
+        });
+        return;
+      }
+
+      const parsedResult = JSON.parse(result);
+      debugger;
+      if (!isKeyObject(parsedResult)) {
+        toast({
+          title: "Error",
+          description: "Keyfile is not in valid Web3 Secret Storage Format.",
+          status: "error",
+        });
+        return;
+      }
+      setKeyFile(parsedResult);
+      return;
+    };
+    reader.readAsText(keyfile);
+  }
 
   const authenticate = async (e: FormEvent) => {
     e.preventDefault();
-
     setLoading(true);
 
-    if (!keystore) {
+    if (!keyFile) {
       setLoading(false);
-      setKeyFile(null);
       toast({
         title: "Error",
-        description: "Failed to read key file. Please try again.",
+        description: "No keyfile has been imported.",
         status: "error",
       });
       return;
@@ -102,7 +119,7 @@ function Page() {
     }
 
     try {
-      const account = getAccountFromV3(keystore, passphrase);
+      const account = (keystore, passphrase);
       setAccount(account, await account.getPublicKey());
     } catch (e: unknown) {
       setLoading(false);
@@ -126,7 +143,6 @@ function Page() {
 
     setLoading(false);
   };
-  */
 
   return (
     <Container
@@ -138,7 +154,7 @@ function Page() {
       gap="4"
     >
       <Title />
-      <Flex as="form" gap="3" flexDir="column">
+      <Flex as="form" gap="3" flexDir="column" onSubmit={authenticate}>
         <FormControl isRequired>
           <FormLabel>Web3 Secret Storage File</FormLabel>
           <InputGroup>
@@ -180,7 +196,7 @@ function Page() {
           ref={inputFileRef}
           onChange={(e) => {
             if (e.target.files && e.target.files.length === 1) {
-              setKeyFile(e.target.files[0]);
+              readFile();
             }
           }}
         />

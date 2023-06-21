@@ -6,7 +6,6 @@ import { Provider as GQLProvider } from "urql";
 import { ChakraProvider } from "@chakra-ui/react";
 import { Provider } from "jotai";
 import { client } from "../api/graphqlClient";
-import AccountContext from "../contexts/Account";
 import { PageContextProvider } from "./usePageContext";
 import type { PageContext } from "./types";
 import { Spinner } from "../components/Spinner";
@@ -22,8 +21,6 @@ function Layout({
   pageContext: PageContext;
 }) {
   const [booted, setBooted] = useState<boolean>(false);
-  const [privateKey, setPrivateKey] = useState<RawPrivateKey | null>(null);
-  const [address, setAddress] = useState<Address | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -35,13 +32,9 @@ function Layout({
   return (
     <React.StrictMode>
       <PageContextProvider pageContext={pageContext}>
-        <AccountContext.Provider
-          value={{ privateKey, setPrivateKey, address, setAddress }}
-        >
-          <ChakraProvider>
-            {booted ? <Center h="100vh">{children}</Center> : <Spinner />}
-          </ChakraProvider>
-        </AccountContext.Provider>
+        <ChakraProvider>
+          {booted ? <Center h="100vh">{children}</Center> : <Spinner />}
+        </ChakraProvider>
       </PageContextProvider>
     </React.StrictMode>
   );

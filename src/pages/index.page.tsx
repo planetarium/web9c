@@ -17,13 +17,13 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { navigate } from "vite-plugin-ssr/client/router";
 import { Title } from "../components/Title";
 import { useAtom } from "jotai";
-import { Keystore } from "../store/keystore";
+import { Account, createWeb3Account } from "../store/account";
 import { isKeyObject } from "../utils/web3-account";
 import { Web3KeyObject } from "@planetarium/account-web3-secret-storage";
 export { Page };
 
 function Page() {
-  const [keystore, setKeystore] = useAtom(Keystore);
+  const [account, setAccount] = useAtom(Account);
   const [keyFile, setKeyFile] = useState<Web3KeyObject>();
   const [passphrase, setPassphrase] = useState<string>("");
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -32,29 +32,6 @@ function Page() {
 
   const toast = useToast();
 
-  /*
-  const { setKeystore, setAccount } = useMainMutations();
-
-  const inputFileRef = useRef<HTMLInputElement>(null);
-
-
-  useEffect(() => readKeyFile(worker, keyFile), [keyFile]);
-
-  // Set Keystore on Worker Message
-  useEffect(() => {
-    if (message?.key === "KEY_FILE_READ") {
-      setKeystore(message.data.content);
-    }
-
-    if (message?.key === "ERROR_KEY_FILE_READ") {
-      toast({
-        title: "Error",
-        description: "Failed to read key file. Please try again.",
-        status: "error",
-      });
-    }
-  }, [message]);
-*/
   function readFile() {
     const files = inputFileRef.current?.files;
     if (!files || files.length !== 1) {
@@ -79,7 +56,6 @@ function Page() {
       }
 
       const parsedResult = JSON.parse(result);
-      debugger;
       if (!isKeyObject(parsedResult)) {
         toast({
           title: "Error",
@@ -89,7 +65,6 @@ function Page() {
         return;
       }
       setKeyFile(parsedResult);
-      return;
     };
     reader.readAsText(keyfile);
   }
@@ -119,8 +94,15 @@ function Page() {
     }
 
     try {
-      const account = (keystore, passphrase);
-      setAccount(account, await account.getPublicKey());
+      const account = createWeb3Account(keyFile, () => passphrase);
+      const publicKey = await account.getPublicKey();
+      const address = await account.getAddress();
+      setAccount({
+        account: account,
+        publicKey: publicKey,
+        address: address,
+      });
+      console.log("success");
     } catch (e: unknown) {
       setLoading(false);
 
@@ -164,7 +146,7 @@ function Page() {
             <Input
               type="text"
               readOnly
-              value={keyFile ? keyFile.name : ""}
+              value={keyFile ? inputFileRef.current.files[0].name ?? "" : ""}
               placeholder="Select a keyfile..."
               onChange={() => {
                 void 0;
@@ -186,7 +168,7 @@ function Page() {
               value={passphrase}
               onChange={(e) => setPassphrase(e.target.value)}
               placeholder="Passphrase"
-              disabled={!keystore}
+              disabled={!account}
             />
           </InputGroup>
         </FormControl>
@@ -203,7 +185,7 @@ function Page() {
         <Button
           w="full"
           type="submit"
-          isDisabled={!keystore || !passphrase}
+          isDisabled={!account || !passphrase}
           isLoading={isLoading}
         >
           Authenticate

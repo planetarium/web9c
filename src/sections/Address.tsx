@@ -18,7 +18,7 @@ export function AddressSection(props: FlexProps) {
         whiteSpace="nowrap"
         textOverflow="ellipsis"
         flexGrow="1"
-      ></Text>
+      >{account.address?.toString()}</Text>
       <Button size="sm" onClick={() => setAccount({ ...account, publicKey: null })}>
         Use another key
       </Button>

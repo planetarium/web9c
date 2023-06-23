@@ -102,7 +102,7 @@ function Page() {
         publicKey: publicKey,
         address: address,
       });
-      navigate("/main")
+      navigate("/main");
     } catch (e: unknown) {
       setLoading(false);
 
@@ -146,7 +146,9 @@ function Page() {
             <Input
               type="text"
               readOnly
-              value={keyFile ? inputFileRef.current?.files?.item(0)?.name ?? "" : ""}
+              value={
+                keyFile ? inputFileRef.current?.files?.item(0)?.name ?? "" : ""
+              }
               placeholder="Select a keyfile..."
               onChange={() => {
                 void 0;

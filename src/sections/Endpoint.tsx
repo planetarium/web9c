@@ -1,7 +1,7 @@
-import { Box, Heading } from '@chakra-ui/react';
-import { EndpointSelect } from '../components/EndpointSelect';
-import { EndpointType } from '../types/endpoint';
-import { EndpointInfoSecion } from './EndpointInfo';
+import { Box, Heading } from "@chakra-ui/react";
+import { EndpointSelect } from "../components/EndpointSelect";
+import { EndpointType } from "../types/endpoint";
+import { EndpointInfoSecion } from "./EndpointInfo";
 
 type EndpointSectionProps = {
   endpoint: EndpointType | null;

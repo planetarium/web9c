@@ -1,4 +1,4 @@
-import pkg from 'chakra-react-select';
+import pkg from "chakra-react-select";
 const { CreatableSelect } = pkg;
 import { EndpointType } from "../types/endpoint";
 import { Endpoints, TempEndpoint } from "../store/endpoint";
@@ -19,13 +19,15 @@ export function EndpointSelect({
   const [, setTempEndpoint] = useAtom(TempEndpoint);
 
   useEffect(() => {
-    (async() => {
+    (async () => {
       setEndpoints(await Promise.all(endpoints.map(loadSingleEndpointHealth)));
     })();
   }, [endpoints, setEndpoints]);
 
-  const sortedEndpoints = endpoints.sort((a, b) => (b.lastIndex || 0) - (a.lastIndex || 0));
-  console.log("sortedEndpoints", sortedEndpoints)
+  const sortedEndpoints = endpoints.sort(
+    (a, b) => (b.lastIndex || 0) - (a.lastIndex || 0)
+  );
+  console.log("sortedEndpoints", sortedEndpoints);
 
   return (
     <CreatableSelect

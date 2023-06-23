@@ -27,7 +27,11 @@ export function createWeb3Account(
     authenticate: (_, firstAttempt: boolean) =>
       firstAttempt
         ? Promise.resolve(getter())
-        : Promise.reject(new Error("Possibly invalid Passphrase. Web3 Secret Storage decryption failed.")),
+        : Promise.reject(
+            new Error(
+              "Possibly invalid Passphrase. Web3 Secret Storage decryption failed."
+            )
+          ),
   });
 
   return account;

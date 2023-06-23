@@ -9,24 +9,24 @@ import {
   Link,
   Text,
   useDisclosure,
-} from '@chakra-ui/react';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+} from "@chakra-ui/react";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Endpoints, TempEndpoint, useLastIndex } from '../store/endpoint';
-import { useAtom } from 'jotai';
+import { Endpoints, TempEndpoint, useLastIndex } from "../store/endpoint";
+import { useAtom } from "jotai";
 
 type EndpointInfoSectionProps = {
   url: string;
 };
 
 export function EndpointInfoSecion({ url }: EndpointInfoSectionProps) {
-  const [endpoints, ] = useAtom(Endpoints);
-  const [tempEndpoint, ] = useAtom(TempEndpoint);
+  const [endpoints] = useAtom(Endpoints);
+  const [tempEndpoint] = useAtom(TempEndpoint);
   const { isOpen, onToggle } = useDisclosure();
-  
+
   const endpoint = (
     tempEndpoint ? [...endpoints, tempEndpoint] : endpoints
-  ).find((e: { value: string; }) => e.value === url);
+  ).find((e: { value: string }) => e.value === url);
 
   const lastIndex = useLastIndex();
 
@@ -34,7 +34,7 @@ export function EndpointInfoSecion({ url }: EndpointInfoSectionProps) {
     return null;
   }
 
-  const open = isOpen ? 'block' : 'none';
+  const open = isOpen ? "block" : "none";
 
   const indexDiff = endpoint.lastIndex
     ? lastIndex - endpoint.lastIndex
@@ -49,20 +49,20 @@ export function EndpointInfoSecion({ url }: EndpointInfoSectionProps) {
           icon={faPlay}
           onClick={onToggle}
           transition="transform 0.2s ease-in-out"
-          transform={isOpen ? 'rotate(90deg)' : undefined}
+          transform={isOpen ? "rotate(90deg)" : undefined}
           _hover={{
-            bgColor: 'gray.100',
+            bgColor: "gray.100",
           }}
-          display={['block', 'block', 'block', 'block', 'none']}
+          display={["block", "block", "block", "block", "none"]}
         />
         <Heading as="h3" size="md">
           Endpoint Info
         </Heading>
-        <Circle bgColor={status ? 'green.500' : 'red.500'} size="3" />
+        <Circle bgColor={status ? "green.500" : "red.500"} size="3" />
       </Flex>
       <Grid
-        display={[open, open, open, open, 'grid']}
-        ml={['6', '6', '6', '6', 0]}
+        display={[open, open, open, open, "grid"]}
+        ml={["6", "6", "6", "6", 0]}
         mt="1"
         gap="1"
         templateColumns="auto 1fr"
@@ -84,9 +84,9 @@ export function EndpointInfoSecion({ url }: EndpointInfoSectionProps) {
           </Heading>
         </GridItem>
         <GridItem>
-          <Text size="sm" color={status ? 'green.500' : 'red.500'}>
-            {status ? 'Healthy ' : 'Unhealthy '}
-            {indexDiff === -Infinity ? '(Not responsive)' : `(${indexDiff})`}
+          <Text size="sm" color={status ? "green.500" : "red.500"}>
+            {status ? "Healthy " : "Unhealthy "}
+            {indexDiff === -Infinity ? "(Not responsive)" : `(${indexDiff})`}
           </Text>
         </GridItem>
         <GridItem>
@@ -95,7 +95,7 @@ export function EndpointInfoSecion({ url }: EndpointInfoSectionProps) {
           </Heading>
         </GridItem>
         <GridItem>
-          <Text size="sm">{endpoint.lastIndex || 'N/A'}</Text>
+          <Text size="sm">{endpoint.lastIndex || "N/A"}</Text>
         </GridItem>
       </Grid>
     </Box>

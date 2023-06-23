@@ -59,10 +59,8 @@ export const TempEndpoint = atom<EndpointType | undefined>(undefined);
 export const useLastIndex = () => {
   const [endpoints] = useAtom(Endpoints);
   const [tempEndpoint] = useAtom(TempEndpoint);
-    if (!tempEndpoint) {
-      return Math.max(...endpoints.map((e) => e.lastIndex || 0));
-    }
-    return Math.max(
-      ...[...endpoints, tempEndpoint].map((e) => e.lastIndex || 0)
-    );
-  };
+  if (!tempEndpoint) {
+    return Math.max(...endpoints.map((e) => e.lastIndex || 0));
+  }
+  return Math.max(...[...endpoints, tempEndpoint].map((e) => e.lastIndex || 0));
+};

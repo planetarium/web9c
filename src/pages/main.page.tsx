@@ -16,7 +16,7 @@ const select = <T,>(narrow: T | null, wide: T | null) => [
 export { Page };
 
 function Page() {
-  const [endpoint, setEndpoint] = useState<EndpointType | undefined>();
+  const [endpoint, setEndpoint] = useState<EndpointType | null>(null);
   const endpointState = { endpoint, setEndpoint };
 
   return (

@@ -1,8 +1,9 @@
-import { CreatableSelect } from "chakra-react-select";
+import pkg from 'chakra-react-select';
+const { CreatableSelect } = pkg;
 import { EndpointType } from "../types/endpoint";
 import { Endpoints, TempEndpoint } from "../store/endpoint";
 import { useAtom } from "jotai";
-import { useState } from "react";
+import { useEffect } from "react";
 import { loadSingleEndpointHealth } from "../utils/endpoint";
 
 type EndpointSectionProps = {
@@ -15,14 +16,23 @@ export function EndpointSelect({
   setEndpoint,
 }: EndpointSectionProps) {
   const [endpoints, setEndpoints] = useAtom(Endpoints);
-  const [current, setCurrent] = useState<EndpointType>(endpoints[0])
-  const [tempEndpoint, setTempEndpoint] = useAtom(TempEndpoint);
+  const [, setTempEndpoint] = useAtom(TempEndpoint);
+
+  useEffect(() => {
+    (async() => {
+      setEndpoints(await Promise.all(endpoints.map(loadSingleEndpointHealth)));
+    })();
+  }, []);
+
+  const sortedEndpoints = endpoints.sort((a, b) => (b.lastIndex || 0) - (a.lastIndex || 0));
+  console.log("sortedEndpoints", sortedEndpoints)
+
   return (
     <CreatableSelect
       value={endpoint || null}
       onChange={(value: EndpointType | null) => value && setEndpoint(value)}
       placeholder="Endpoint Address"
-      options={endpoints}
+      options={sortedEndpoints}
       onCreateOption={async (value: any) => {
         const newEndpoint = {
           value,

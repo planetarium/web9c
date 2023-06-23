@@ -1,5 +1,4 @@
 import { Button, Flex, FlexProps, Text } from "@chakra-ui/react";
-import { HexToUint8Array } from "../utils/Uint8Array";
 import { Account } from "../store/account";
 import { useAtom } from "jotai";
 

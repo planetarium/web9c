@@ -7,7 +7,6 @@ import ReactDOM from "react-dom/client";
 import { Layout } from "./Layout";
 import { getPageTitle } from "./getPageTitle";
 import type { PageContextClient } from "./types";
-import { Buffer } from "buffer";
 
 let root: ReactDOM.Root;
 async function render(pageContext: PageContextClient) {

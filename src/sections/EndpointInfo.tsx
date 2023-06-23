@@ -12,17 +12,16 @@ import {
 } from '@chakra-ui/react';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { EndpointType } from "../types/endpoint";
 import { Endpoints, TempEndpoint, useLastIndex } from '../store/endpoint';
+import { useAtom } from 'jotai';
 
 type EndpointInfoSectionProps = {
   url: string;
 };
 
 export function EndpointInfoSecion({ url }: EndpointInfoSectionProps) {
-  const [endpoints, setEndpoints] = useAtom(Endpoints);
-  const [current, setCurrent] = useState<EndpointType>(endpoints[0])
-  const [tempEndpoint, setTempEndpoint] = useAtom(TempEndpoint);
+  const [endpoints, ] = useAtom(Endpoints);
+  const [tempEndpoint, ] = useAtom(TempEndpoint);
   const { isOpen, onToggle } = useDisclosure();
   
   const endpoint = (

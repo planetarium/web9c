@@ -1,4 +1,3 @@
-export { useAccountContext } from "./useAccountContext";
 export { useAccountMetadatas } from "./useAccountMetadatas";
 export { useAvatarStates } from "./useAvatarStates";
 export { useNcgBalance } from "./useGoldBalance";

@@ -4,8 +4,8 @@ import { EndpointType } from '../types/endpoint';
 import { EndpointInfoSecion } from './EndpointInfo';
 
 type EndpointSectionProps = {
-  endpoint: EndpointType | undefined;
-  setEndpoint: (endpoint: EndpointType | undefined) => void;
+  endpoint: EndpointType | null;
+  setEndpoint: (endpoint: EndpointType | null) => void;
 };
 
 export function EndpointSection(props: EndpointSectionProps) {

@@ -22,7 +22,7 @@ export function EndpointSelect({
     (async() => {
       setEndpoints(await Promise.all(endpoints.map(loadSingleEndpointHealth)));
     })();
-  }, []);
+  }, [endpoints, setEndpoints]);
 
   const sortedEndpoints = endpoints.sort((a, b) => (b.lastIndex || 0) - (a.lastIndex || 0));
   console.log("sortedEndpoints", sortedEndpoints)
@@ -33,7 +33,7 @@ export function EndpointSelect({
       onChange={(value: EndpointType | null) => value && setEndpoint(value)}
       placeholder="Endpoint Address"
       options={sortedEndpoints}
-      onCreateOption={async (value: any) => {
+      onCreateOption={async (value: string) => {
         const newEndpoint = {
           value,
           label: value,

@@ -29,27 +29,27 @@ export const Endpoints = atom<EndpointType[]>([
   },
   {
     label: "Ninodes RPC - Tokyo",
-    value: "tky-nc-1.ninodes.com,80,31238",
+    value: "http://tky-nc-1.ninodes.com/graphql",
     lastIndex: undefined,
   },
   {
     label: "Ninodes RPC - Singapore",
-    value: "sgp-nc-1.ninodes.com,80,31238",
+    value: "http://sgp-nc-1.ninodes.com/graphql",
     lastIndex: undefined,
   },
   {
     label: "Ninodes RPC - New Jersey",
-    value: "nj-nc-1.ninodes.com,80,31238",
+    value: "http://nj-nc-1.ninodes.com/graphql",
     lastIndex: undefined,
   },
   {
     label: "Ninodes RPC - Los Angeles",
-    value: "la-nc-1.ninodes.com,80,31238",
+    value: "http://la-nc-1.ninodes.com/graphql",
     lastIndex: undefined,
   },
   {
     label: "Ninodes RPC - France",
-    value: "fra-nc-1.ninodes.com,80,31238",
+    value: "http://fra-nc-1.ninodes.com/graphql",
     lastIndex: undefined,
   },
 ]);

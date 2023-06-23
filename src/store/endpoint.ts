@@ -27,31 +27,31 @@ export const Endpoints = atom<EndpointType[]>([
     value: "http://9c-main-rpc-5.nine-chronicles.com/graphql",
     lastIndex: undefined,
   },
-  {
-    label: "Ninodes RPC - Tokyo",
-    value: "http://tky-nc-1.ninodes.com/graphql",
-    lastIndex: undefined,
-  },
-  {
-    label: "Ninodes RPC - Singapore",
-    value: "http://sgp-nc-1.ninodes.com/graphql",
-    lastIndex: undefined,
-  },
-  {
-    label: "Ninodes RPC - New Jersey",
-    value: "http://nj-nc-1.ninodes.com/graphql",
-    lastIndex: undefined,
-  },
-  {
-    label: "Ninodes RPC - Los Angeles",
-    value: "http://la-nc-1.ninodes.com/graphql",
-    lastIndex: undefined,
-  },
-  {
-    label: "Ninodes RPC - France",
-    value: "http://fra-nc-1.ninodes.com/graphql",
-    lastIndex: undefined,
-  },
+  // {
+  //   label: "Ninodes RPC - Tokyo",
+  //   value: "http://tky-nc-1.ninodes.com/graphql",
+  //   lastIndex: undefined,
+  // },
+  // {
+  //   label: "Ninodes RPC - Singapore",
+  //   value: "http://sgp-nc-1.ninodes.com/graphql",
+  //   lastIndex: undefined,
+  // },
+  // {
+  //   label: "Ninodes RPC - New Jersey",
+  //   value: "http://nj-nc-1.ninodes.com/graphql",
+  //   lastIndex: undefined,
+  // },
+  // {
+  //   label: "Ninodes RPC - Los Angeles",
+  //   value: "http://la-nc-1.ninodes.com/graphql",
+  //   lastIndex: undefined,
+  // },
+  // {
+  //   label: "Ninodes RPC - France",
+  //   value: "http://fra-nc-1.ninodes.com/graphql",
+  //   lastIndex: undefined,
+  // },
 ]);
 
 export const TempEndpoint = atom<EndpointType | undefined>(undefined);

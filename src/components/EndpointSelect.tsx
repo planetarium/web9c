@@ -1,5 +1,4 @@
-import pkg from "chakra-react-select";
-const { CreatableSelect } = pkg;
+import { CreatableSelect } from "chakra-react-select";
 import { EndpointType } from "../types/endpoint";
 import { Endpoints, TempEndpoint } from "../store/endpoint";
 import { useAtom } from "jotai";

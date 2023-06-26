@@ -13,7 +13,7 @@ import {
 import { faFile } from "@fortawesome/free-regular-svg-icons";
 import { faKey } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { navigate } from "vite-plugin-ssr/client/router";
 import { Title } from "../components/Title";
 import { useAtom } from "jotai";
@@ -102,7 +102,7 @@ function Page() {
         publicKey: publicKey,
         address: address,
       });
-      navigate("/main")
+      navigate("/main");
     } catch (e: unknown) {
       setLoading(false);
 
@@ -146,7 +146,9 @@ function Page() {
             <Input
               type="text"
               readOnly
-              value={keyFile ? inputFileRef.current.files[0].name ?? "" : ""}
+              value={
+                keyFile ? inputFileRef.current?.files?.item(0)?.name ?? "" : ""
+              }
               placeholder="Select a keyfile..."
               onChange={() => {
                 void 0;

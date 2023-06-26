@@ -1,5 +1,4 @@
 import { Button, Flex, FlexProps, Text } from "@chakra-ui/react";
-import { HexToUint8Array } from "../utils/Uint8Array";
 import { Account } from "../store/account";
 import { useAtom } from "jotai";
 
@@ -18,8 +17,13 @@ export function AddressSection(props: FlexProps) {
         whiteSpace="nowrap"
         textOverflow="ellipsis"
         flexGrow="1"
-      ></Text>
-      <Button size="sm" onClick={() => setAccount({ ...account, publicKey: null })}>
+      >
+        {account.address?.toString()}
+      </Text>
+      <Button
+        size="sm"
+        onClick={() => setAccount({ ...account, publicKey: null })}
+      >
         Use another key
       </Button>
     </Flex>

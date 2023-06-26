@@ -3,7 +3,7 @@ import { Account } from "../store/account";
 import { useAtom } from "jotai";
 
 export function PublicKeySection(props: BoxProps) {
-  const [account, setAccount] = useAtom(Account);
+  const [account] = useAtom(Account);
 
   return (
     <Box {...props}>

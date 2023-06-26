@@ -7,7 +7,6 @@ import ReactDOM from "react-dom/client";
 import { Layout } from "./Layout";
 import { getPageTitle } from "./getPageTitle";
 import type { PageContextClient } from "./types";
-import { Buffer } from "buffer";
 
 let root: ReactDOM.Root;
 async function render(pageContext: PageContextClient) {
@@ -17,7 +16,11 @@ async function render(pageContext: PageContextClient) {
       <Page {...pageProps} />
     </Layout>
   );
-  const container = document.getElementById("react-root")!;
+  const container = document.getElementById("react-root");
+  if (container == null) {
+    throw new Error("react-root doesn't exist.");
+  }
+
   if (pageContext.isHydration) {
     root = ReactDOM.hydrateRoot(container, page);
   } else {

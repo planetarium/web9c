@@ -7,7 +7,7 @@ import {
   Heading,
   Input,
   Spacer,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
 export function SendSection() {
   return (

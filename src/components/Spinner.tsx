@@ -2,7 +2,7 @@ export const Spinner = () => {
   return (
     <div className="flex justify-center items-center h-screen fixed top-0 left-0 right-0 bottom-0 w-full z-50 overflow-hidden">
       <div className="inline-block w-96 rounded-full" role="status">
-      <p className="font-semibold text-center text-2xl">Web9c</p>
+        <p className="font-semibold text-center text-2xl">Web9c</p>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 1000 1000"

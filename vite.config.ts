@@ -8,6 +8,10 @@ import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfil
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react(), svgr(), tsconfigPaths(), ssr({ prerender: true })],
+  ssr: {
+    // Add npm packages containing invalid code here
+    noExternal: ["chakra-react-select", "react-select"],
+  },
   optimizeDeps: {
     esbuildOptions: {
       // Node.js global to browser globalThis
@@ -22,8 +26,5 @@ export default defineConfig({
       ],
     },
   },
-  build: {
-    // to make tests faster
-    minify: false,
-  },
+  build: {},
 });

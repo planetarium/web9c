@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "build": "yarn codegen && yarn tsc && vite build",
+    "lint": "eslint && prettier -w src/**/*.{js,ts,jsx,tsx}",
     "preview": "vite preview",
     "codegen": "graphql-codegen-esm --config ./graphql/codegen.ts"
   },
@@ -14,7 +14,6 @@
     "@chakra-ui/react": "^2.7.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
     "@fortawesome/free-regular-svg-icons": "^6.4.0",
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
@@ -45,6 +44,8 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@evilmartians/lefthook": "^1.4.3",
     "@graphql-codegen/cli": "^4.0.1",
     "@graphql-codegen/client-preset": "^4.0.1",
     "@types/react": "^18.0.28",

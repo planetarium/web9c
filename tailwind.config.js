@@ -92,12 +92,12 @@ export default {
           "-50%": { transform: "translateX(-50%)" },
         },
         spin: {
-          "from": { transform: "rotate(0deg)", transformOrigin: "center"  },
-          "to": { transform: "rotate(360deg)", transformOrigin: "center"  },
+          from: { transform: "rotate(0deg)", transformOrigin: "center" },
+          to: { transform: "rotate(360deg)", transformOrigin: "center" },
         },
         spinRev: {
-          "from": { transform: "rotate(360deg)", transformOrigin: "center"  },
-          "to": { transform: "rotate(0deg)", transformOrigin: "center"  },
+          from: { transform: "rotate(360deg)", transformOrigin: "center" },
+          to: { transform: "rotate(0deg)", transformOrigin: "center" },
         },
       },
       animation: {

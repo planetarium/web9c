@@ -13,12 +13,23 @@ import {
 } from "@planetarium/tx";
 import { decode, encode } from "@planetarium/bencodex";
 import { stageTransaction } from ".";
-import { NCG_CURRENCY, GENESIS_HASH } from "../constants";
+import { NCG_CURRENCY, MEAD_CURRENCY, GENESIS_HASH } from "../constants";
 import { TxId } from "../types";
 
 interface TransactionOpts {
   nonce: number;
 }
+
+const additionalGasTxProperties = MEAD_CURRENCY === null ? {
+  maxGasPrice: null,
+  gasLimit: null,
+} : {
+  maxGasPrice: {
+    currency: MEAD_CURRENCY,
+    rawValue: 10n ** 18n,
+  },
+  gasLimit: 1n,
+};
 
 export async function sendTransferAssetTransaction(
   account: Account,
@@ -50,6 +61,7 @@ export async function sendTransferAssetTransaction(
     updatedAddresses: new Set(),
     genesisHash: GENESIS_HASH,
     customActions: [action],
+    ...additionalGasTxProperties,
   };
 
   const signed = await signTx(unsignedTx, account);
@@ -78,6 +90,7 @@ export async function sendStakeTransaction(
     updatedAddresses: new Set(),
     genesisHash: GENESIS_HASH,
     customActions: [action],
+    ...additionalGasTxProperties,
   };
 
   const signed = await signTx(unsignedTx, account);
@@ -124,6 +137,7 @@ export async function sendHackAndSlashTransaction(
     updatedAddresses: new Set(),
     genesisHash: GENESIS_HASH,
     customActions: [action],
+    ...additionalGasTxProperties,
   };
 
   const signed = await signTx(unsignedTx, account);

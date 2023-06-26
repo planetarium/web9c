@@ -17,4 +17,4 @@ jobs:
         cache: 'npm'
     - name: Install dependencies
       run: yarn
-    - run: yarn build
+    - run: yarn codegen && yarn build

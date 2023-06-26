@@ -1,4 +1,3 @@
-import { Divider, AbsoluteCenter } from "@chakra-ui/react";
 import { ButtonLink } from "../../components/ui/ButtonLink";
 import { useAccountMetadatas } from "../../hooks/useAccountMetadatas";
 import { createWeb3KeyStore } from "../../hooks/useAccountMetadatas";

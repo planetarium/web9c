@@ -19,7 +19,7 @@ type EndpointInfoSectionProps = {
   url: string;
 };
 
-export function EndpointInfoSecion({ url }: EndpointInfoSectionProps) {
+export function EndpointInfoSection({ url }: EndpointInfoSectionProps) {
   const [endpoints] = useAtom(Endpoints);
   const [tempEndpoint] = useAtom(TempEndpoint);
   const { isOpen, onToggle } = useDisclosure();

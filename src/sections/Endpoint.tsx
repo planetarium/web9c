@@ -1,23 +1,14 @@
-import { Box, Heading } from "@chakra-ui/react";
-import { EndpointSelect } from "../components/EndpointSelect";
-import { EndpointType } from "../types/endpoint";
-import { EndpointInfoSection } from "./EndpointInfo";
+import { Heading } from "@chakra-ui/react";
+import { Section } from "../components/ui/Section";
+import { EndpointList } from "../components/EndpointList";
+import { EndpointInfo } from "../components/EndpointInfo";
 
-type EndpointSectionProps = {
-  endpoint: EndpointType | null;
-  setEndpoint: (endpoint: EndpointType | null) => void;
-};
-
-export function EndpointSection(props: EndpointSectionProps) {
+export function EndpointSection() {
   return (
-    <Box>
-      <Heading as="h2" size="lg" mr="2" mb="2">
-        Endpoint
-      </Heading>
-      <EndpointSelect {...props} />
-      {props.endpoint && props.endpoint.lastIndex && (
-        <EndpointInfoSection url={props.endpoint.value} />
-      )}
-    </Box>
+    <Section>
+      <Heading>Endpoint</Heading>
+      <EndpointList />
+      <EndpointInfo />
+    </Section>
   );
 }

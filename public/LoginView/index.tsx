@@ -4,12 +4,7 @@ import { useAccountContext, useAccountMetadatas } from "../../hooks";
 import { useForm } from "react-hook-form";
 import { createWeb3KeyStore } from "../../hooks/useAccountMetadatas";
 import { useState } from "react";
-import {
-  Button,
-  Input,
-  FormErrorMessage,
-  FormControl,
-} from "@chakra-ui/react";
+import { Button, Input, FormErrorMessage, FormControl } from "@chakra-ui/react";
 
 interface Inputs {
   keyId: string;

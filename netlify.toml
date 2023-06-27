@@ -4,4 +4,4 @@
   status = 200
 
 [build]
-  command = yarn codegen && yarn build
+  command = "yarn codegen && yarn build"

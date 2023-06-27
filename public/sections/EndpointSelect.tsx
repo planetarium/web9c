@@ -1,19 +1,11 @@
 import { CreatableSelect } from "chakra-react-select";
-import { EndpointType } from "../types/endpoint";
-import { Endpoints, TempEndpoint } from "../store/endpoint";
+import { EndpointType } from "../../src/types/endpoint";
+import { Endpoints, TempEndpoint } from "../../src/store/endpoint";
 import { useAtom } from "jotai";
 import { useEffect } from "react";
-import { loadSingleEndpointHealth } from "../utils/endpoint";
+import { loadSingleEndpointHealth } from "../../src/utils/endpoint";
 
-type EndpointSectionProps = {
-  endpoint: EndpointType | null;
-  setEndpoint: (endpoint: EndpointType | null) => void;
-};
-
-export function EndpointSelect({
-  endpoint,
-  setEndpoint,
-}: EndpointSectionProps) {
+export function EndpointSelect() {
   const [endpoints, setEndpoints] = useAtom(Endpoints);
   const [, setTempEndpoint] = useAtom(TempEndpoint);
 

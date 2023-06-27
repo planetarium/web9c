@@ -34,3 +34,6 @@ node_modules
 
 **/dist
 **/*.tsbuildinfo
+
+# GraphQL-codegen
+src/graphql

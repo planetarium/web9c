@@ -3434,39 +3434,39 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@planetarium/account-web3-secret-storage@npm:2.1.0":
-  version: 2.1.0
-  resolution: "@planetarium/account-web3-secret-storage@npm:2.1.0"
+"@planetarium/account-web3-secret-storage@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@planetarium/account-web3-secret-storage@npm:2.0.0"
   dependencies:
     "@noble/hashes": ^1.3.0
     "@peculiar/webcrypto": ^1.4.3
     scrypt-js: ^3.0.1
   peerDependencies:
-    "@planetarium/account": ^2.1.0
-  checksum: 3b2252e6e28976ee4cd49be289ecc74d411b23791e86bff9cf7ec32882a5398e4bd04a919c80f527129829ddaa1608cdd65dff17ab6552c14c82ff66470a84b4
+    "@planetarium/account": ^2.0.0
+  checksum: 08a474db099406e62aaaeba83b1ff39fc627aa159836c6945eb856edf2834f33040fabe6b8b5fd7ab63ba5306228bdaf541848926cfd3cdddd29ecbba35f4fa2
   languageName: node
   linkType: hard
 
-"@planetarium/account-web3-secret-storage@patch:@planetarium/account-web3-secret-storage@npm%3A2.1.0#./.yarn/patches/@planetarium-account-web3-secret-storage-npm-2.1.0-5ce4577bf4.patch::locator=web9c%40workspace%3A.":
-  version: 2.1.0
-  resolution: "@planetarium/account-web3-secret-storage@patch:@planetarium/account-web3-secret-storage@npm%3A2.1.0#./.yarn/patches/@planetarium-account-web3-secret-storage-npm-2.1.0-5ce4577bf4.patch::version=2.1.0&hash=2ffbe6&locator=web9c%40workspace%3A."
+"@planetarium/account-web3-secret-storage@patch:@planetarium/account-web3-secret-storage@npm%3A2.0.0#./.yarn/patches/@planetarium-account-web3-secret-storage-npm-2.0.0-cdaf03f6ab.patch::locator=web9c%40workspace%3A.":
+  version: 2.0.0
+  resolution: "@planetarium/account-web3-secret-storage@patch:@planetarium/account-web3-secret-storage@npm%3A2.0.0#./.yarn/patches/@planetarium-account-web3-secret-storage-npm-2.0.0-cdaf03f6ab.patch::version=2.0.0&hash=2ffbe6&locator=web9c%40workspace%3A."
   dependencies:
     "@noble/hashes": ^1.3.0
     "@peculiar/webcrypto": ^1.4.3
     scrypt-js: ^3.0.1
   peerDependencies:
-    "@planetarium/account": ^2.1.0
-  checksum: a3bb39a25da0bdac6ab6ac2687713c6f4fd39cc1d3d55b0d38db531450c26546095d4d32dfe2bb5e8eb60a7f826e9f927b16619e54034712108f97f0e71d533e
+    "@planetarium/account": ^2.0.0
+  checksum: 035e2aeb73394eab5f68a080b006bb6c9436601f360f184c373d6c4a285efaae95d2f6c069ac2f1eae1f5295d34f47b093c45ecee2530573a732db3a7b08d761
   languageName: node
   linkType: hard
 
-"@planetarium/account@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "@planetarium/account@npm:1.3.0"
+"@planetarium/account@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@planetarium/account@npm:2.0.0"
   dependencies:
     "@noble/hashes": ^1.2.0
     "@noble/secp256k1": ^1.7.1
-  checksum: 1c2537d9fea2386e3b05bfa05ade641d87fc98ec149c10f52b59b298abfeeac4372a87ad9ca232970b7a12a169564b6b6edad75d4e590ec24036588a2bf61561
+  checksum: 1e5770641f0b36bc5d66f72fb090cb00e674a5b8a2c121d57e012af4298909a478cd6c543f5da7df72885ee1951592090b99900bf08c14826eb5715ea7716dcd
   languageName: node
   linkType: hard
 
@@ -3497,14 +3497,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@planetarium/tx@npm:^1.3.0":
-  version: 1.3.0
-  resolution: "@planetarium/tx@npm:1.3.0"
+"@planetarium/tx@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@planetarium/tx@npm:2.0.0"
   dependencies:
     "@planetarium/bencodex": ^0.2.2
   peerDependencies:
-    "@planetarium/account": ^1.3.0
-  checksum: 54bbcf2fe0437c099b705b89c06aabedd2d0c2694b0a4de7e6126edc0659e5381cc1da4d1d7981d8210f91ebd623728cc7aeaaf57ea94910474aed6baa3be415
+    "@planetarium/account": ^2.0.0
+  checksum: fe4b65fc097dc4d32623b910f13d5d6a37722c990b87b96baabf8ef2596e526f9b923bcca23ba9f4423a381ee55c65fb31238072557c70ab3bdb8a9b77a46d54
+  languageName: node
+  linkType: hard
+
+"@planetarium/tx@patch:@planetarium/tx@npm%3A2.0.0#./.yarn/patches/@planetarium-tx-npm-2.0.0-ecc63e1b1a.patch::locator=web9c%40workspace%3A.":
+  version: 2.0.0
+  resolution: "@planetarium/tx@patch:@planetarium/tx@npm%3A2.0.0#./.yarn/patches/@planetarium-tx-npm-2.0.0-ecc63e1b1a.patch::version=2.0.0&hash=f7e618&locator=web9c%40workspace%3A."
+  dependencies:
+    "@planetarium/bencodex": ^0.2.2
+  peerDependencies:
+    "@planetarium/account": ^2.0.0
+  checksum: f0617472dd76e769d50fc8a0effc2388c6c7b58a909e53de58dd6a4c3a5c02bf895a1c3306992a2c1725da9cfec2bd92ab8d4409c15abac6ea41cb7fb87e9b79
   languageName: node
   linkType: hard
 
@@ -10017,12 +10028,12 @@ __metadata:
     "@graphql-codegen/cli": ^4.0.1
     "@graphql-codegen/client-preset": ^4.0.1
     "@peculiar/webcrypto": ^1.4.3
-    "@planetarium/account": ^1.3.0
-    "@planetarium/account-web3-secret-storage": ^2.1.0
+    "@planetarium/account": ^2.0.0
+    "@planetarium/account-web3-secret-storage": ^2.0.0
     "@planetarium/bencodex": ^0.2.2
     "@planetarium/lib9c-wasm": 0.0.4-dev.56de660
     "@planetarium/sign": ^0.0.12
-    "@planetarium/tx": ^1.3.0
+    "@planetarium/tx": ^2.0.0
     "@tailwindcss/typography": ^0.5.9
     "@types/react": ^18.0.28
     "@types/react-dom": ^18.0.11

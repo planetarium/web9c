@@ -7,7 +7,14 @@ import {
   useNextTxNonce,
 } from "../../hooks";
 import Avatar from "./Avatar";
-import { Tab, Tabs, TabList, TabPanel, Spinner, TabPanels } from "@chakra-ui/react";
+import {
+  Tab,
+  Tabs,
+  TabList,
+  TabPanel,
+  Spinner,
+  TabPanels,
+} from "@chakra-ui/react";
 import TransferTab from "./tabs/TransferTab";
 import StakeTab from "./tabs/StakeTab";
 import { Address, RawPrivateKey } from "@planetarium/account";
@@ -42,7 +49,7 @@ function LobbyViewContent({ rawPrivateKey, address }: LobbyViewContentProps) {
           <Tabs variant="enclosed">
             <TabList>
               <Tab>Transfer NCG</Tab>
-              <Tab c>Stake</Tab>
+              <Tab>Stake</Tab>
             </TabList>
 
             <TabPanels>

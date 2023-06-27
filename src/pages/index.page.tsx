@@ -15,7 +15,7 @@ import { faKey } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FormEvent, useRef, useState } from "react";
 import { navigate } from "vite-plugin-ssr/client/router";
-import { Title } from "../components/Title";
+import { Title } from "../components/ui/Title";
 import { useAtom } from "jotai";
 import { Account, createWeb3Account } from "../store/account";
 import { isKeyObject } from "../utils/web3-account";

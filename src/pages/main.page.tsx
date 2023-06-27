@@ -1,10 +1,7 @@
-import { useState } from "react";
-import { Center, Grid } from "@chakra-ui/react";
-import { Title } from "../components/Title";
-import { AddressSection } from "../sections/Address";
+import { Center, Flex } from "@chakra-ui/react";
 import { EndpointSection } from "../sections/Endpoint";
-import { SendSection } from "../sections/SendSection";
-import { EndpointType } from "../types/endpoint";
+import { AccountSection } from "../sections/Account";
+import { TransactionSection } from "../sections/Transaction";
 
 const select = <T,>(narrow: T | null, wide: T | null) => [
   narrow,
@@ -16,24 +13,17 @@ const select = <T,>(narrow: T | null, wide: T | null) => [
 export { Page };
 
 function Page() {
-  const [endpoint, setEndpoint] = useState<EndpointType | null>(null);
-  const endpointState = { endpoint, setEndpoint };
-
   return (
     <Center h="100%">
-      <Grid
+      <Flex
+        direction={select("column", "row")}
         width={select("60ch", "120ch")}
-        rounded="2xl"
-        shadow="2xl"
-        p="6"
         gap="4"
-        templateColumns={select("1fr", "1fr 1fr")}
       >
-        <Title />
-        <AddressSection />
-        <EndpointSection {...endpointState} />
-        {endpoint && <SendSection />}
-      </Grid>
+        <EndpointSection />
+        <AccountSection />
+        <TransactionSection />
+      </Flex>
     </Center>
   );
 }

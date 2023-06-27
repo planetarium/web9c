@@ -4,7 +4,7 @@ import { Center } from "@chakra-ui/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import { PageContextProvider } from "./usePageContext";
 import type { PageContext } from "./types";
-import { Spinner } from "../components/Spinner";
+import { Spinner } from "../components/ui/Spinner";
 import "../../styles.css";
 
 export { Layout };

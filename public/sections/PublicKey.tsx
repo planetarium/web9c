@@ -1,5 +1,5 @@
 import { Box, BoxProps, Heading, Text } from "@chakra-ui/react";
-import { Account } from "../store/account";
+import { Account } from "../../src/store/account";
 import { useAtom } from "jotai";
 
 export function PublicKeySection(props: BoxProps) {

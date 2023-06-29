@@ -18,19 +18,23 @@ const GetAvatarStatesQuery = gql`
   }
 `;
 
-type AvatarStatesType = ({
+export type AvatarStateType = {
   name: string;
   level: number;
   actionPoint: number;
   address: string;
-} | null)[];
+};
 
-export function useAvatarStates(address: Address): AvatarStatesType | null {
+export type AvatarStatesType = (AvatarStateType | null)[];
+
+export function useAvatarStates(
+  address: Address | null
+): AvatarStatesType | null {
   const avatarStatesRef = useRef<AvatarStatesType | null>(null);
   const [{ data, error, fetching }, executeQuery] = useQuery({
     query: GetAvatarStatesQuery,
     variables: {
-      address: address.toHex(),
+      address: address?.toHex(),
     },
   });
   useEffect(() => {
@@ -42,6 +46,10 @@ export function useAvatarStates(address: Address): AvatarStatesType | null {
       return () => clearTimeout(id);
     }
   }, [fetching, executeQuery]);
+
+  if (address === null) {
+    return null;
+  }
 
   if (error) {
     throw error;

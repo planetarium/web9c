@@ -8,12 +8,12 @@ const GetGoldBalanceQuery = gql`
   }
 `;
 
-export function useNcgBalance(address: Address): number | null {
+export function useNcgBalance(address: Address | null): number | null {
   const ref = useRef<number | null>(null);
   const [{ data, error, fetching }, executeQuery] = useQuery({
     query: GetGoldBalanceQuery,
     variables: {
-      address: address.toHex(),
+      address: address?.toHex(),
     },
   });
 
@@ -26,6 +26,10 @@ export function useNcgBalance(address: Address): number | null {
       return () => clearTimeout(id);
     }
   }, [fetching, executeQuery]);
+
+  if (address === null) {
+    return null;
+  }
 
   if (error) {
     throw error;

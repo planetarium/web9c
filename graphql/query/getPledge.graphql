@@ -1,0 +1,9 @@
+query GetPledge($address: Address!) {
+  stateQuery {
+    pledge(agentAddress: $address) {
+      approved
+      patronAddress
+      mead
+    }
+  }
+}

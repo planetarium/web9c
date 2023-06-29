@@ -1,19 +1,18 @@
 import { Address } from "@planetarium/account";
-import { gql, useQuery } from "urql";
+import { useQuery } from "urql";
 import { useEffect, useRef } from "react";
+import { GetPledgeDocument } from "../graphql/graphql";
 
-const GetNextNonceQuery = gql`
-  query ($address: Address!) {
-    transaction {
-      nextTxNonce(address: $address)
-    }
-  }
-`;
+export interface PledgeType {
+  approved: boolean;
+  mead: number;
+  patronAddress: string | null;
+}
 
-export function useNextTxNonce(address: Address | null): number | null {
-  const ref = useRef<number | null>(null);
+export function usePledge(address: Address | null): PledgeType | null {
+  const ref = useRef<PledgeType | null>(null);
   const [{ data, error, fetching }, executeQuery] = useQuery({
-    query: GetNextNonceQuery,
+    query: GetPledgeDocument.toString(),
     variables: {
       address: address?.toHex(),
     },
@@ -41,6 +40,6 @@ export function useNextTxNonce(address: Address | null): number | null {
     return ref.current;
   }
 
-  ref.current = data.transaction.nextTxNonce;
+  ref.current = (data?.stateQuery.pledge || null) as PledgeType | null;
   return ref.current;
 }

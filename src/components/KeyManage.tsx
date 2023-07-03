@@ -1,5 +1,6 @@
-import { Heading, Link, Text } from "@chakra-ui/react";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { Heading, Link, Text, Icon } from "@chakra-ui/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faExternalLink } from "@fortawesome/free-solid-svg-icons";
 import { Slot } from "./ui/Slot";
 import { useAtom } from "jotai";
 import { Account } from "../store/account";
@@ -99,7 +100,8 @@ function PatronAddress() {
 function AddressNcscanLink({ address }: { address: LibplanetAccountAddress }) {
   return (
     <Link href={`https://9cscan.com/address/${address.toString()}`} isExternal>
-      {address.toString()} <ExternalLinkIcon mx="2px" />
+      {address.toString()}{" "}
+      <Icon as={FontAwesomeIcon} icon={faExternalLink} mx="2px" />
     </Link>
   );
 }

@@ -30,9 +30,7 @@ function Layout({
     <React.StrictMode>
       <PageContextProvider pageContext={pageContext}>
         <ChakraProvider>
-          <GraphQLProvider>
-            {booted ? <Center h="100vh">{children}</Center> : <Spinner />}
-          </GraphQLProvider>
+          {booted ? <Center>{children}</Center> : <Spinner />}
         </ChakraProvider>
       </PageContextProvider>
     </React.StrictMode>

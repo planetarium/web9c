@@ -1,5 +1,7 @@
 export type EndpointType = {
-  label: string;
-  value: string;
-  lastIndex: number | undefined;
+  id: string;
+  label?: string;
+  value?: string;
+  lastIndex?: number;
+  clients?: number;
 };

@@ -1,0 +1,13 @@
+  query getAvatarStatus ($address: Address!) {
+    stateQuery {
+      agent(address: $address) {
+        avatarStates {
+          name
+          level
+          index
+          actionPoint
+          address
+        }
+      }
+    }
+  }

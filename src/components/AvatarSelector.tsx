@@ -1,15 +1,25 @@
-import { Heading, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { Slot } from "./ui/Slot";
-import { useAvatarStates } from "../hooks";
-import type { AvatarStateType } from "../hooks/useAvatarStates";
 import { useAtom } from "jotai";
 import { Account } from "../store/account";
 import { Avatar } from "../store/avatar";
+import { useQuery } from "urql";
+import { GetAvatarStatusDocument } from "../graphql/graphql";
+import { useEffect } from "react";
+
+type AvatarStateType = {
+  name: string;
+  level: number;
+  actionPoint: number;
+  address: string;
+};
 
 export function AvatarSelector() {
   return (
     <Slot>
-      <Heading size="md">Avatar</Heading>
+      <Heading shadow="base" p="2" borderRadius="md" size="md">
+        Avatar
+      </Heading>
       <AvatarStates />
     </Slot>
   );
@@ -17,14 +27,22 @@ export function AvatarSelector() {
 
 const AvatarStates: React.FC = () => {
   const [{ address }] = useAtom(Account);
-  const avatarStates = useAvatarStates(address);
+  const [{ data }, reexecuteQuery] = useQuery({
+    query: GetAvatarStatusDocument.toString(),
+    variables: {
+      address: address?.toHex(),
+    },
+  });
+  useEffect(() => {
+    reexecuteQuery();
+  }, []);
 
   return (
-    <Slot>
-      {...avatarStates?.map((avatarState, index) => (
+    <Flex flexDir="column" p="2" gap="2">
+      {data?.stateQuery.agent?.avatarStates?.map((avatarState, index) => (
         <AvatarStateBox key={index} avatarState={avatarState} />
-      )) ?? [<Text>There is no character.</Text>]}
-    </Slot>
+      )) ?? <Text>No Avatar Exists</Text>}
+    </Flex>
   );
 };
 
@@ -39,14 +57,15 @@ function AvatarStateBox({
 
   if (avatarState === null) {
     return (
-      <Slot>
+      <Box>
         <Text>Empty</Text>
-      </Slot>
+      </Box>
     );
   }
 
   return (
-    <Slot
+    <Button
+      colorScheme="gray"
       bgColor={avatar?.address === avatarState.address ? "blue.100" : "white"}
       onClick={() =>
         avatarState.address === avatar?.address
@@ -55,9 +74,9 @@ function AvatarStateBox({
       }
     >
       <Text>
-        name={avatarState.name} | level={avatarState.level} | AP=
+        {avatarState.name} | Level {avatarState.level} | AP{" "}
         {avatarState.actionPoint}/{MAX_ACTION_POINT}
       </Text>
-    </Slot>
+    </Button>
   );
 }

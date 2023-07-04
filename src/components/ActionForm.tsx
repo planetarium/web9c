@@ -7,6 +7,7 @@ import {
   Select,
   useToast,
 } from "@chakra-ui/react";
+import { useQuery } from "urql";
 import { Slot } from "./ui/Slot";
 import { FC, useEffect, useMemo, useState } from "react";
 import { useAtom } from "jotai";
@@ -21,8 +22,7 @@ import {
 import { Account } from "../store/account";
 import { BencodexDictionary, decode, encode } from "@planetarium/bencodex";
 import { Uint8ArrayToHex } from "../utils/Uint8Array";
-import { useAvatarStates } from "../hooks";
-import { AvatarStateType } from "../hooks/useAvatarStates";
+import { GetAvatarStatusDocument } from "../graphql/graphql";
 
 const UNKNOWN_ACTION = "" as const;
 
@@ -187,16 +187,29 @@ function TransferAssetForm() {
   );
 }
 
+type AvatarStateType = {
+  name: string;
+  level: number;
+  index: number;
+  actionPoint: number;
+  address: string;
+};
+
 const ClaimStakeRewardForm: FC = () => {
   const [, setAction] = useAtom(Action);
   const [{ address }] = useAtom(Account);
-  const nullableAvatarStates = useAvatarStates(address);
+  const [{ data: avatarStatesQuery }] = useQuery({
+    query: GetAvatarStatusDocument.toString(),
+    variables: {
+      address: address?.toHex(),
+    },
+  });
   const avatarStates = useMemo(
     () =>
-      nullableAvatarStates?.filter(
+      avatarStatesQuery?.stateQuery.agent?.avatarStates?.filter(
         (state): state is AvatarStateType => state !== null
       ) ?? [],
-    [nullableAvatarStates]
+    [avatarStatesQuery]
   );
 
   const [avatarAddress, setAvatarAddress] = useState<Address>();

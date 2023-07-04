@@ -1,5 +1,0 @@
-query getNextTxNonce($address: Address!) {
-  transaction {
-    nextTxNonce(address: $address)
-  }
-}

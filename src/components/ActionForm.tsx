@@ -15,11 +15,14 @@ import {
   Address,
   Currency,
   transfer_asset3,
+  claim_stake_reward3,
   stake2,
 } from "@planetarium/lib9c-wasm";
 import { Account } from "../store/account";
 import { BencodexDictionary, decode, encode } from "@planetarium/bencodex";
 import { Uint8ArrayToHex } from "../utils/Uint8Array";
+import { useAvatarStates } from "../hooks";
+import { AvatarStateType } from "../hooks/useAvatarStates";
 
 const UNKNOWN_ACTION = "" as const;
 
@@ -35,6 +38,7 @@ export function ActionForm() {
       >
         <option value="transfer_asset3">Transfer Asset</option>
         <option value="stake2">Stake</option>
+        <option value="claim_stake_reward3">Claim Stake Reward</option>
       </Select>
       <ActionFieldForm actionType={actionType} />
       <Button bgColor="green.100">Action Gen</Button>
@@ -77,11 +81,14 @@ function GetBencodexButton() {
 
 function ActionFieldForm({ actionType }: { actionType: string }) {
   if (actionType === UNKNOWN_ACTION) {
-    return <StakeForm />;
+    return <></>;
   }
 
   if (actionType === "transfer_asset3") {
     return <TransferAssetForm />;
+  }
+  if (actionType === "claim_stake_reward3") {
+    return <ClaimStakeRewardForm />;
   }
   if (actionType === "stake2") {
     return <StakeForm />;
@@ -180,8 +187,50 @@ function TransferAssetForm() {
   );
 }
 
+const ClaimStakeRewardForm: FC = () => {
+  const [, setAction] = useAtom(Action);
+  const [{ address }] = useAtom(Account);
+  const nullableAvatarStates = useAvatarStates(address);
+  const avatarStates = useMemo(
+    () =>
+      nullableAvatarStates?.filter(
+        (state): state is AvatarStateType => state !== null
+      ) ?? [],
+    [nullableAvatarStates]
+  );
+
+  const [avatarAddress, setAvatarAddress] = useState<Address>();
+
+  useEffect(() => {
+    if (!avatarAddress) return;
+
+    const encodedAction = claim_stake_reward3({ avatarAddress });
+    const action = decode(encodedAction);
+
+    setAction(action);
+  }, [avatarAddress, setAction]);
+
+  return (
+    <Slot>
+      <FormControl>
+        <FormLabel>Avatar Address</FormLabel>
+        <Select
+          placeholder="Select avatar"
+          onChange={(e) => setAvatarAddress(new Address(e.currentTarget.value))}
+        >
+          {avatarStates.map((avatarState) => (
+            <option key={avatarState.address} value={avatarState.address}>
+              [Lv. {avatarState.level}] {avatarState.name}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
+    </Slot>
+  );
+};
+
 const StakeForm: FC = () => {
-  const [action, setAction] = useAtom(Action);
+  const [, setAction] = useAtom(Action);
   const [amount, setAmount] = useState<number>();
 
   useEffect(() => {
@@ -191,7 +240,7 @@ const StakeForm: FC = () => {
     const action = decode(encodedAction);
 
     setAction(action);
-  }, [amount, action, setAction]);
+  }, [amount, setAction]);
 
   return (
     <Slot>

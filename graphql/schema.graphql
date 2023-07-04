@@ -215,6 +215,7 @@ type ActionQuery {
     """
     activationCode: String!
   ): ByteString!
+  approvePledge(patronAddress: Address!): ByteString!
   claimRaidReward(
     """
     address of avatar state to receive reward.
@@ -316,12 +317,18 @@ type ActionQuery {
     """
     tail: Int = 0
   ): ByteString!
+  createPledge(
+    agentAddresses: [Address!]!
+    mead: Int = 4
+    patronAddress: Address!
+  ): ByteString!
   dailyReward(
     """
     Avatar address to get daily reward
     """
     avatarAddress: Address!
   ): ByteString!
+  endPledge(agentAddress: Address!): ByteString!
   grinding(
     """
     Address of avatar.
@@ -511,6 +518,7 @@ type ActionQuery {
     """
     slotIndex: Int!
   ): ByteString!
+  requestPledge(agentAddress: Address!, mead: Int = 4): ByteString!
   runeEnhancement(
     """
     The avatar address to enhance rune.
@@ -606,6 +614,7 @@ type ActionTxQuery {
     """
     activationCode: String!
   ): ByteString!
+  approvePledge(patronAddress: Address!): ByteString!
   claimRaidReward(
     """
     address of avatar state to receive reward.
@@ -707,12 +716,18 @@ type ActionTxQuery {
     """
     tail: Int = 0
   ): ByteString!
+  createPledge(
+    agentAddresses: [Address!]!
+    mead: Int = 4
+    patronAddress: Address!
+  ): ByteString!
   dailyReward(
     """
     Avatar address to get daily reward
     """
     avatarAddress: Address!
   ): ByteString!
+  endPledge(agentAddress: Address!): ByteString!
   grinding(
     """
     Address of avatar.
@@ -902,6 +917,7 @@ type ActionTxQuery {
     """
     slotIndex: Int!
   ): ByteString!
+  requestPledge(agentAddress: Address!, mead: Int = 4): ByteString!
   runeEnhancement(
     """
     The avatar address to enhance rune.
@@ -1013,6 +1029,16 @@ type AddressQuery {
   ): [Address!]
 
   """
+  pledge information address.
+  """
+  pledgeAddress(
+    """
+    address of agent state.
+    """
+    agentAddress: Address!
+  ): Address!
+
+  """
   user information address by world boss season.
   """
   raiderAddress(
@@ -1094,6 +1120,11 @@ type AgentStateType {
   Monster collection round of agent.
   """
   monsterCollectionRound: Long!
+
+  """
+  mead pledge information.
+  """
+  pledge: MeadPledgeType!
 }
 
 type AppProtocolVersionType {
@@ -1404,6 +1435,7 @@ type ConsumableType {
   """
   itemType: ItemType!
   mainStat: StatType!
+  requiredBlockIndex: Long
 }
 
 type CostumeType {
@@ -1441,6 +1473,7 @@ type CostumeType {
   Item category.
   """
   itemType: ItemType!
+  requiredBlockIndex: Long
 }
 
 type CraftQuery {
@@ -1631,6 +1664,7 @@ type EquipmentType {
   """
   itemType: ItemType!
   level: Int!
+  requiredBlockIndex: Long
   setId: Int!
   skills: [SkillType]
   stat: DecimalStatType!
@@ -1814,6 +1848,7 @@ type ItemUsableType {
   Item category.
   """
   itemType: ItemType!
+  requiredBlockIndex: Long
 }
 
 type KeyStoreMutation {
@@ -1889,6 +1924,7 @@ type MaterialType {
   Item category.
   """
   itemType: ItemType!
+  requiredBlockIndex: Long
 }
 
 input MaterialsToUseInputType {
@@ -1901,6 +1937,12 @@ input MaterialsToUseInputType {
   Item quantity to be used.
   """
   quantity: Int!
+}
+
+type MeadPledgeType {
+  approved: Boolean!
+  mead: Int!
+  patronAddress: Address
 }
 
 type MonsterCollectionRewardInfoType {
@@ -2435,6 +2477,7 @@ type StakeRegularRewardsType {
 }
 
 enum StakeRewardType {
+  CURRENCY
   ITEM
   RUNE
 }
@@ -2558,6 +2601,13 @@ type StandaloneQuery {
   """
   actionQuery: ActionQuery!
   actionTxQuery(
+    maxGasPrice: FungibleAssetValueInputType = {
+      decimalPlaces: 18
+      minters: null
+      quantity: 1000000000000000000
+      ticker: "Mead"
+    }
+
     """
     The nonce for Transaction.
     """
@@ -2591,7 +2641,7 @@ type StandaloneQuery {
     transaction id.
     """
     txId: TxId!
-  ): TransactionType_1
+  ): TransactionType
     @deprecated(
       reason: "The root query is not the best place for getTx so it was moved. Use transaction.getTx()"
     )
@@ -2749,6 +2799,7 @@ type StateQuery {
     agentAddress: Address!
   ): MonsterCollectionStateType
   orderDigestList(avatarAddress: Address!): OrderDigestListStateType
+  pledge(agentAddress: Address!): MeadPledgeType!
 
   """
   world boss season id by block index.
@@ -2974,7 +3025,7 @@ type TransactionHeadlessQuery {
     transaction id.
     """
     txId: TxId!
-  ): TransactionType_1
+  ): TransactionType
   nextTxNonce(
     """
     Target address to query
@@ -2999,6 +3050,13 @@ type TransactionHeadlessQuery {
     txId: TxId!
   ): TxResultType!
   unsignedTransaction(
+    maxGasPrice: FungibleAssetValueInputType = {
+      decimalPlaces: 18
+      minters: null
+      quantity: 1000000000000000000
+      ticker: "Mead"
+    }
+
     """
     The nonce for Transaction.
     """
@@ -3076,7 +3134,7 @@ type TransactionQuery {
   ): ByteString!
 }
 
-type TransactionType_1 {
+type TransactionType {
   """
   A list of actions in this transaction.
   """

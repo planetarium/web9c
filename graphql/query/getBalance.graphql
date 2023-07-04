@@ -1,3 +1,0 @@
-query getBalance($address: Address!) {
-  goldBalance(address: $address)
-}

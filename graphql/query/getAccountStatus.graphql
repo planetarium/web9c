@@ -1,0 +1,13 @@
+query getAccountStatus($address: Address!) {
+  stateQuery {
+    pledge(agentAddress: $address) {
+      approved
+      patronAddress
+      mead
+    }
+  }
+  transaction {
+    nextTxNonce(address: $address)
+  }
+  goldBalance(address: $address)
+}

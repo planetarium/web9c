@@ -1,9 +1,0 @@
-query getLastBlockIndex($offset: Int!) {
-  chainQuery {
-    blockQuery {
-      blocks(offset: $offset, limit: 1, desc: true) {
-        index
-      }
-    }
-  }
-}

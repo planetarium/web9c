@@ -6,6 +6,7 @@ import { PageContextProvider } from "./usePageContext";
 import type { PageContext } from "./types";
 import { Spinner } from "../components/ui/Spinner";
 import "../../styles.css";
+import { GraphQLProvider } from "./GraphQLProvider";
 
 export { Layout };
 
@@ -29,7 +30,9 @@ function Layout({
     <React.StrictMode>
       <PageContextProvider pageContext={pageContext}>
         <ChakraProvider>
-          {booted ? <Center h="100vh">{children}</Center> : <Spinner />}
+          <GraphQLProvider>
+            {booted ? <Center h="100vh">{children}</Center> : <Spinner />}
+          </GraphQLProvider>
         </ChakraProvider>
       </PageContextProvider>
     </React.StrictMode>

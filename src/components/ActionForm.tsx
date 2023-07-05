@@ -7,14 +7,22 @@ import {
   Select,
   useToast,
 } from "@chakra-ui/react";
+import { useQuery } from "urql";
 import { Slot } from "./ui/Slot";
-import { useEffect, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useAtom } from "jotai";
 import { Action } from "../store/action";
-import { Address, Currency, transfer_asset3 } from "@planetarium/lib9c-wasm";
+import {
+  Address,
+  Currency,
+  transfer_asset3,
+  claim_stake_reward3,
+  stake2,
+} from "@planetarium/lib9c-wasm";
 import { Account } from "../store/account";
 import { BencodexDictionary, decode, encode } from "@planetarium/bencodex";
 import { Uint8ArrayToHex } from "../utils/Uint8Array";
+import { GetAvatarStatusDocument } from "../graphql/graphql";
 
 const UNKNOWN_ACTION = "" as const;
 
@@ -29,6 +37,8 @@ export function ActionForm() {
         onChange={(e) => setActionType(e.currentTarget.value)}
       >
         <option value="transfer_asset3">Transfer Asset</option>
+        <option value="stake2">Stake</option>
+        <option value="claim_stake_reward3">Claim Stake Reward</option>
       </Select>
       <ActionFieldForm actionType={actionType} />
       <Button bgColor="green.100">Action Gen</Button>
@@ -76,6 +86,12 @@ function ActionFieldForm({ actionType }: { actionType: string }) {
 
   if (actionType === "transfer_asset3") {
     return <TransferAssetForm />;
+  }
+  if (actionType === "claim_stake_reward3") {
+    return <ClaimStakeRewardForm />;
+  }
+  if (actionType === "stake2") {
+    return <StakeForm />;
   }
 
   return <Slot>Should be implemented.</Slot>;
@@ -170,3 +186,90 @@ function TransferAssetForm() {
     </Slot>
   );
 }
+
+type AvatarStateType = {
+  name: string;
+  level: number;
+  index: number;
+  actionPoint: number;
+  address: string;
+};
+
+const ClaimStakeRewardForm: FC = () => {
+  const [, setAction] = useAtom(Action);
+  const [{ address }] = useAtom(Account);
+  const [{ data: avatarStatesQuery }] = useQuery({
+    query: GetAvatarStatusDocument.toString(),
+    variables: {
+      address: address?.toHex(),
+    },
+  });
+  const avatarStates = useMemo(
+    () =>
+      avatarStatesQuery?.stateQuery.agent?.avatarStates?.filter(
+        (state): state is AvatarStateType => state !== null
+      ) ?? [],
+    [avatarStatesQuery]
+  );
+
+  const [avatarAddress, setAvatarAddress] = useState<Address>();
+
+  useEffect(() => {
+    if (!avatarAddress) return;
+
+    const encodedAction = claim_stake_reward3({ avatarAddress });
+    const action = decode(encodedAction);
+
+    setAction(action);
+  }, [avatarAddress, setAction]);
+
+  return (
+    <Slot>
+      <FormControl>
+        <FormLabel>Avatar Address</FormLabel>
+        <Select
+          placeholder="Select avatar"
+          onChange={(e) => setAvatarAddress(new Address(e.currentTarget.value))}
+        >
+          {avatarStates.map((avatarState) => (
+            <option key={avatarState.address} value={avatarState.address}>
+              [Lv. {avatarState.level}] {avatarState.name}
+            </option>
+          ))}
+        </Select>
+      </FormControl>
+    </Slot>
+  );
+};
+
+const StakeForm: FC = () => {
+  const [, setAction] = useAtom(Action);
+  const [amount, setAmount] = useState<number>();
+
+  useEffect(() => {
+    if (!amount) return;
+
+    const encodedAction = stake2({ amount: `${amount}` });
+    const action = decode(encodedAction);
+
+    setAction(action);
+  }, [amount, setAction]);
+
+  return (
+    <Slot>
+      <FormControl>
+        <FormLabel>Amount</FormLabel>
+        <Input
+          required={true}
+          type="number"
+          value={amount ?? ""}
+          onChange={(e) =>
+            setAmount(
+              e.target.value !== undefined ? Number(e.target.value) : undefined
+            )
+          }
+        />
+      </FormControl>
+    </Slot>
+  );
+};

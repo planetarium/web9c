@@ -9,43 +9,15 @@ import {
 } from "@chakra-ui/react";
 import { useQuery } from "urql";
 import { Slot } from "./ui/Slot";
-import { FC, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, FC, useEffect, useMemo, useState } from "react";
 import { useAtom } from "jotai";
 import { Action } from "../store/action";
-import {
-  Address,
-  Currency,
-  transfer_asset3,
-  claim_stake_reward3,
-  stake2,
-} from "@planetarium/lib9c-wasm";
+import { Address, Currency } from "@planetarium/lib9c-wasm";
+import { Lib9c } from "@planetarium/lib9c-wasm/dotnet";
 import { Account } from "../store/account";
 import { BencodexDictionary, decode, encode } from "@planetarium/bencodex";
 import { Uint8ArrayToHex } from "../utils/Uint8Array";
 import { GetAvatarStatusDocument } from "../graphql/graphql";
-
-const UNKNOWN_ACTION = "" as const;
-
-export function ActionForm() {
-  const [actionType, setActionType] = useState<string>(UNKNOWN_ACTION);
-
-  return (
-    <Slot>
-      <Heading size="md">Action</Heading>
-      <Select
-        placeholder="Select action type."
-        onChange={(e) => setActionType(e.currentTarget.value)}
-      >
-        <option value="transfer_asset3">Transfer Asset</option>
-        <option value="stake2">Stake</option>
-        <option value="claim_stake_reward3">Claim Stake Reward</option>
-      </Select>
-      <ActionFieldForm actionType={actionType} />
-      <Button bgColor="green.100">Action Gen</Button>
-      <GetBencodexButton />
-    </Slot>
-  );
-}
 
 function GetBencodexButton() {
   const [action] = useAtom(Action);
@@ -79,197 +51,57 @@ function GetBencodexButton() {
   );
 }
 
-function ActionFieldForm({ actionType }: { actionType: string }) {
-  if (actionType === UNKNOWN_ACTION) {
-    return <></>;
-  }
+export const ActionForm = () => {
+  const [selectedAction, setSelectedAction] = useState("");
+  const [inputs, setInputs] = useState({});
 
-  if (actionType === "transfer_asset3") {
-    return <TransferAssetForm />;
-  }
-  if (actionType === "claim_stake_reward3") {
-    return <ClaimStakeRewardForm />;
-  }
-  if (actionType === "stake2") {
-    return <StakeForm />;
-  }
+  const actionTypes = Lib9c.Wasm.getAllActionTypes();
 
-  return <Slot>Should be implemented.</Slot>;
-}
-
-function TransferAssetForm() {
-  const [action, setAction] = useAtom(Action);
-  const [account] = useAtom(Account);
-  const [recipientString, setRecipientString] = useState<string>();
-  const [amount, setAmount] = useState<number>();
-  const [memo, setMemo] = useState<string>();
-
-  if (action !== null) {
-    console.debug(
-      "ACTION",
-      action,
-      Array.from((action as BencodexDictionary).values())
+  const handleActionChange = (event: { target: { value: any } }) => {
+    const actionType = event.target.value;
+    setSelectedAction(actionType);
+    console.log(event.target.value);
+    console.log(Lib9c.Wasm.getAvailableInputs(actionType));
+    const inputsForAction = JSON.parse(
+      Lib9c.Wasm.getAvailableInputs(actionType)
     );
-  }
+    setInputs(inputsForAction);
+  };
 
-  const recipient = useMemo<Address | undefined>(() => {
-    if (recipientString === undefined) {
-      return undefined;
-    }
-
-    try {
-      return new Address(recipientString);
-    } catch (e) {
-      console.error(e);
-      return undefined;
-    }
-  }, [recipientString]);
-
-  useEffect(() => {
-    if (recipient && amount && account.address) {
-      setAction(
-        decode(
-          transfer_asset3({
-            sender: new Address(account.address.toString()),
-            recipient,
-            amount: {
-              currency: new Currency({
-                ticker: "NCG",
-                decimalPlaces: 2,
-                minters: [
-                  new Address("0x47d082a115c63e7b58b1532d20e631538eafadde"),
-                ],
-              }),
-              sign: 1,
-              majorUnit: String(amount),
-              minorUnit: "00",
-            },
-            memo: memo || "EMPTY",
-          })
-        )
-      );
-    }
-  }, [recipient, amount, memo]);
+  const handleInputChange = (
+    event: ChangeEvent<HTMLInputElement>,
+    inputName: string
+  ) => {
+    setInputs({
+      ...inputs,
+      [inputName]: event.target.value,
+    });
+  };
 
   return (
     <Slot>
-      <FormControl>
-        <FormLabel>Recipient</FormLabel>
-        <Input
-          required={true}
-          isInvalid={
-            recipientString !== undefined &&
-            !/^0x[0-9a-fA-F]{40}$/.test(recipientString)
-          }
-          type="string"
-          value={recipientString ?? ""}
-          onChange={(e) => setRecipientString(e.target.value)}
-        />
-        <FormLabel>Amount</FormLabel>
-        <Input
-          required={true}
-          type="number"
-          value={amount ?? ""}
-          onChange={(e) =>
-            setAmount(
-              e.target.value === undefined ? undefined : Number(e.target.value)
-            )
-          }
-        />
-        <FormLabel>Memo</FormLabel>
-        <Input
-          type="string"
-          value={memo ?? ""}
-          onChange={(e) => setMemo(e.target.value)}
-        />
-      </FormControl>
-    </Slot>
-  );
-}
+      <Heading size="md">Action</Heading>
+      <Select value={selectedAction} onChange={handleActionChange}>
+        <option value="">Select an action</option>
+        {actionTypes.map((actionType) => (
+          <option key={actionType} value={actionType}>
+            {actionType}
+          </option>
+        ))}
+      </Select>
 
-type AvatarStateType = {
-  name: string;
-  level: number;
-  index: number;
-  actionPoint: number;
-  address: string;
-};
-
-const ClaimStakeRewardForm: FC = () => {
-  const [, setAction] = useAtom(Action);
-  const [{ address }] = useAtom(Account);
-  const [{ data: avatarStatesQuery }] = useQuery({
-    query: GetAvatarStatusDocument.toString(),
-    variables: {
-      address: address?.toHex(),
-    },
-  });
-  const avatarStates = useMemo(
-    () =>
-      avatarStatesQuery?.stateQuery.agent?.avatarStates?.filter(
-        (state): state is AvatarStateType => state !== null
-      ) ?? [],
-    [avatarStatesQuery]
-  );
-
-  const [avatarAddress, setAvatarAddress] = useState<Address>();
-
-  useEffect(() => {
-    if (!avatarAddress) return;
-
-    const encodedAction = claim_stake_reward3({ avatarAddress });
-    const action = decode(encodedAction);
-
-    setAction(action);
-  }, [avatarAddress, setAction]);
-
-  return (
-    <Slot>
-      <FormControl>
-        <FormLabel>Avatar Address</FormLabel>
-        <Select
-          placeholder="Select avatar"
-          onChange={(e) => setAvatarAddress(new Address(e.currentTarget.value))}
-        >
-          {avatarStates.map((avatarState) => (
-            <option key={avatarState.address} value={avatarState.address}>
-              [Lv. {avatarState.level}] {avatarState.name}
-            </option>
-          ))}
-        </Select>
-      </FormControl>
-    </Slot>
-  );
-};
-
-const StakeForm: FC = () => {
-  const [, setAction] = useAtom(Action);
-  const [amount, setAmount] = useState<number>();
-
-  useEffect(() => {
-    if (!amount) return;
-
-    const encodedAction = stake2({ amount: `${amount}` });
-    const action = decode(encodedAction);
-
-    setAction(action);
-  }, [amount, setAction]);
-
-  return (
-    <Slot>
-      <FormControl>
-        <FormLabel>Amount</FormLabel>
-        <Input
-          required={true}
-          type="number"
-          value={amount ?? ""}
-          onChange={(e) =>
-            setAmount(
-              e.target.value !== undefined ? Number(e.target.value) : undefined
-            )
-          }
-        />
-      </FormControl>
+      {Object.keys(inputs).map((inputName) => (
+        <div key={inputName}>
+          <label>{inputName}</label>
+          <input
+            type="text"
+            value={inputs[inputName]}
+            onChange={(event) => handleInputChange(event, inputName)}
+          />
+          <Button bgColor="green.100">Action Gen</Button>
+          <GetBencodexButton />
+        </div>
+      ))}
     </Slot>
   );
 };

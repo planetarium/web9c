@@ -1,0 +1,11 @@
+query getNodeState {
+  nodeStatus{
+    tip{
+      index
+    }
+    stagedTxIdsCount
+  }
+  rpcInformation{
+    totalCount
+  }
+}
